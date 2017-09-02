@@ -18,8 +18,6 @@ public class RomLoader {
      * @param memory The memory to load the ROM into
      */
     public void loadRom(File romFile, Chip8Memory memory) {
-        System.out.println(romFile.toPath().toString());
-        //File romFile = new File(romPath);
         InputStream inputStream = null;
         byte[] loadedRom = new byte[MEMORY_LENGTH - PROGRAM_COUNTER_START];
         int readBytes = -1;
