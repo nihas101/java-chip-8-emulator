@@ -14,11 +14,12 @@ import static de.nihas101.chip8.utils.Constants.PROGRAM_COUNTER_START;
 public class RomLoader {
     /**
      * Loads a ROM into memory
-     * @param romPath The path to the ROM
+     * @param romFile The file of the ROM
      * @param memory The memory to load the ROM into
      */
-    public void loadRom(String romPath, Chip8Memory memory) {
-        File romFile = new File(romPath);
+    public void loadRom(File romFile, Chip8Memory memory) {
+        System.out.println(romFile.toPath().toString());
+        //File romFile = new File(romPath);
         InputStream inputStream = null;
         byte[] loadedRom = new byte[MEMORY_LENGTH - PROGRAM_COUNTER_START];
         int readBytes = -1;

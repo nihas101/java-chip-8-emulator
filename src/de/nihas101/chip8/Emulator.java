@@ -14,6 +14,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -67,12 +68,11 @@ public class Emulator extends Application{
         /* Load root-node */
         FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("main.fxml"));
         Pane root = loader.load();
+        MainController mainController = loader.getController();
 
-        /* Create resizable canvas and bind it's properties to the parent */
+        /* Create resizable canvas and add it to the scene */
         canvas = new ResizableCanvas(cpu.getScreenMemory());
-        root.getChildren().add(canvas);
-        canvas.widthProperty().bind(root.widthProperty());
-        canvas.heightProperty().bind(root.heightProperty());
+        ((BorderPane)root.getChildren().get(0)).setCenter(canvas);
 
         /* Create Scene */
         Scene scene = new Scene(root);
@@ -109,17 +109,28 @@ public class Emulator extends Application{
         timeline.getKeyFrames().add(oneFrame);
         timeline.play();
 
-        /* Start the thread to execute cpu cycles */
-        new Thread(() -> {
-            while(!stop) {
-                executeCPUCycles();
-                //canvas.draw();
-                waitForStep();
-                waitFor(2);
-            }
-        }).start();
+        /* TODO: Load ROM by opening a FileManager */
+        /* TODO: Allow user to choose colors of screen */
+
+        Runnable cpuThread = () ->{
+            /* Start the thread to execute cpu cycles */
+            new Thread(() -> {
+                while(!stop) {
+                    executeCPUCycles();
+                    waitForStep();
+                    waitFor(2);
+                }
+            }).start();
+        };
+
+        mainController.setup(cpuThread, cpu.getMemory(), canvas);
 
         primaryStage.show();
+
+        /* Bind size properties of canvas */
+        double gridPaneHeight = ((BorderPane)root.getChildren().get(0)).getTop().getBoundsInParent().getHeight() - 8;
+        canvas.widthProperty().bind(root.widthProperty().add(1));
+        canvas.heightProperty().bind(root.heightProperty().subtract(gridPaneHeight));
     }
 
     /**
@@ -260,9 +271,6 @@ public class Emulator extends Application{
                 timer, delayTimer, soundTimer,
                 random,
                 midiChannels[0]);
-
-        /* Load ROM*/
-        /* TODO: Load ROM by opening a FileManager */
 
         return cpu;
     }
