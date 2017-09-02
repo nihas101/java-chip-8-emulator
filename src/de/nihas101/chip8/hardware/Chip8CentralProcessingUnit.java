@@ -76,12 +76,17 @@ public class Chip8CentralProcessingUnit implements Debuggable {
      */
     public void reset(){
         cycles = 0;
+        registers.clear();
         programCounter.jumpTo(new UnsignedShort((short) 0x200));
         screenMemory.reset();
         addressRegister.setAddress(new UnsignedShort((short) 0));
         delayTimer.reset();
         soundTimer.reset();
         stack.clear();
+    }
+
+    public void clearMemory(){
+        memory.clear();
     }
 
     /**
@@ -755,7 +760,15 @@ public class Chip8CentralProcessingUnit implements Debuggable {
     /**
      * Stops the cpu if it is looking for input
      */
-    public void stop(){
+    public void stopCPU(){
         this.stop = true;
+    }
+
+    public boolean isStop(){
+        return stop;
+    }
+
+    public void continueCPU(){
+        this.stop = false;
     }
 }

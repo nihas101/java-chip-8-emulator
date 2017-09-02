@@ -9,15 +9,15 @@ import static de.nihas101.chip8.utils.Constants.REGISTER_LENGTH;
  * A class representing the registers of a Chip-8
  */
 public class Chip8Registers implements Debuggable {
+    private UnsignedByte ZERO = new UnsignedByte((byte) 0);
     /**
      * 16 registers, 1 byte each
      */
     private final UnsignedByte[] registers = new UnsignedByte[REGISTER_LENGTH];
 
     public Chip8Registers(){
-        UnsignedByte zero = new UnsignedByte((byte) 0);
         for(int i=0 ; i < registers.length ; i++)
-            registers[i] = zero;
+            registers[i] = ZERO;
     }
 
     /**
@@ -60,5 +60,10 @@ public class Chip8Registers implements Debuggable {
      */
     public void poke(int Vx, UnsignedByte unsignedByte){
         registers[Vx] = unsignedByte;
+    }
+
+    public void clear() {
+        for(int i=0 ; i < registers.length ; i++)
+            registers[i] = ZERO;
     }
 }

@@ -7,7 +7,6 @@ import de.nihas101.chip8.hardware.timers.DelayTimer;
 import de.nihas101.chip8.hardware.timers.SoundTimer;
 import de.nihas101.chip8.unsignedDataTypes.UnsignedShort;
 import de.nihas101.chip8.utils.ResizableCanvas;
-import de.nihas101.chip8.utils.RomLoader;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -98,7 +97,7 @@ public class Emulator extends Application{
             /* Close debugger if it is open on closing the main window */
             if(debugger.isDebugging()) debugger.stop();
             /* In case cpu is looking for user input interrupt it */
-            cpu.stop();
+            cpu.stopCPU();
         });
 
         /* Setup keyframes to draw the canvas */
@@ -109,13 +108,10 @@ public class Emulator extends Application{
         timeline.getKeyFrames().add(oneFrame);
         timeline.play();
 
-        /* TODO: Load ROM by opening a FileManager */
-        /* TODO: Allow user to choose colors of screen */
-
         Runnable cpuThread = () ->{
             /* Start the thread to execute cpu cycles */
             new Thread(() -> {
-                while(!stop) {
+                while(!cpu.isStop()) {
                     executeCPUCycles();
                     waitForStep();
                     waitFor(2);
@@ -123,7 +119,7 @@ public class Emulator extends Application{
             }).start();
         };
 
-        mainController.setup(cpuThread, cpu.getMemory(), canvas);
+        mainController.setup(cpuThread, cpu, canvas);
 
         primaryStage.show();
 
@@ -149,9 +145,9 @@ public class Emulator extends Application{
      * Waits for the user to hit the key to calculate the next step
      */
     private void waitForStep() {
-        if(stepByStep && !stop){
+        if(stepByStep && !cpu.isStop()){
             nextStep = false;
-            while(stepByStep & !nextStep && !stop) waitFor(100);
+            while(stepByStep & !nextStep && !cpu.isStop()) waitFor(100);
         }
     }
 
@@ -161,7 +157,7 @@ public class Emulator extends Application{
     private void executeCPUCycles() {
         try { cpu.decodeNextOpCode(); }
         catch (Exception e) {
-            stop = true;
+            cpu.stopCPU();
             System.out.println(cpu.getState());
             e.printStackTrace();
         }
@@ -173,7 +169,7 @@ public class Emulator extends Application{
     @Override
     public void stop(){
         /* Stop the thread that is used as timer */
-        stop = true;
+        cpu.stopCPU();
         cpu.stopTimer();
         timeline.stop();
         if(debugger.isDebugging()) debugger.stop();
@@ -203,7 +199,7 @@ public class Emulator extends Application{
                 case V: cpu.setKeyCode(KEY_D); break;
                 case B: cpu.setKeyCode(KEY_E); break;
                 case N: cpu.setKeyCode(KEY_F); break;
-                case SPACE: nextStep = true; break;
+                case T: nextStep = true; break;
                 case Q: handleDebugger(); break;
                 case W: {
                     stepByStep = !stepByStep;

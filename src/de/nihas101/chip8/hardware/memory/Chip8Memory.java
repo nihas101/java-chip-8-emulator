@@ -12,7 +12,7 @@ public class Chip8Memory implements Debuggable {
     /**
      * 0xFFF (4096) bytes of hardware
      */
-    private final UnsignedByte[] memory = new UnsignedByte[MEMORY_LENGTH];
+    private UnsignedByte[] memory = new UnsignedByte[MEMORY_LENGTH];
 
     public Chip8Memory(){
         // Set Registers to 0
@@ -58,5 +58,9 @@ public class Chip8Memory implements Debuggable {
     public UnsignedByte read(int index){
         if(index > -1 && index < MEMORY_LENGTH) return memory[index];
         else throw new IndexOutOfBoundsException("Index " + index + " is out of bounds (0 - " + MEMORY_LENGTH + ")");
+    }
+
+    public void clear() {
+        for (int i=0 ; i < memory.length ; i++) memory[i] = new UnsignedByte((byte) 0);
     }
 }
