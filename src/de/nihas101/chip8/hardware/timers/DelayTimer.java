@@ -1,11 +1,9 @@
 package de.nihas101.chip8.hardware.timers;
 
-import de.nihas101.chip8.debug.Debuggable;
-
 /**
  * Represents the delay timer of the Chip-8
  */
-public class DelayTimer extends Chip8Timer implements Debuggable{
+public class DelayTimer extends Chip8Timer {
     /**
      * {@inheritDoc}
      */
