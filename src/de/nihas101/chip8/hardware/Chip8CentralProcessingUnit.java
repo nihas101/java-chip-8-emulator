@@ -768,7 +768,7 @@ public class Chip8CentralProcessingUnit implements Debuggable {
         return stop;
     }
 
-    public void continueCPU(){
+    public void startCPU(){
         this.stop = false;
     }
 }
