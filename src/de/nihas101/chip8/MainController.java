@@ -38,8 +38,13 @@ public class MainController {
         romFile = fileChooser.showOpenDialog(ownerWindow);
 
         if(romFile != null) {
-            /* Stop last thread*/
+            /* Stop last thread */
             cpu.stopCPU();
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             /* Clear memory and load in new ROM */
             cpu.clearMemory();
             cpu.reset();
