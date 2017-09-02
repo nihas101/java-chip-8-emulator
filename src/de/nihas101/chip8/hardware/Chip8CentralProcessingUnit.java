@@ -239,8 +239,8 @@ public class Chip8CentralProcessingUnit implements Debuggable {
         int decimalValue = this.registers.peek(Vx).unsignedDataType;
 
         UnsignedByte hundreds = new UnsignedByte((byte) (decimalValue / 100));
-        UnsignedByte tens = new UnsignedByte((byte) ((decimalValue / 10) % 10));
-        UnsignedByte units = new UnsignedByte((byte) (decimalValue % 10));
+        UnsignedByte tens = new UnsignedByte((byte) ((decimalValue % 100) / 10));
+        UnsignedByte units = new UnsignedByte((byte) ((decimalValue % 100) % 10));
 
         this.memory.write(this.addressRegister.getAddress().unsignedDataType, hundreds);
         this.memory.write(this.addressRegister.getAddress().apply(x -> x+1).unsignedDataType, tens);
@@ -491,7 +491,7 @@ public class Chip8CentralProcessingUnit implements Debuggable {
      * @param unsignedByte The unsigned byte to be written into the register
      */
     private void setRegister(int Vx, UnsignedByte unsignedByte){
-        opCodeString += "Vx = " + Integer.toHexString(unsignedByte.unsignedDataType);
+        opCodeString += "V" + Integer.toHexString(Vx) + " = " + Integer.toHexString(unsignedByte.unsignedDataType);
 
         registers.poke(Vx, unsignedByte);
     }
