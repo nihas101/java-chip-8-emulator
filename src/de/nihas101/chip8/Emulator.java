@@ -262,8 +262,7 @@ public class Emulator extends Application{
                 midiChannels[0]);
 
         /* Load ROM*/
-        RomLoader romLoader = new RomLoader();
-        romLoader.loadRom("resources/roms/WIPEOFF", cpu.getMemory());
+        /* TODO: Load ROM by opening a FileManager */
 
         return cpu;
     }
