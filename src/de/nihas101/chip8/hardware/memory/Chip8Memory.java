@@ -17,6 +17,7 @@ public class Chip8Memory implements Debuggable {
     public Chip8Memory(){
         // Set Registers to 0
         for (int i=0 ; i < memory.length ; i++) memory[i] = new UnsignedByte((byte) 0);
+        setupCharacterSprites();
     }
 
     /**
@@ -61,6 +62,104 @@ public class Chip8Memory implements Debuggable {
     }
 
     public void clear() {
-        for (int i=0 ; i < memory.length ; i++) memory[i] = new UnsignedByte((byte) 0);
+        for (int i=0x200 ; i < memory.length ; i++) memory[i] = new UnsignedByte((byte) 0);
+    }
+
+    private void setupCharacterSprites(){
+        this.memory[ 0] = new UnsignedByte((byte) 0b11110000); // 0
+        this.memory[ 1] = new UnsignedByte((byte) 0b10010000);
+        this.memory[ 2] = new UnsignedByte((byte) 0b10010000);
+        this.memory[ 3] = new UnsignedByte((byte) 0b10010000);
+        this.memory[ 4] = new UnsignedByte((byte) 0b11110000);
+
+        this.memory[ 5] = new UnsignedByte((byte) 0b00100000); // 1
+        this.memory[ 6] = new UnsignedByte((byte) 0b01100000);
+        this.memory[ 7] = new UnsignedByte((byte) 0b00100000);
+        this.memory[ 8] = new UnsignedByte((byte) 0b00100000);
+        this.memory[ 9] = new UnsignedByte((byte) 0b01110000);
+
+        this.memory[10] = new UnsignedByte((byte) 0b11110000); // 2
+        this.memory[11] = new UnsignedByte((byte) 0b00010000);
+        this.memory[12] = new UnsignedByte((byte) 0b11110000);
+        this.memory[13] = new UnsignedByte((byte) 0b10000000);
+        this.memory[14] = new UnsignedByte((byte) 0b11110000);
+
+        this.memory[15] = new UnsignedByte((byte) 0b11110000); // 3
+        this.memory[16] = new UnsignedByte((byte) 0b00010000);
+        this.memory[17] = new UnsignedByte((byte) 0b11110000);
+        this.memory[18] = new UnsignedByte((byte) 0b00010000);
+        this.memory[19] = new UnsignedByte((byte) 0b11110000);
+
+        this.memory[20] = new UnsignedByte((byte) 0b10010000); // 4
+        this.memory[21] = new UnsignedByte((byte) 0b10010000);
+        this.memory[22] = new UnsignedByte((byte) 0b11110000);
+        this.memory[23] = new UnsignedByte((byte) 0b00010000);
+        this.memory[24] = new UnsignedByte((byte) 0b00010000);
+
+        this.memory[25] = new UnsignedByte((byte) 0b11110000); // 5
+        this.memory[26] = new UnsignedByte((byte) 0b10000000);
+        this.memory[27] = new UnsignedByte((byte) 0b11110000);
+        this.memory[28] = new UnsignedByte((byte) 0b00010000);
+        this.memory[29] = new UnsignedByte((byte) 0b11110000);
+
+        this.memory[30] = new UnsignedByte((byte) 0b11110000); // 6
+        this.memory[31] = new UnsignedByte((byte) 0b10000000);
+        this.memory[32] = new UnsignedByte((byte) 0b11110000);
+        this.memory[33] = new UnsignedByte((byte) 0b10010000);
+        this.memory[34] = new UnsignedByte((byte) 0b11110000);
+
+        this.memory[35] = new UnsignedByte((byte) 0b11110000); // 7
+        this.memory[36] = new UnsignedByte((byte) 0b00010000);
+        this.memory[37] = new UnsignedByte((byte) 0b00100000);
+        this.memory[38] = new UnsignedByte((byte) 0b01000000);
+        this.memory[39] = new UnsignedByte((byte) 0b01000000);
+
+        this.memory[40] = new UnsignedByte((byte) 0b11110000); // 8
+        this.memory[41] = new UnsignedByte((byte) 0b10010000);
+        this.memory[42] = new UnsignedByte((byte) 0b11110000);
+        this.memory[43] = new UnsignedByte((byte) 0b10010000);
+        this.memory[44] = new UnsignedByte((byte) 0b11110000);
+
+        this.memory[45] = new UnsignedByte((byte) 0b11110000); // 9
+        this.memory[46] = new UnsignedByte((byte) 0b10010000);
+        this.memory[47] = new UnsignedByte((byte) 0b11110000);
+        this.memory[48] = new UnsignedByte((byte) 0b00010000);
+        this.memory[49] = new UnsignedByte((byte) 0b11110000);
+
+        this.memory[50] = new UnsignedByte((byte) 0b11110000); // A
+        this.memory[51] = new UnsignedByte((byte) 0b10010000);
+        this.memory[52] = new UnsignedByte((byte) 0b11110000);
+        this.memory[53] = new UnsignedByte((byte) 0b10010000);
+        this.memory[54] = new UnsignedByte((byte) 0b10010000);
+
+        this.memory[55] = new UnsignedByte((byte) 0b11100000); // B
+        this.memory[56] = new UnsignedByte((byte) 0b10010000);
+        this.memory[57] = new UnsignedByte((byte) 0b11100000);
+        this.memory[58] = new UnsignedByte((byte) 0b10010000);
+        this.memory[59] = new UnsignedByte((byte) 0b11100000);
+
+        this.memory[60] = new UnsignedByte((byte) 0b11110000); // C
+        this.memory[61] = new UnsignedByte((byte) 0b10000000);
+        this.memory[62] = new UnsignedByte((byte) 0b10000000);
+        this.memory[63] = new UnsignedByte((byte) 0b10000000);
+        this.memory[64] = new UnsignedByte((byte) 0b11110000);
+
+        this.memory[60] = new UnsignedByte((byte) 0b11100000); // D
+        this.memory[61] = new UnsignedByte((byte) 0b10010000);
+        this.memory[62] = new UnsignedByte((byte) 0b10010000);
+        this.memory[63] = new UnsignedByte((byte) 0b10010000);
+        this.memory[64] = new UnsignedByte((byte) 0b11100000);
+
+        this.memory[65] = new UnsignedByte((byte) 0b11110000); // E
+        this.memory[66] = new UnsignedByte((byte) 0b10000000);
+        this.memory[67] = new UnsignedByte((byte) 0b11110000);
+        this.memory[68] = new UnsignedByte((byte) 0b10000000);
+        this.memory[69] = new UnsignedByte((byte) 0b11110000);
+
+        this.memory[70] = new UnsignedByte((byte) 0b11110000); // F
+        this.memory[71] = new UnsignedByte((byte) 0b10000000);
+        this.memory[72] = new UnsignedByte((byte) 0b11110000);
+        this.memory[73] = new UnsignedByte((byte) 0b10000000);
+        this.memory[74] = new UnsignedByte((byte) 0b10000000);
     }
 }
