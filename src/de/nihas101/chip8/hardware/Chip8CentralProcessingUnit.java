@@ -161,12 +161,23 @@ public class Chip8CentralProcessingUnit implements Debuggable {
         switch (opCode.getByte(2)){
             case 0x0: opCodeFX0Y(opCode); break;
             case 0x1: opCodeFX1Y(opCode); break;
-            case 0x2: setDelayTimer(opCode.getByte(1)); break;
+            case 0x2: gotoSpriteAddress(opCode.getByte(1)); break;
             case 0x3: opCodeFX3Y(opCode); break;
             case 0x5: opCodeFX5Y(opCode); break;
             case 0x6: opCodeFX6Y(opCode); break;
             default: throw new Exception("Unknown OpCode encountered: " + Integer.toHexString(opCode.getOpCode()));
         }
+    }
+
+    /**
+     * Sets the address register to the sprite for the character
+     * in VX
+     * @param Vx The register holding the character
+     */
+    private void gotoSpriteAddress(int Vx) {
+        opCodeString += "I=sprite_addr[" + Integer.toHexString(Vx) + "]";
+        int address = this.registers.peek(Vx).apply(x -> x*5).unsignedDataType;
+        this.addressRegister.setAddress(new UnsignedShort((short) address));
     }
 
     /**
