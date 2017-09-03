@@ -32,23 +32,29 @@ public class ResizableCanvas extends Canvas {
      * Draws what is written in the {@link ScreenMemory} onto the screen
      */
     public void draw() {
-        /* Clear screen */
-        //GraphicsContext graphicsContext = this.getGraphicsContext2D();
+        /* Calculate height and width of pixels, depending on the size of the canvas */
         double width = this.getWidth()/SCREEN_WIDTH;
         double height = this.getHeight()/SCREEN_HEIGHT;
-        graphicsContext.clearRect(0, 0, this.getWidth(), this.getHeight());
-
+        /* Draw Pixels */
         for(int x=0 ; x < SCREEN_WIDTH ; x++) {
             for (int y = 0; y < SCREEN_HEIGHT; y++) {
-                if (!memory[x][y]) draw(x * width, y * height, width, height, paintOff);
-                else               draw(x * width, y * height, width, height, paintOn );
+                if (!memory[x][y]) drawPixel(x * width, y * height, width, height, paintOff);
+                else               drawPixel(x * width, y * height, width, height, paintOn );
             }
         }
     }
 
-    private void draw(double x, double y, double w, double h, Paint paint){
+    /**
+     * Draws a pixel
+     * @param x The horizontal position of the pixel
+     * @param y The lateral position of the pixel
+     * @param width The width of the pixel
+     * @param height The height of the pixel
+     * @param paint The paint used to color in the pixel
+     */
+    private void drawPixel(double x, double y, double width, double height, Paint paint){
         graphicsContext.setFill(paint);
-        graphicsContext.fillRect(x, y, w + 1, h + 1);
+        graphicsContext.fillRect(x, y, width + 1, height + 1);
     }
 
     /**
