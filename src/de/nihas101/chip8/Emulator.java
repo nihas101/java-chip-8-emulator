@@ -130,9 +130,6 @@ public class Emulator extends Application{
         double gridPaneHeight = ((BorderPane)root.getChildren().get(0)).getTop().getBoundsInParent().getHeight() - 8;
         canvas.widthProperty().bind(root.widthProperty().add(1));
         canvas.heightProperty().bind(root.heightProperty().subtract(gridPaneHeight));
-
-        /* TODO: Play around with the midi sound, to get a better sound to play */
-        /* TODO: Play around with the key layout */
     }
 
     /**
@@ -193,29 +190,29 @@ public class Emulator extends Application{
     private void setupEventHandler(Scene scene, Chip8CentralProcessingUnit cpu) {
         scene.addEventHandler(KeyEvent.KEY_PRESSED, (event) -> {
             switch(event.getCode()){
-                case NUMPAD0: cpu.setKeyCode(KEY_0); break;
-                case NUMPAD1: cpu.setKeyCode(KEY_1); break;
-                case NUMPAD2: cpu.setKeyCode(KEY_2); break;
-                case NUMPAD3: cpu.setKeyCode(KEY_3); break;
-                case NUMPAD4: cpu.setKeyCode(KEY_4); break;
-                case NUMPAD5: cpu.setKeyCode(KEY_5); break;
-                case NUMPAD6: cpu.setKeyCode(KEY_6); break;
-                case NUMPAD7: cpu.setKeyCode(KEY_7); break;
-                case NUMPAD8: cpu.setKeyCode(KEY_8); break;
-                case NUMPAD9: cpu.setKeyCode(KEY_9); break;
-                case Y: cpu.setKeyCode(KEY_A); break;
-                case X: cpu.setKeyCode(KEY_B); break;
-                case C: cpu.setKeyCode(KEY_C); break;
-                case V: cpu.setKeyCode(KEY_D); break;
-                case B: cpu.setKeyCode(KEY_E); break;
-                case N: cpu.setKeyCode(KEY_F); break;
-                case T: nextStep = true; break;
-                case Q: handleDebugger(); break;
-                case W: {
+                case N: cpu.setKeyCode(KEY_0); break;
+                case Q: cpu.setKeyCode(KEY_1); break;
+                case W: cpu.setKeyCode(KEY_2); break;
+                case E: cpu.setKeyCode(KEY_3); break;
+                case A: cpu.setKeyCode(KEY_4); break;
+                case S: cpu.setKeyCode(KEY_5); break;
+                case D: cpu.setKeyCode(KEY_6); break;
+                case Y: cpu.setKeyCode(KEY_7); break;
+                case X: cpu.setKeyCode(KEY_8); break;
+                case C: cpu.setKeyCode(KEY_9); break;
+                case B: cpu.setKeyCode(KEY_A); break;
+                case M: cpu.setKeyCode(KEY_B); break;
+                case R: cpu.setKeyCode(KEY_C); break;
+                case F: cpu.setKeyCode(KEY_D); break;
+                case V: cpu.setKeyCode(KEY_E); break;
+                case SEMICOLON: cpu.setKeyCode(KEY_F); break;
+                case NUMPAD3: nextStep = true; break;
+                case NUMPAD1: handleDebugger(); break;
+                case NUMPAD2: {
                     stepByStep = !stepByStep;
                     debugger.setStepByStep(stepByStep); break;
                 }
-                case E: cpu.reset();
+                case NUMPAD0: cpu.reset();
                 default: /* NOP */
             }
         });
@@ -253,11 +250,6 @@ public class Emulator extends Application{
 
         try {
             synthesizer = MidiSystem.getSynthesizer();
-        } catch (MidiUnavailableException e) {
-            e.printStackTrace();
-            System.exit(1);
-        }
-        try {
             synthesizer.open();
         } catch (MidiUnavailableException e) {
             e.printStackTrace();
@@ -267,17 +259,14 @@ public class Emulator extends Application{
         /* get and load default instrument and channel lists */
         Instrument[] instruments = synthesizer.getDefaultSoundbank().getInstruments();
         MidiChannel[] midiChannels = synthesizer.getChannels();
+
         synthesizer.loadInstrument(instruments[0]);
 
-        midiChannels[0].noteOff(60);
-
-        Chip8CentralProcessingUnit cpu = new Chip8CentralProcessingUnit(
+        return new Chip8CentralProcessingUnit(
                 memory, screenMemory,
                 registers, addressRegister, programCounter, stack,
                 timer, delayTimer, soundTimer,
                 random,
                 midiChannels[0]);
-
-        return cpu;
     }
 }
