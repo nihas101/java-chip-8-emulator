@@ -28,4 +28,7 @@ public class Constants {
 
     /* 60 Hertz are about 17 ms */
     public static final long HERTZ_60 = 17;
+
+    public static long CYCLE_WAIT_TIME = 2;
+    public static long STEP_WAIT_TIME = 100;
 }

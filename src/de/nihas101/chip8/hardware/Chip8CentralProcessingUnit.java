@@ -72,6 +72,20 @@ public class Chip8CentralProcessingUnit implements Debuggable {
     }
 
     /**
+     * Changes the speed of both timers by the given factor
+     * @param factor The factor by which the timers' speed should increase/decrease
+     */
+    public void changeTimerSpeed(double factor){
+        long newSpeed = (long) (HERTZ_60 * factor);
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                updateTimer();
+            }
+        }, newSpeed, newSpeed);
+    }
+
+    /**
      * Reset the {@link Chip8CentralProcessingUnit}
      */
     public void reset(){

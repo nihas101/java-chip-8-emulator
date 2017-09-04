@@ -110,6 +110,7 @@ public class MainController {
         this.speed = Double.parseDouble(speedTextField.getText());
         /* Leave Focus again */
         speedTextField.getParent().requestFocus();
+        cpu.changeTimerSpeed(speed);
     }
 
     public double getSpeed(){
