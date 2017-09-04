@@ -39,6 +39,9 @@ public class Emulator extends Application{
     private boolean stepByStep = false;
     private boolean nextStep = false;
 
+    private long cycleTime = 2;
+    private long stepWaitTime = 100;
+
     /**
      *  Standard constructor needed for JavaFX
      */
@@ -116,9 +119,9 @@ public class Emulator extends Application{
                     executeCPUCycles(cycles);
                     waitForStep();
                     /* Wait and calculate how many cycles to execute */
-                    cycles = System.currentTimeMillis() + 1;
-                    waitFor(2);
-                    cycles  = System.currentTimeMillis() - cycles;
+                    cycles = System.currentTimeMillis() + cycleTime;
+                    waitFor(cycleTime);
+                    cycles  = (System.currentTimeMillis()/cycles) * mainController.getSpeed();
                 }
             }).start();
         };
@@ -134,7 +137,7 @@ public class Emulator extends Application{
 
         /* TODO: Play around with the midi sound, to get a better sound to play */
         /* TODO: Play around with the key layout */
-        /* TODO: Allow user to change speed of the emulator */
+        /* TODO: Increased speed doesn't affect delay- and soundTimer yet */
     }
 
     /**
@@ -155,7 +158,7 @@ public class Emulator extends Application{
     private void waitForStep() {
         if(stepByStep && !cpu.isStop()){
             nextStep = false;
-            while(stepByStep & !nextStep && !cpu.isStop()) waitFor(100);
+            while(stepByStep & !nextStep && !cpu.isStop()) waitFor(stepWaitTime);
         }
     }
 
