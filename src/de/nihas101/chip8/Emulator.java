@@ -206,13 +206,13 @@ public class Emulator extends Application{
                 case F: cpu.setKeyCode(KEY_D); break;
                 case V: cpu.setKeyCode(KEY_E); break;
                 case SEMICOLON: cpu.setKeyCode(KEY_F); break;
-                case NUMPAD3: nextStep = true; break;
-                case NUMPAD1: handleDebugger(); break;
-                case NUMPAD2: {
+                case F3: nextStep = true; break;
+                case F1: handleDebugger(); break;
+                case F2: {
                     stepByStep = !stepByStep;
                     debugger.setStepByStep(stepByStep); break;
                 }
-                case NUMPAD0: cpu.reset();
+                case F4: cpu.reset();
                 default: /* NOP */
             }
         });
