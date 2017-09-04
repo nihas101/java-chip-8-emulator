@@ -65,8 +65,8 @@ public class Chip8CentralProcessingUnit implements Debuggable {
 
         this.delayTimer = delayTimer;
         this.soundTimer = soundTimer;
-        soundTimer.setOnValue(() -> { if(midiChannel != null) midiChannel.noteOn(60, 100); });
-        soundTimer.setOnZero(() -> { if(midiChannel != null) midiChannel.noteOff(60); });
+        soundTimer.setOnValue(() -> { if(midiChannel != null) midiChannel.noteOn(70, 40); });
+        soundTimer.setOnZero(() -> { if(midiChannel != null) midiChannel.noteOff(70); });
 
         cycles = 0;
     }
