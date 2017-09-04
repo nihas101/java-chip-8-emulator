@@ -38,7 +38,7 @@ public class Emulator extends Application{
     private boolean stepByStep = false;
     private boolean nextStep = false;
 
-    private long cycleTime = 2;
+    private long cycleWaitTime = 2;
     private long stepWaitTime = 100;
 
     /**
@@ -118,8 +118,8 @@ public class Emulator extends Application{
                     executeCPUCycles(cycles);
                     waitForStep();
                     /* Wait and calculate how many cycles to execute */
-                    cycles = System.currentTimeMillis() + cycleTime;
-                    waitFor(cycleTime);
+                    cycles = System.currentTimeMillis() + cycleWaitTime;
+                    waitFor(cycleWaitTime);
                     cycles  = (System.currentTimeMillis()/cycles) * mainController.getSpeed();
                 }
             }).start();
