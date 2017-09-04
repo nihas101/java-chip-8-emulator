@@ -29,7 +29,6 @@ import static de.nihas101.chip8.utils.Constants.*;
 
 public class Emulator extends Application{
     private Chip8CentralProcessingUnit cpu;
-    private boolean stop = false;
     private ResizableCanvas canvas;
     private Synthesizer synthesizer = null;
     private Timeline timeline;
