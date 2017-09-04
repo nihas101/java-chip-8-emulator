@@ -111,10 +111,14 @@ public class Emulator extends Application{
         Runnable cpuThread = () ->{
             /* Start the thread to execute cpu cycles */
             new Thread(() -> {
+                double cycles = 1;
                 while(!cpu.isStop()) {
-                    executeCPUCycles();
+                    executeCPUCycles(cycles);
                     waitForStep();
+                    /* Wait and calculate how many cycles to execute */
+                    cycles = System.currentTimeMillis() + 1;
                     waitFor(2);
+                    cycles  = System.currentTimeMillis() - cycles;
                 }
             }).start();
         };
@@ -127,6 +131,10 @@ public class Emulator extends Application{
         double gridPaneHeight = ((BorderPane)root.getChildren().get(0)).getTop().getBoundsInParent().getHeight() - 8;
         canvas.widthProperty().bind(root.widthProperty().add(1));
         canvas.heightProperty().bind(root.heightProperty().subtract(gridPaneHeight));
+
+        /* TODO: Play around with the midi sound, to get a better sound to play */
+        /* TODO: Play around with the key layout */
+        /* TODO: Allow user to change speed of the emulator */
     }
 
     /**
@@ -152,14 +160,18 @@ public class Emulator extends Application{
     }
 
     /**
-     * Executes a single CPU cycle
+     * Executes CPU cycles
+     * @param cycles The number of cycles to execute
      */
-    private void executeCPUCycles() {
-        try { cpu.decodeNextOpCode(); }
-        catch (Exception e) {
-            cpu.stopCPU();
-            System.out.println(cpu.getState());
-            e.printStackTrace();
+    private void executeCPUCycles(double cycles) {
+        for( ; cycles > 0 ; cycles --) {
+            try {
+                cpu.decodeNextOpCode();
+            } catch (Exception e) {
+                cpu.stopCPU();
+                System.out.println(cpu.getState());
+                e.printStackTrace();
+            }
         }
     }
 
