@@ -49,7 +49,7 @@ public class MainController {
             /* Stop last thread */
             cpu.stopCPU();
             try {
-                Thread.sleep(1000);
+                Thread.sleep(150);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
