@@ -1,0 +1,21 @@
+apply plugin: "java"
+apply plugin: 'idea'
+apply plugin: "maven"
+
+sourceCompatibility = "1.8"
+targetCompatibility = "1.8"
+
+/* dependencies */
+repositories {
+    mavenCentral()
+    // The following is only necessary if you want to use SNAPSHOT releases.
+    // maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+}
+
+dependencies {
+    testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.0.0-M1'
+}
+
+jar {
+    baseName = "chip8Emulator"
+}

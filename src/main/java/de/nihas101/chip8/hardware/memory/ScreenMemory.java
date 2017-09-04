@@ -36,6 +36,7 @@ public class ScreenMemory implements Debuggable {
      * Writes to the memory at the specified location
      * @param x The horizontal index
      * @param y The lateral index
+     * @param bool The boolean to write
      */
     public void write(int x, int y, boolean bool) {
         x = x%SCREEN_WIDTH;
