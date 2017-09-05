@@ -7,6 +7,8 @@ sourceCompatibility = "1.8"
 targetCompatibility = "1.8"
 /* Application */
 mainClassName = "de.nihas101.chip8.Emulator"
+archivesBaseName = 'chip8Emulator'
+version = '1.0-SNAPSHOT'
 
 /* dependencies */
 repositories {
