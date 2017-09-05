@@ -141,7 +141,7 @@ public class Emulator extends Application{
         try { Thread.sleep(milliseconds); }
         catch (InterruptedException e) {
             e.printStackTrace();
-            System.out.println(cpu.getState());
+            System.err.println(cpu.getState());
         }
     }
 
@@ -165,7 +165,7 @@ public class Emulator extends Application{
                 cpu.decodeNextOpCode();
             } catch (Exception e) {
                 cpu.stopCPU();
-                System.out.println(cpu.getState());
+                System.err.println(cpu.getState());
                 e.printStackTrace();
             }
         }
