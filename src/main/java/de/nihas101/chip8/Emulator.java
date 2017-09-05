@@ -111,13 +111,14 @@ public class Emulator extends Application{
             /* Start the thread to execute cpu cycles */
             new Thread(() -> {
                 double cycles = 1;
+                double leftCycle;
                 while(!cpu.isStop()) {
-                    executeCPUCycles(cycles);
+                    leftCycle = executeCPUCycles(cycles);
                     waitForStep();
                     /* Wait and calculate how many cycles to execute */
                     cycles = System.currentTimeMillis() + CYCLE_WAIT_TIME;
                     waitFor(CYCLE_WAIT_TIME);
-                    cycles  = (System.currentTimeMillis()/cycles) * mainController.getSpeed();
+                    cycles  = (System.currentTimeMillis()/cycles) * mainController.getSpeed() + leftCycle;
                 }
             }).start();
         };

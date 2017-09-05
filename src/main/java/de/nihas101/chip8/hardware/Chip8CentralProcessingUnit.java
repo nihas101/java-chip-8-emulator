@@ -32,7 +32,7 @@ public class Chip8CentralProcessingUnit implements Debuggable {
 
     private int keyCode = NO_KEY;
 
-    private final Timer timer;
+    private Timer timer;
 
     private final DelayTimer delayTimer;
     private final SoundTimer soundTimer;
@@ -76,7 +76,9 @@ public class Chip8CentralProcessingUnit implements Debuggable {
      * @param factor The factor by which the timers' speed should increase/decrease
      */
     public void changeTimerSpeed(double factor){
-        long newSpeed = (long) (HERTZ_60 * factor);
+        long newSpeed = (long) (HERTZ_60 / factor);
+        timer.cancel();
+        timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
