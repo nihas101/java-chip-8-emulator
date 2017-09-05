@@ -50,4 +50,10 @@ This Emulator features a simple debug-mode and can be controlled with the follow
 | F1             | Opens/Closes the debug-window              |
 | F2             | Activates/Deactivates step-by-step-mode    |
 | F3             | Executes the next step (one CPU-cycle)     |
-| F4             | Resets the CPU                              |
+| F4             | Resets the CPU                             |
+
+### Sources
+
+The sources used to create this emulator:
+* [www.codeslinger.co.uk/pages/projects/chip8.html](http://www.codeslinger.co.uk/pages/projects/chip8.html)
+* [devernay.free.fr/hacks/chip8/C8TECH10.HTM](http://devernay.free.fr/hacks/chip8/C8TECH10.HTM)
