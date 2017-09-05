@@ -4,7 +4,7 @@
 
 ## Build Standalone Distribution
 
-To create a standalone distribution as a zip file, run:
+To create a standalone distribution as a zip or tar file, run:
 
 ```sh
 ./gradlew distZip
