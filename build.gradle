@@ -1,9 +1,12 @@
 apply plugin: "java"
 apply plugin: 'idea'
 apply plugin: "maven"
+apply plugin: 'application'
 
 sourceCompatibility = "1.8"
 targetCompatibility = "1.8"
+/* Application */
+mainClassName = "de.nihas101.chip8.Emulator"
 
 /* dependencies */
 repositories {
