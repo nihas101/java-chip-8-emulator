@@ -206,7 +206,7 @@ public class Emulator extends Application{
                 case A: cpu.setKeyCode(KEY_4); break;
                 case S: cpu.setKeyCode(KEY_5); break;
                 case D: cpu.setKeyCode(KEY_6); break;
-                case Y: cpu.setKeyCode(KEY_7); break;
+                case Z: cpu.setKeyCode(KEY_7); break;
                 case X: cpu.setKeyCode(KEY_8); break;
                 case C: cpu.setKeyCode(KEY_9); break;
                 case B: cpu.setKeyCode(KEY_A); break;
@@ -214,7 +214,7 @@ public class Emulator extends Application{
                 case R: cpu.setKeyCode(KEY_C); break;
                 case F: cpu.setKeyCode(KEY_D); break;
                 case V: cpu.setKeyCode(KEY_E); break;
-                case SEMICOLON: cpu.setKeyCode(KEY_F); break;
+                case COMMA: cpu.setKeyCode(KEY_F); break;
                 case F3: nextStep = true; break;
                 case F1: handleDebugger(); break;
                 case F2: {
