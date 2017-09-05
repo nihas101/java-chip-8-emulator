@@ -2,15 +2,17 @@ package de.nihas101.chip8.hardware;
 
 import de.nihas101.chip8.hardware.memory.Chip8Memory;
 import de.nihas101.chip8.unsignedDataTypes.UnsignedByte;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
+
 
 import static de.nihas101.chip8.utils.Constants.MEMORY_LENGTH;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
-class Chip8MemoryTest {
+
+public class Chip8MemoryTest {
     @Test
-    void testPokePeek(){
+    public void testPokePeek(){
         Chip8Memory memory = new Chip8Memory();
         memory.write(0, new UnsignedByte((byte) 255));
         memory.write(255, new UnsignedByte((byte) 5));
@@ -24,7 +26,7 @@ class Chip8MemoryTest {
     }
 
     @Test
-    void testPokeNeg(){
+    public void testPokeNeg(){
         Chip8Memory memory = new Chip8Memory();
         memory.write(0, new UnsignedByte((byte) -1));
 
@@ -32,7 +34,7 @@ class Chip8MemoryTest {
     }
 
     @Test
-    void testPoke(){
+    public void testPoke(){
         Chip8Memory memory = new Chip8Memory();
         memory.write(0, new UnsignedByte((byte) 256));
 
@@ -40,7 +42,7 @@ class Chip8MemoryTest {
     }
 
     @Test
-    void testIndexOutOfBoundsPokeNeg(){
+    public void testIndexOutOfBoundsPokeNeg(){
         Chip8Memory memory = new Chip8Memory();
         try {
             memory.write(-1, new UnsignedByte((byte) 255));
@@ -51,7 +53,7 @@ class Chip8MemoryTest {
     }
 
     @Test
-    void testIndexOutOfBoundsPoke(){
+    public void testIndexOutOfBoundsPoke(){
         Chip8Memory memory = new Chip8Memory();
         try {
             memory.write(MEMORY_LENGTH, new UnsignedByte((byte) 255));
@@ -62,7 +64,7 @@ class Chip8MemoryTest {
     }
 
     @Test
-    void testIndexOutOfBoundsPeekNeg(){
+    public void testIndexOutOfBoundsPeekNeg(){
         Chip8Memory memory = new Chip8Memory();
         try {
             memory.read(-1);
@@ -73,7 +75,7 @@ class Chip8MemoryTest {
     }
 
     @Test
-    void testIndexOutOfBoundsPeek(){
+    public void testIndexOutOfBoundsPeek(){
         Chip8Memory memory = new Chip8Memory();
         try {
             memory.read(MEMORY_LENGTH);
