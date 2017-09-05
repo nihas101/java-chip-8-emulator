@@ -1,5 +1,7 @@
 # Chip-8 Emulator [![Build Status](https://travis-ci.org/nihas101/java-chip-8-emulator.svg?branch=master)](https://travis-ci.org/nihas101/java-chip-8-emulator)
 
+This is an emulator for the interpreted programming language Chip-8 written in Java.
+
 ## Build Standalone Distribution
 
 To create a standalone distribution as a zip or tar file, run:
