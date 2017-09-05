@@ -158,9 +158,13 @@ public class Emulator extends Application{
     /**
      * Executes CPU cycles
      * @param cycles The number of cycles to execute
+     * @return The part of the cycles that wasn't  a full cycle
+     * e.g. if the cpu was instructed to calculate 1.2 cycles this
+     * will return 0.2, so this debt can be accumulated and corrected once this debt
+     * equals a full cycle
      */
-    private void executeCPUCycles(double cycles) {
-        for( ; cycles > 0 ; cycles --) {
+    private double executeCPUCycles(double cycles) {
+        for( ; cycles >= 1 ; cycles --) {
             try {
                 cpu.decodeNextOpCode();
             } catch (Exception e) {
@@ -169,6 +173,7 @@ public class Emulator extends Application{
                 e.printStackTrace();
             }
         }
+        return cycles;
     }
 
     /**
