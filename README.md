@@ -9,6 +9,10 @@ To create a standalone distribution as a zip or tar file, run:
 ```sh
 ./gradlew distZip
 ```
+or
+```sh
+./gradlew distTar
+```
 
 The distribution is placed under `build/distributions`.
 
