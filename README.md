@@ -10,7 +10,7 @@ To create a standalone distribution as a zip or tar file, run:
 ./gradlew distZip
 ```
 
-The zip distribution is placed under `build/distributions`.
+The distribution is placed under `build/distributions`.
 
 To run the program from the distribution, extract the zip or tar file, and run the launch script for your system in the bin folder. On Windows, use the Batch script (.bat extension). On OS X, Linux, etc., use the shell script (no extension).
 
