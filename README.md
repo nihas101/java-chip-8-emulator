@@ -1,6 +1,4 @@
-# Chip-8 Emulator
-
-[![Build Status](https://travis-ci.org/nihas101/java-chip-8-emulator.svg?branch=master)](https://travis-ci.org/nihas101/java-chip-8-emulator)
+# Chip-8 Emulator [![Build Status](https://travis-ci.org/nihas101/java-chip-8-emulator.svg?branch=master)](https://travis-ci.org/nihas101/java-chip-8-emulator)
 
 ## Build Standalone Distribution
 
