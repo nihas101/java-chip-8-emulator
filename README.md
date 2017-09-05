@@ -50,4 +50,4 @@ This Emulator features a simple debug-mode and can be controlled with the follow
 | F1             | Opens/Closes the debug-window              |
 | F2             | Activates/Deactivates step-by-step-mode    |
 | F3             | Executes the next step (one CPU-cycle)     |
-| F4             | Reset the CPU                              |
+| F4             | Resets the CPU                              |
