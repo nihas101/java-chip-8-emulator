@@ -7,7 +7,7 @@ sourceCompatibility = "1.8"
 targetCompatibility = "1.8"
 /* Application */
 mainClassName = "de.nihas101.chip8.Emulator"
-archivesBaseName = 'chip8Emulator'
+archivesBaseName = 'Chip8Emulator'
 version = '1.0-SNAPSHOT'
 
 /* dependencies */
@@ -23,5 +23,5 @@ dependencies {
 }
 
 jar {
-    baseName = "chip8Emulator"
+    baseName = "Chip8Emulator"
 }
