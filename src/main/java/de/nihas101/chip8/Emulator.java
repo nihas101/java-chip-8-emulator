@@ -116,9 +116,12 @@ public class Emulator extends Application{
                     leftCycle = executeCPUCycles(cycles);
                     waitForStep();
                     /* Wait and calculate how many cycles to execute */
-                    cycles = System.currentTimeMillis() + CYCLE_WAIT_TIME;
-                    waitFor(CYCLE_WAIT_TIME);
-                    cycles  = (System.currentTimeMillis()/cycles) * mainController.getSpeed() + leftCycle;
+                    if(stepByStep) cycles = 1; // Always execute one step in step-by-step mode
+                    else {
+                        cycles = System.currentTimeMillis() + CYCLE_WAIT_TIME;
+                        waitFor(CYCLE_WAIT_TIME);
+                        cycles = (System.currentTimeMillis() / cycles) * mainController.getSpeed() + leftCycle;
+                    }
                 }
             }).start();
         };
