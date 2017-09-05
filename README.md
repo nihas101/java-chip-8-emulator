@@ -52,7 +52,7 @@ This Emulator features a simple debug-mode and can be controlled with the follow
 | F3             | Executes the next step (one CPU-cycle)     |
 | F4             | Resets the CPU                             |
 
-### Sources
+## Sources
 
 The sources used to create this emulator:
 * [www.codeslinger.co.uk/pages/projects/chip8.html](http://www.codeslinger.co.uk/pages/projects/chip8.html)
