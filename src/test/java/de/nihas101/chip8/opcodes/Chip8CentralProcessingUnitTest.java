@@ -57,7 +57,7 @@ public class Chip8CentralProcessingUnitTest {
     }
 
     @Test
-    public void test_00E0(){   // clear screen
+    public void test00E0(){   // clear screen
         int opcode = 0x00E0;
         byte topByte = (byte) ((opcode & 0xff00) >> 8);
         byte bottomByte = (byte) (opcode & 0x00ff);
@@ -81,7 +81,7 @@ public class Chip8CentralProcessingUnitTest {
     }
 
     @Test
-    public void test_00EE(){   // return from subroutine
+    public void test00EE(){   // return from subroutine
         int opcode = 0x00EE;
         byte topByte = (byte) ((opcode & 0xff00) >> 8);
         byte bottomByte = (byte) (opcode & 0x00ff);
@@ -102,7 +102,7 @@ public class Chip8CentralProcessingUnitTest {
     }
 
     @Test
-    public void test_1NNN(){   // jump to address NNN
+    public void test1NNN(){   // jump to address NNN
         int opcode = 0x1123;
         byte topByte = (byte) ((opcode & 0xff00) >> 8);
         byte bottomByte = (byte) (opcode & 0x00ff);
@@ -120,7 +120,7 @@ public class Chip8CentralProcessingUnitTest {
     }
 
     @Test
-    public void test_2NNN(){   // Call subroutine at NNN
+    public void test2NNN(){   // Call subroutine at NNN
         int opcode = 0x2123;
         byte topByte = (byte) ((opcode & 0xff00) >> 8);
         byte bottomByte = (byte) (opcode & 0x00ff);
@@ -138,13 +138,11 @@ public class Chip8CentralProcessingUnitTest {
 
         // 0x01FF + 0x0002 = 0x0201
         assertEquals(new UnsignedShort((short) 0x0201), cpu.getStack().pop());
-        //assertEquals(new UnsignedShort((short) 0x1), cpu.getStack().pop());
-        //assertEquals(new UnsignedShort((short) 0x200), cpu.getStack().pop());
         assertEquals(new UnsignedShort((short) 0x0123), cpu.getProgramCounter().getCounter());
     }
 
     @Test
-    public void test_3XNN(){   // Skip next instruction if Vx == NN
+    public void test3XNN(){   // Skip next instruction if Vx == NN
         int opcode = 0x3002;
         byte topByte = (byte) ((opcode & 0xff00) >> 8);
         byte bottomByte = (byte) (opcode & 0x00ff);
@@ -164,7 +162,7 @@ public class Chip8CentralProcessingUnitTest {
     }
 
     @Test
-    public void test_4XNN(){   // Skip next instruction if Vx != NN
+    public void test4XNN(){   // Skip next instruction if Vx != NN
         int opcode = 0x4201;
         byte topByte = (byte) ((opcode & 0xff00) >> 8);
         byte bottomByte = (byte) (opcode & 0x00ff);
@@ -185,7 +183,7 @@ public class Chip8CentralProcessingUnitTest {
     }
 
     @Test
-    public void test_5XY0(){      // Skip next instruction if Vx == Vy
+    public void test5XY0(){      // Skip next instruction if Vx == Vy
         int opcode = 0x5230;
         byte topByte = (byte) ((opcode & 0xff00) >> 8);
         byte bottomByte = (byte) (opcode & 0x00ff);
@@ -206,7 +204,7 @@ public class Chip8CentralProcessingUnitTest {
     }
 
     @Test
-    public void test_6XNN(){   // 	Sets VX to NN
+    public void test6XNN(){   // 	Sets VX to NN
         int opcode = 0x6512;
         byte topByte = (byte) ((opcode & 0xff00) >> 8);
         byte bottomByte = (byte) (opcode & 0x00ff);
@@ -226,7 +224,7 @@ public class Chip8CentralProcessingUnitTest {
     }
 
     @Test
-    public void test_7XNN(){   // Adds NN to VX
+    public void test7XNN(){   // Adds NN to VX
         int opcode = 0x7701;
         byte topByte = (byte) ((opcode & 0xff00) >> 8);
         byte bottomByte = (byte) (opcode & 0x00ff);
@@ -246,7 +244,7 @@ public class Chip8CentralProcessingUnitTest {
     }
 
     @Test
-    public void test_8XY0(){   // Sets VX to the value of VY
+    public void test8XY0(){   // Sets VX to the value of VY
         int opcode = 0x8780;
         byte topByte = (byte) ((opcode & 0xff00) >> 8);
         byte bottomByte = (byte) (opcode & 0x00ff);
@@ -267,7 +265,7 @@ public class Chip8CentralProcessingUnitTest {
     }
 
     @Test
-    public void test_8XY1(){   // 	Sets VX to VX or VY (Bitwise OR operation)
+    public void test8XY1(){   // 	Sets VX to VX or VY (Bitwise OR operation)
         int opcode = 0x89A1;
         byte topByte = (byte) ((opcode & 0xff00) >> 8);
         byte bottomByte = (byte) (opcode & 0x00ff);
@@ -288,7 +286,7 @@ public class Chip8CentralProcessingUnitTest {
     }
 
     @Test
-    public void test_8XY2(){   // Sets VX to VX and VY (Bitwise AND operation)
+    public void test8XY2(){   // Sets VX to VX and VY (Bitwise AND operation)
         int opcode = 0x8BC2;
         byte topByte = (byte) ((opcode & 0xff00) >> 8);
         byte bottomByte = (byte) (opcode & 0x00ff);
@@ -309,7 +307,7 @@ public class Chip8CentralProcessingUnitTest {
     }
 
     @Test
-    public void test_8XY3(){   // Sets VX to VX xor VY
+    public void test8XY3(){   // Sets VX to VX xor VY
         int opcode = 0x8DE3;
         byte topByte = (byte) ((opcode & 0xff00) >> 8);
         byte bottomByte = (byte) (opcode & 0x00ff);
@@ -330,7 +328,7 @@ public class Chip8CentralProcessingUnitTest {
     }
 
     @Test
-    public void test_8XY4NoCarry(){   // Adds VY to VX. VF is set to 1 when there's a carry, and to 0 when there isn't
+    public void test8XY4NoCarry(){   // Adds VY to VX. VF is set to 1 when there's a carry, and to 0 when there isn't
         int opcode = 0x8DE4;
         byte topByte = (byte) ((opcode & 0xff00) >> 8);
         byte bottomByte = (byte) (opcode & 0x00ff);
@@ -352,7 +350,7 @@ public class Chip8CentralProcessingUnitTest {
     }
 
     @Test
-    public void test_8XY4Carry(){   // Adds VY to VX. VF is set to 1 when there's a carry, and to 0 when there isn't
+    public void test8XY4Carry(){   // Adds VY to VX. VF is set to 1 when there's a carry, and to 0 when there isn't
         int opcode = 0x8DE4;
         byte topByte = (byte) ((opcode & 0xff00) >> 8);
         byte bottomByte = (byte) (opcode & 0x00ff);
@@ -375,7 +373,7 @@ public class Chip8CentralProcessingUnitTest {
     }
 
     @Test
-    public void test_8XY5Borrow(){   // VY is subtracted from VX. VF is set to 0 when there's a borrow, and 1 when there isn't.
+    public void test8XY5Borrow(){   // VY is subtracted from VX. VF is set to 0 when there's a borrow, and 1 when there isn't.
         int opcode = 0x8015;
         byte topByte = (byte) ((opcode & 0xff00) >> 8);
         byte bottomByte = (byte) (opcode & 0x00ff);
@@ -397,7 +395,7 @@ public class Chip8CentralProcessingUnitTest {
     }
 
     @Test
-    public void test_8XY5NoBorrow(){   // VY is subtracted from VX. VF is set to 0 when there's a borrow, and 1 when there isn't.
+    public void test8XY5NoBorrow(){   // VY is subtracted from VX. VF is set to 0 when there's a borrow, and 1 when there isn't.
         int opcode = 0x8015;
         byte topByte = (byte) ((opcode & 0xff00) >> 8);
         byte bottomByte = (byte) (opcode & 0x00ff);
@@ -419,7 +417,7 @@ public class Chip8CentralProcessingUnitTest {
     }
 
     @Test
-    public void test_8XY6(){   // Shifts VX right by one. VF is set to the value of the least significant bit of VX before the shift.
+    public void test8XY6(){   // Shifts VX right by one. VF is set to the value of the least significant bit of VX before the shift.
         int opcode = 0x8126;
         byte topByte = (byte) ((opcode & 0xff00) >> 8);
         byte bottomByte = (byte) (opcode & 0x00ff);
@@ -440,7 +438,7 @@ public class Chip8CentralProcessingUnitTest {
     }
 
     @Test
-    public void test_8XY7Borrow(){   // Sets VX to VY minus VX. VF is set to 0 when there's a borrow, and 1 when there isn't.
+    public void test8XY7Borrow(){   // Sets VX to VY minus VX. VF is set to 0 when there's a borrow, and 1 when there isn't.
         int opcode = 0x8237;
         byte topByte = (byte) ((opcode & 0xff00) >> 8);
         byte bottomByte = (byte) (opcode & 0x00ff);
@@ -464,7 +462,7 @@ public class Chip8CentralProcessingUnitTest {
     }
 
     @Test
-    public void test_8XY7NoBorrow(){   // Sets VX to VY minus VX. VF is set to 0 when there's a borrow, and 1 when there isn't.
+    public void test8XY7NoBorrow(){   // Sets VX to VY minus VX. VF is set to 0 when there's a borrow, and 1 when there isn't.
         int opcode = 0x8237;
         byte topByte = (byte) ((opcode & 0xff00) >> 8);
         byte bottomByte = (byte) (opcode & 0x00ff);
@@ -486,7 +484,7 @@ public class Chip8CentralProcessingUnitTest {
     }
 
     @Test
-    public void test_8XYE(){   // Shifts VX left by one. VF is set to the value of the most significant bit of VX before the shift.
+    public void test8XYE(){   // Shifts VX left by one. VF is set to the value of the most significant bit of VX before the shift.
         int opcode = 0x834E;
         byte topByte = (byte) ((opcode & 0xff00) >> 8);
         byte bottomByte = (byte) (opcode & 0x00ff);
@@ -507,7 +505,7 @@ public class Chip8CentralProcessingUnitTest {
     }
 
     @Test
-    public void test_9XYE(){   // Skips the next instruction if VX doesn't equal VY. (Usually the next instruction is a jump to skip a code block)
+    public void test9XYE(){   // Skips the next instruction if VX doesn't equal VY. (Usually the next instruction is a jump to skip a code block)
         int opcode = 0x945E;
         byte topByte = (byte) ((opcode & 0xff00) >> 8);
         byte bottomByte = (byte) (opcode & 0x00ff);
@@ -528,7 +526,7 @@ public class Chip8CentralProcessingUnitTest {
     }
 
     @Test
-    public void test_ANNN(){   // Sets I to the address NNN.
+    public void testANNN(){   // Sets I to the address NNN.
         int opcode = 0xA123;
         byte topByte = (byte) ((opcode & 0xff00) >> 8);
         byte bottomByte = (byte) (opcode & 0x00ff);
@@ -546,7 +544,7 @@ public class Chip8CentralProcessingUnitTest {
     }
 
     @Test
-    public void test_BNNN(){   // Jumps to the address NNN plus V0.
+    public void testBNNN(){   // Jumps to the address NNN plus V0.
         int opcode = 0xB123;
         byte topByte = (byte) ((opcode & 0xff00) >> 8);
         byte bottomByte = (byte) (opcode & 0x00ff);
@@ -566,7 +564,7 @@ public class Chip8CentralProcessingUnitTest {
     }
 
     @Test
-    public void test_CXNN(){   // Sets VX to the result of a bitwise and operation on a random number (Typically: 0 to 255) and NN.
+    public void testCXNN(){   // Sets VX to the result of a bitwise and operation on a random number (Typically: 0 to 255) and NN.
         int opcode = 0xC512;
         byte topByte = (byte) ((opcode & 0xff00) >> 8);
         byte bottomByte = (byte) (opcode & 0x00ff);
@@ -584,7 +582,7 @@ public class Chip8CentralProcessingUnitTest {
     }
 
     @Test
-    public void test_DXYNNoCollision(){   // Draws a sprite at coordinate (VX, VY) that has a width of 8 pixels and a height of N pixels
+    public void testDXYNNoCollision(){   // Draws a sprite at coordinate (VX, VY) that has a width of 8 pixels and a height of N pixels
         int opcode = 0xD01A;
         byte topByte = (byte) ((opcode & 0xff00) >> 8);
         byte bottomByte = (byte) (opcode & 0x00ff);
@@ -622,7 +620,7 @@ public class Chip8CentralProcessingUnitTest {
     }
 
     @Test
-    public void test_DXYNCollision(){   // Draws a sprite at coordinate (VX, VY) that has a width of 8 pixels and a height of N pixels
+    public void testDXYNCollision(){   // Draws a sprite at coordinate (VX, VY) that has a width of 8 pixels and a height of N pixels
         int opcode = 0xD01A;
         byte topByte = (byte) ((opcode & 0xff00) >> 8);
         byte bottomByte = (byte) (opcode & 0x00ff);
@@ -660,7 +658,7 @@ public class Chip8CentralProcessingUnitTest {
     }
 
     @Test
-    public void test_EX9E(){   // Skips the next instruction if the key stored in VX is pressed. (Usually the next instruction is a jump to skip a code block)
+    public void testEX9E(){   // Skips the next instruction if the key stored in VX is pressed. (Usually the next instruction is a jump to skip a code block)
         int opcode = 0xEC9E;
         byte topByte = (byte) ((opcode & 0xff00) >> 8);
         byte bottomByte = (byte) (opcode & 0x00ff);
@@ -682,7 +680,7 @@ public class Chip8CentralProcessingUnitTest {
     }
 
     @Test
-    public void test_EXA1(){   // Skips the next instruction if the key stored in VX isn't pressed. (Usually the next instruction is a jump to skip a code block)
+    public void testEXA1(){   // Skips the next instruction if the key stored in VX isn't pressed. (Usually the next instruction is a jump to skip a code block)
         int opcode = 0xEEA1;
         byte topByte = (byte) ((opcode & 0xff00) >> 8);
         byte bottomByte = (byte) (opcode & 0x00ff);
@@ -704,7 +702,7 @@ public class Chip8CentralProcessingUnitTest {
     }
 
     @Test
-    public void test_FX07(){   // Sets VX to the value of the delay timer.
+    public void testFX07(){   // Sets VX to the value of the delay timer.
         int opcode = 0xF107;
         byte topByte = (byte) ((opcode & 0xff00) >> 8);
         byte bottomByte = (byte) (opcode & 0x00ff);
@@ -724,7 +722,7 @@ public class Chip8CentralProcessingUnitTest {
     }
 
     @Test
-    public void test_FX0A(){   // A key press is awaited, and then stored in VX. (Blocking BinaryOperation. All instruction halted until next key event)
+    public void testFX0A(){   // A key press is awaited, and then stored in VX. (Blocking BinaryOperation. All instruction halted until next key event)
         int opcode = 0xF30A;
         byte topByte = (byte) ((opcode & 0xff00) >> 8);
         byte bottomByte = (byte) (opcode & 0x00ff);
@@ -756,7 +754,7 @@ public class Chip8CentralProcessingUnitTest {
     }
 
     @Test
-    public void test_FX15(){   // Sets the delay timer to VX.
+    public void testFX15(){   // Sets the delay timer to VX.
         int opcode = 0xF815;
         byte topByte = (byte) ((opcode & 0xff00) >> 8);
         byte bottomByte = (byte) (opcode & 0x00ff);
@@ -776,7 +774,7 @@ public class Chip8CentralProcessingUnitTest {
     }
 
     @Test
-    public void test_FX18(){   // Sets the sound timer to VX.
+    public void testFX18(){   // Sets the sound timer to VX.
         int opcode = 0xFB18;
         byte topByte = (byte) ((opcode & 0xff00) >> 8);
         byte bottomByte = (byte) (opcode & 0x00ff);
@@ -796,7 +794,7 @@ public class Chip8CentralProcessingUnitTest {
     }
 
     @Test
-    public void test_FX1E(){   // Adds VX to I
+    public void testFX1E(){   // Adds VX to I
         int opcode = 0xF91E;
         byte topByte = (byte) ((opcode & 0xff00) >> 8);
         byte bottomByte = (byte) (opcode & 0x00ff);
@@ -818,7 +816,7 @@ public class Chip8CentralProcessingUnitTest {
     }
 
     @Test
-    public void test_FX29(){   // Sets I to the location of the sprite for the character in VX. Characters 0-F (in hexadecimal) are represented by a 4x5 font.
+    public void testFX29(){   // Sets I to the location of the sprite for the character in VX. Characters 0-F (in hexadecimal) are represented by a 4x5 font.
         int opcode = 0xF429;
         byte topByte = (byte) ((opcode & 0xff00) >> 8);
         byte bottomByte = (byte) (opcode & 0x00ff);
@@ -834,7 +832,7 @@ public class Chip8CentralProcessingUnitTest {
     }
 
     @Test
-    public void test_FX33(){   // Stores the binary-coded decimal representation of VX, with the most significant of three digits at the address in I, the middle digit at I plus 1, and the least significant digit at I plus 2. (In other words, take the decimal representation of VX, place the hundreds digit in hardware at location in I, the tens digit at location I+1, and the ones digit at location I+2.)
+    public void testFX33(){   // Stores the binary-coded decimal representation of VX, with the most significant of three digits at the address in I, the middle digit at I plus 1, and the least significant digit at I plus 2. (In other words, take the decimal representation of VX, place the hundreds digit in hardware at location in I, the tens digit at location I+1, and the ones digit at location I+2.)
         int opcode = 0xF733;
         byte topByte = (byte) ((opcode & 0xff00) >> 8);
         byte bottomByte = (byte) (opcode & 0x00ff);
@@ -857,7 +855,7 @@ public class Chip8CentralProcessingUnitTest {
     }
 
     @Test
-    public void test_FX55(){   // Stores V0 to VX (including VX) in hardware starting at address I.
+    public void testFX55(){   // Stores V0 to VX (including VX) in hardware starting at address I.
         int opcode = 0xF555;
         byte topByte = (byte) ((opcode & 0xff00) >> 8);
         byte bottomByte = (byte) (opcode & 0x00ff);
@@ -889,7 +887,7 @@ public class Chip8CentralProcessingUnitTest {
     }
 
     @Test
-    public void test_FX65(){   // Fills V0 to VX (including VX) with values from hardware starting at address I
+    public void testFX65(){   // Fills V0 to VX (including VX) with values from hardware starting at address I
         int opcode = 0xF865;
         byte topByte = (byte) ((opcode & 0xff00) >> 8);
         byte bottomByte = (byte) (opcode & 0x00ff);
