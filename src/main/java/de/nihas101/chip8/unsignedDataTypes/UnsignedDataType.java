@@ -27,6 +27,14 @@ public abstract class UnsignedDataType implements Comparable{
      * {@inheritDoc}
      */
     @Override
+    public int hashCode(){
+        return this.unsignedDataType;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public int compareTo(Object o) {
         return unsignedDataType - ((UnsignedDataType)o).unsignedDataType;
     }
