@@ -217,16 +217,18 @@ public class Emulator extends Application{
                 case COMMA: cpu.setKeyCode(KEY_F); break;
                 case F3: nextStep = true; break;
                 case F1: handleDebugger(); break;
-                case F2: {
-                    stepByStep = !stepByStep;
-                    debugger.setStepByStep(stepByStep); break;
-                }
+                case F2: switchStepByStep(); break;
                 case F4: cpu.reset();
                 default: /* NOP */
             }
         });
         /* 255 = No key pressed*/
         scene.addEventHandler(KeyEvent.KEY_RELEASED, (event) -> this.cpu.setKeyCode(NO_KEY));
+    }
+
+    private void switchStepByStep(){
+        stepByStep = !stepByStep;
+        debugger.setStepByStep(stepByStep);
     }
 
     private void handleDebugger() {
