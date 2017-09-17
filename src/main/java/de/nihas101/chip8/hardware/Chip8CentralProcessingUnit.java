@@ -121,7 +121,7 @@ public class Chip8CentralProcessingUnit implements Debuggable {
         OPCode opCode = getNextOpCode();
         opCodeString = Integer.toHexString(opCode.getOpCode()) + " -> ";
         decodeOpCode(opCode);
-        cycles++;
+        if(cycles < Integer.MAX_VALUE) cycles++;
     }
 
     /**
@@ -731,8 +731,11 @@ public class Chip8CentralProcessingUnit implements Debuggable {
 
     @Override
     public String getState() {
+        String cycleString = Integer.toString(cycles);
+        if(cycles == Integer.MAX_VALUE) cycleString += "+";
+
         return "State:\n"
-                + "Cycles executed: " + cycles + "\n"
+                + "Cycles executed: " + cycleString + "\n"
                 + "OpCode: " + opCodeString + "\n"
                 // + this.memory.getState()
                 //+ this.screenMemory.getState()
