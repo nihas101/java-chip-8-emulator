@@ -92,8 +92,7 @@ public class MainController {
 
         /* Setup textfield | source: gist.github.com/karimsqualli96/f8d4c2995da8e11496ed */
         doubleFilter = (TextFormatter.Change change) -> {
-            if (change.isReplaced())
-                if(change.getText().matches("[^0-9]"))
+            if (change.isReplaced() && change.getText().matches("[^0-9]"))
                     change.setText(change.getControlText().substring(change.getRangeStart(), change.getRangeEnd()));
 
             if (change.isAdded()) {
