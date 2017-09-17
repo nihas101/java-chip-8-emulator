@@ -145,6 +145,7 @@ public class Emulator extends Application{
         catch (InterruptedException e) {
             e.printStackTrace();
             System.err.println(cpu.getState());
+            Thread.currentThread().interrupt();
         }
     }
 
@@ -154,7 +155,7 @@ public class Emulator extends Application{
     private void waitForStep() {
         if(stepByStep && !cpu.isStop()){
             nextStep = false;
-            while(stepByStep & !nextStep && !cpu.isStop()) waitFor(STEP_WAIT_TIME);
+            while(stepByStep && !nextStep && !cpu.isStop()) waitFor(STEP_WAIT_TIME);
         }
     }
 

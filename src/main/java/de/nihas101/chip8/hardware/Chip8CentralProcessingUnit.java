@@ -345,6 +345,7 @@ public class Chip8CentralProcessingUnit implements Debuggable {
                 Thread.sleep(300);
             } catch (InterruptedException e) {
                 e.printStackTrace();
+                Thread.currentThread().interrupt();
             }
         }
         this.registers.poke(Vx, new UnsignedByte((byte) keyCode));

@@ -38,7 +38,7 @@ public class MainController {
     private Window ownerWindow;
     private File romFile;
     private RomLoader romLoader;
-    private Runnable start;
+    private Runnable threadRunner;
     private ResizableCanvas resizableCanvas;
 
     public void loadRom(ActionEvent actionEvent) {
@@ -46,12 +46,13 @@ public class MainController {
         romFile = fileChooser.showOpenDialog(ownerWindow);
 
         if(romFile != null) {
-            /* Stop last thread */
+            /* Stop last threadRunner */
             cpu.stopCPU();
             try {
                 Thread.sleep(150);
             } catch (InterruptedException e) {
                 e.printStackTrace();
+                Thread.currentThread().interrupt();
             }
             /* Clear memory and load in new ROM */
             cpu.clearMemory();
@@ -59,7 +60,7 @@ public class MainController {
             romLoader.loadRom(romFile, memory);
             /* Start CPU */
             cpu.startCPU();
-            start.run();
+            threadRunner.run();
         }
     }
 
@@ -75,13 +76,13 @@ public class MainController {
         colorPickerBackground.getParent().requestFocus();
     }
 
-    public void setup(Runnable start, Chip8CentralProcessingUnit cpu, ResizableCanvas resizableCanvas){
+    public void setup(Runnable threadRunner, Chip8CentralProcessingUnit cpu, ResizableCanvas resizableCanvas){
         fileChooser = new FileChooser();
         fileChooser.setTitle("Choose a ROM to load");
 
         romLoader = new RomLoader();
 
-        this.start = start;
+        this.threadRunner = threadRunner;
         this.cpu = cpu;
         this.memory = cpu.getMemory();
         this.resizableCanvas = resizableCanvas;

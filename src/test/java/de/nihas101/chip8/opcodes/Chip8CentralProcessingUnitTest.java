@@ -738,6 +738,7 @@ public class Chip8CentralProcessingUnitTest {
                 Thread.sleep(600);
             } catch (InterruptedException e) {
                 e.printStackTrace();
+                Thread.currentThread().interrupt();
             }
             /* Set a keycode */
             this.cpu.setKeyCode(1);
