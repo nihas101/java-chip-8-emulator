@@ -42,7 +42,7 @@ public class Emulator extends Application{
      *  Standard constructor needed for JavaFX
      */
     public Emulator(){
-
+        /* TODO: Add Loggers & Define and throw dedicated exceptions instead of using generic ones */
     }
 
     /**
@@ -60,8 +60,7 @@ public class Emulator extends Application{
     @Override
     public void start(Stage primaryStage) throws Exception {
         /* Setup emulator instance */
-        Chip8CentralProcessingUnit cpu = setupEmulator();
-        this.cpu = cpu;
+        this.cpu = setupEmulator();
 
         /* Load root-node */
         FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("main.fxml"));
