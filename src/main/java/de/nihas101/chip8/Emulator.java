@@ -218,7 +218,7 @@ public class Emulator extends Application{
                 case F3: nextStep = true; break;
                 case F1: handleDebugger(); break;
                 case F2: switchStepByStep(); break;
-                case F4: cpu.reset();
+                case F4: cpu.reset(); break;
                 default: /* NOP */
             }
         });
