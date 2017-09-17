@@ -106,8 +106,8 @@ public class Emulator extends Application{
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.getKeyFrames().add(oneFrame);
         timeline.play();
-
-        Runnable cpuThread = () ->{
+        /* Interface called to produce Threads */
+        Runnable cpuThreadRunner = () ->{
             /* Start the thread to execute cpu cycles */
             new Thread(() -> {
                 double cycles = 1;
@@ -126,7 +126,7 @@ public class Emulator extends Application{
             }).start();
         };
 
-        mainController.setup(cpuThread, cpu, canvas);
+        mainController.setup(cpuThreadRunner, cpu, canvas);
 
         primaryStage.show();
 
