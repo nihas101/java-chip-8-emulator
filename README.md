@@ -16,7 +16,13 @@ or
 
 The distribution is placed under `build/distributions`.
 
-To run the program from the distribution, extract the zip or tar file, and run the launch script for your system in the bin folder. On Windows, use the Batch script (.bat extension). On OS X, Linux, etc., use the shell script (no extension).
+## How to run the emulator
+
+To run the program from the distribution, extract the zip or tar file, and run the launch script for your system in the bin folder by typing:
+```sh
+./chip-8
+```
+in the command-line interface.
 
 ## Manual
 
