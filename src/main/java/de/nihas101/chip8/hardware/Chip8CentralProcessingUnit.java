@@ -119,9 +119,9 @@ public class Chip8CentralProcessingUnit implements Debuggable {
 
     /**
      * Fetches the next opcode from the hardware
-     * @throws Exception Thrown if the given opcode is unknown
+     * @throws UnknownOPCodeException Thrown if the given opcode is unknown
      */
-    public void decodeNextOpCode() throws Exception {
+    public void decodeNextOpCode() throws UnknownOPCodeException {
         OPCode opCode = getNextOpCode();
         opCodeString = Integer.toHexString(opCode.getOpCode()) + " -> ";
         decodeOpCode(opCode);
@@ -132,9 +132,9 @@ public class Chip8CentralProcessingUnit implements Debuggable {
      * Decodes an opcode and executes the appropriate instruction
      * See en.wikipedia.org/wiki/CHIP-8#Opcode_table for a breakdown of the codes
      * @param opCode The opcode to be decoded
-     * @throws Exception Thrown if the given opcode is unknown
+     * @throws UnknownOPCodeException Thrown if the given opcode is unknown
      */
-    private void decodeOpCode(OPCode opCode) throws Exception {
+    private void decodeOpCode(OPCode opCode) throws UnknownOPCodeException {
         switch (opCode.getByte(0)){
             case 0x0: opCode0XYZ(opCode); break;
             case 0x1: gotoOp(opCode.applyMask(0x0FFF)); break;
@@ -168,16 +168,16 @@ public class Chip8CentralProcessingUnit implements Debuggable {
             case 0xD: drawSprite(opCode.getByte(1), opCode.getByte(2), opCode.getByte(3)); break;
             case 0xE: opCodeEXYZ(opCode); break;
             case 0xF: opCodeFXYZ(opCode); break;
-            default: throw new Exception("Unknown OpCode encountered: " + Integer.toHexString(opCode.getOpCode()));
+            default: throw new UnknownOPCodeException(opCode);
         }
     }
 
     /**
      * Further decodes {@link OPCode} instances that begin with 0xF
      * @param opCode The {@link OPCode} to be decoded
-     * @throws Exception If an unknown {@link OPCode} is encountered
+     * @throws UnknownOPCodeException If an unknown {@link OPCode} is encountered
      */
-    private void opCodeFXYZ(OPCode opCode) throws Exception {
+    private void opCodeFXYZ(OPCode opCode) throws UnknownOPCodeException {
         switch (opCode.getByte(2)){
             case 0x0: opCodeFX0Y(opCode); break;
             case 0x1: opCodeFX1Y(opCode); break;
@@ -185,7 +185,7 @@ public class Chip8CentralProcessingUnit implements Debuggable {
             case 0x3: opCodeFX3Y(opCode); break;
             case 0x5: opCodeFX5Y(opCode); break;
             case 0x6: opCodeFX6Y(opCode); break;
-            default: throw new Exception("Unknown OpCode encountered: " + Integer.toHexString(opCode.getOpCode()));
+            default: throw new UnknownOPCodeException(opCode);
         }
     }
 
@@ -203,24 +203,24 @@ public class Chip8CentralProcessingUnit implements Debuggable {
     /**
      * Further decodes {@link OPCode} instances that in the form 0xF_6_
      * @param opCode The {@link OPCode} to be decoded
-     * @throws Exception If an unknown {@link OPCode} is encountered
+     * @throws UnknownOPCodeException If an unknown {@link OPCode} is encountered
      */
-    private void opCodeFX6Y(OPCode opCode) throws Exception {
+    private void opCodeFX6Y(OPCode opCode) throws UnknownOPCodeException {
         switch (opCode.getByte(3)){
             case 0x5: loadReg(opCode.getByte(1));break;
-            default: throw new Exception("Unknown OpCode encountered: " + Integer.toHexString(opCode.getOpCode()));
+            default: throw new UnknownOPCodeException(opCode);
         }
     }
 
     /**
      * Further decodes {@link OPCode} instances that in the form 0xF_5_
      * @param opCode The {@link OPCode} to be decoded
-     * @throws Exception If an unknown {@link OPCode} is encountered
+     * @throws UnknownOPCodeException If an unknown {@link OPCode} is encountered
      */
-    private void opCodeFX5Y(OPCode opCode) throws Exception {
+    private void opCodeFX5Y(OPCode opCode) throws UnknownOPCodeException {
         switch (opCode.getByte(3)){
             case 0x5: dumpReg(opCode.getByte(1)); break;
-            default: throw new Exception("Unknown OpCode encountered: " + Integer.toHexString(opCode.getOpCode()));
+            default: throw new UnknownOPCodeException(opCode);
         }
     }
 
@@ -251,12 +251,12 @@ public class Chip8CentralProcessingUnit implements Debuggable {
     /**
      * Further decodes {@link OPCode} instances that in the form 0xF_3_
      * @param opCode The {@link OPCode} to be decoded
-     * @throws Exception If an unknown {@link OPCode} is encountered
+     * @throws UnknownOPCodeException If an unknown {@link OPCode} is encountered
      */
-    private void opCodeFX3Y(OPCode opCode) throws Exception {
+    private void opCodeFX3Y(OPCode opCode) throws UnknownOPCodeException {
         switch (opCode.getByte(3)){
             case 0x3: storeBinaryCodedDecimals(opCode.getByte(1)); break;
-            default: throw new Exception("Unknown OpCode encountered: " + Integer.toHexString(opCode.getOpCode()));
+            default: throw new UnknownOPCodeException(opCode);
         }
     }
 
@@ -281,27 +281,27 @@ public class Chip8CentralProcessingUnit implements Debuggable {
     /**
      * Further decodes {@link OPCode} instances that in the form 0xF_0_
      * @param opCode The {@link OPCode} to be decoded
-     * @throws Exception If an unknown {@link OPCode} is encountered
+     * @throws UnknownOPCodeException If an unknown {@link OPCode} is encountered
      */
-    private void opCodeFX0Y(OPCode opCode) throws Exception {
+    private void opCodeFX0Y(OPCode opCode) throws UnknownOPCodeException {
         switch (opCode.getByte(3)){
             case 0x7: getDelayTimer(opCode.getByte(1)); break;
             case 0xA: waitForInput(opCode.getByte(1)); break;
-            default: throw new Exception("Unknown OpCode encountered: " + Integer.toHexString(opCode.getOpCode()));
+            default: throw new UnknownOPCodeException(opCode);
         }
     }
 
     /**
      * Further decodes {@link OPCode} instances that in the form 0xF_1_
      * @param opCode The {@link OPCode} to be decoded
-     * @throws Exception If an unknown {@link OPCode} is encountered
+     * @throws UnknownOPCodeException If an unknown {@link OPCode} is encountered
      */
-    private void opCodeFX1Y(OPCode opCode) throws Exception {
+    private void opCodeFX1Y(OPCode opCode) throws UnknownOPCodeException {
         switch (opCode.getByte(3)){
             case 0x5: setDelayTimer(opCode.getByte(1)); break;
             case 0x8: setSoundTimer(opCode.getByte(1)); break;
             case 0xE: setAddressReg(opCode.getByte(1)); break;
-            default: throw new Exception("Unknown OpCode encountered: " + Integer.toHexString(opCode.getOpCode()));
+            default: throw new UnknownOPCodeException(opCode);
         }
     }
 
@@ -358,9 +358,9 @@ public class Chip8CentralProcessingUnit implements Debuggable {
     /**
      * Further decodes {@link OPCode} instances beginning with 0x0
      * @param opCode The {@link OPCode} to be decoded
-     * @throws Exception If an unknown {@link OPCode} is encountered
+     * @throws UnknownOPCodeException If an unknown {@link OPCode} is encountered
      */
-    private void opCode0XYZ(OPCode opCode) throws Exception {
+    private void opCode0XYZ(OPCode opCode) throws UnknownOPCodeException {
         switch (opCode.getByte(1)){
             case 0x0: {
                 if(opCode.getByte(3) == 0) {
@@ -371,7 +371,7 @@ public class Chip8CentralProcessingUnit implements Debuggable {
             }
             default:{
                 /* Call RCA 1802 program at address NNN. Not necessary for most ROMs. */
-                throw new Exception("RCA 1802 is not  supported: " + Integer.toHexString(opCode.getOpCode())); //break;
+                throw new UnknownOPCodeException("RCA 1802 is not  supported: " + Integer.toHexString(opCode.getOpCode()));
             }
         }
     }
@@ -387,9 +387,9 @@ public class Chip8CentralProcessingUnit implements Debuggable {
     /**
      * Further decodes {@link OPCode} instances beginning with 0x8
      * @param opCode The {@link OPCode} to be decoded
-     * @throws Exception If an unknown {@link OPCode} is encountered
+     * @throws UnknownOPCodeException If an unknown {@link OPCode} is encountered
      */
-    private void opCode8XYN(OPCode opCode) throws Exception {
+    private void opCode8XYN(OPCode opCode) throws UnknownOPCodeException {
         switch (opCode.getByte(3)){
             case 0x0: assign(opCode.getByte(1), opCode.getByte(2)); break;
             case 0x1: assignOR(opCode.getByte(1), opCode.getByte(2)); break;
@@ -400,20 +400,20 @@ public class Chip8CentralProcessingUnit implements Debuggable {
             case 0x6: shiftRight(opCode.getByte(1)); break;
             case 0x7: sub(opCode.getByte(2), opCode.getByte(1), opCode.getByte(1)); break;
             case 0xE: shiftLeft(opCode.getByte(1)); break;
-            default: throw new Exception("Unknown OpCode encountered: " + Integer.toHexString(opCode.getOpCode()));
+            default: throw new UnknownOPCodeException(opCode);
         }
     }
 
     /**
      * Further decodes {@link OPCode} instances beginning with 0xE
      * @param opCode The {@link OPCode} to be decoded
-     * @throws Exception If an unknown {@link OPCode} is encountered
+     * @throws UnknownOPCodeException If an unknown {@link OPCode} is encountered
      */
-    private void opCodeEXYZ(OPCode opCode) throws Exception {
+    private void opCodeEXYZ(OPCode opCode) throws UnknownOPCodeException {
         switch (opCode.getByte(2)){
             case 0x9: skipIfKeyPressed(opCode.getByte(1)); break;
             case 0xA: skipIfKeyNotPressed(opCode.getByte(1)); break;
-            default: throw new Exception("Unknown OpCode encountered: " + Integer.toHexString(opCode.getOpCode()));
+            default: throw new UnknownOPCodeException(opCode);
         }
     }
 
