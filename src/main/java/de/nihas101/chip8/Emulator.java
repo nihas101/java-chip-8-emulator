@@ -22,6 +22,7 @@ import javax.sound.midi.*;
 import java.util.Random;
 import java.util.Stack;
 import java.util.Timer;
+import java.util.logging.Logger;
 
 import static de.nihas101.chip8.hardware.memory.ScreenMemory.SCREEN_HEIGHT;
 import static de.nihas101.chip8.hardware.memory.ScreenMemory.SCREEN_WIDTH;
@@ -38,11 +39,12 @@ public class Emulator extends Application{
     private boolean stepByStep = false;
     private boolean nextStep = false;
 
+    private Logger logger = Logger.getLogger(Emulator.class.getName());
+
     /**
      *  Standard constructor needed for JavaFX
      */
     public Emulator(){
-        /* TODO: Add Loggers & Define and throw dedicated exceptions instead of using generic ones */
     }
 
     /**
@@ -142,8 +144,8 @@ public class Emulator extends Application{
     private void waitFor(long milliseconds) {
         try { Thread.sleep(milliseconds); }
         catch (InterruptedException e) {
-            e.printStackTrace();
-            System.err.println(cpu.getState());
+            logger.severe(e.getMessage());
+            logger.severe(cpu.getState());
             Thread.currentThread().interrupt();
         }
     }
@@ -172,8 +174,8 @@ public class Emulator extends Application{
                 cpu.decodeNextOpCode();
             } catch (Exception e) {
                 cpu.stopCPU();
-                System.err.println(cpu.getState());
-                e.printStackTrace();
+                logger.severe(cpu.getState());
+                logger.severe(e.getMessage());
             }
         }
         return cycles;
@@ -237,7 +239,7 @@ public class Emulator extends Application{
                 debuggerStage = new Stage();
                 debugger.start(debuggerStage);
             } catch (Exception e) {
-                e.printStackTrace();
+                logger.severe(e.getMessage());
             }
         }else debugger.stop();
     }
@@ -263,7 +265,7 @@ public class Emulator extends Application{
             synthesizer = MidiSystem.getSynthesizer();
             synthesizer.open();
         } catch (MidiUnavailableException e) {
-            e.printStackTrace();
+            logger.severe(e.getMessage());
             System.exit(1);
         }
 

@@ -15,6 +15,7 @@ import javafx.stage.Window;
 
 import java.io.File;
 import java.util.function.UnaryOperator;
+import java.util.logging.Logger;
 
 public class MainController {
     @FXML
@@ -31,7 +32,7 @@ public class MainController {
     /* The speed of the emulation */
     private double speed = 1;
 
-    UnaryOperator<TextFormatter.Change> doubleFilter;
+    private UnaryOperator<TextFormatter.Change> doubleFilter;
 
 
     private FileChooser fileChooser;
@@ -40,6 +41,8 @@ public class MainController {
     private RomLoader romLoader;
     private Runnable threadRunner;
     private ResizableCanvas resizableCanvas;
+
+    private Logger logger = Logger.getLogger(MainController.class.getName());
 
     public void loadRom(ActionEvent actionEvent) {
         ownerWindow = romLoaderButton.getScene().getWindow();
@@ -51,7 +54,7 @@ public class MainController {
             try {
                 Thread.sleep(150);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                logger.severe(e.getMessage());
                 Thread.currentThread().interrupt();
             }
             /* Clear memory and load in new ROM */

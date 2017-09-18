@@ -4,6 +4,7 @@ import de.nihas101.chip8.hardware.memory.*;
 import de.nihas101.chip8.hardware.timers.DelayTimer;
 import de.nihas101.chip8.hardware.timers.SoundTimer;
 import de.nihas101.chip8.opcodes.OPCode;
+import de.nihas101.chip8.opcodes.UnknownOPCodeException;
 import de.nihas101.chip8.unsignedDataTypes.UnsignedByte;
 import de.nihas101.chip8.unsignedDataTypes.UnsignedShort;
 import de.nihas101.chip8.debug.Debuggable;
@@ -12,6 +13,7 @@ import javax.sound.midi.MidiChannel;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.logging.Logger;
 
 import static de.nihas101.chip8.utils.Constants.HERTZ_60;
 import static de.nihas101.chip8.utils.Constants.NO_KEY;
@@ -40,6 +42,8 @@ public class Chip8CentralProcessingUnit implements Debuggable {
     private String opCodeString = "";
     private int cycles;
     private boolean stop = false;
+
+    private Logger logger = Logger.getLogger(Chip8CentralProcessingUnit.class.getName());
 
     public Chip8CentralProcessingUnit(Chip8Memory memory, ScreenMemory screenMemory, Chip8Registers registers,
                                       Chip8AddressRegister addressRegister, Chip8ProgramCounter programCounter,
@@ -344,7 +348,7 @@ public class Chip8CentralProcessingUnit implements Debuggable {
             try {
                 Thread.sleep(300);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                logger.severe(e.getMessage());
                 Thread.currentThread().interrupt();
             }
         }

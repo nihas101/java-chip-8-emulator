@@ -4,6 +4,7 @@ import de.nihas101.chip8.hardware.memory.Chip8Memory;
 import de.nihas101.chip8.unsignedDataTypes.UnsignedByte;
 
 import java.io.*;
+import java.util.logging.Logger;
 
 import static de.nihas101.chip8.utils.Constants.MEMORY_LENGTH;
 import static de.nihas101.chip8.utils.Constants.PROGRAM_COUNTER_START;
@@ -12,6 +13,9 @@ import static de.nihas101.chip8.utils.Constants.PROGRAM_COUNTER_START;
  * Loads ROMs from a hard drive
  */
 public class RomLoader {
+
+    private Logger logger = Logger.getLogger(RomLoader.class.getName());
+
     /**
      * Loads a ROM into memory
      * @param romFile The file of the ROM
@@ -26,13 +30,13 @@ public class RomLoader {
             inputStream = new FileInputStream(romFile);
             readBytes = inputStream.read(loadedRom);
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.severe(e.getMessage());
         } finally {
             closeFileStream(inputStream);
         }
 
         if(readBytes > 0) loadIntoMemory(memory, loadedRom);
-        else System.out.println("No bytes were read");
+        else logger.info("No bytes were read");
     }
 
     /**
@@ -45,7 +49,7 @@ public class RomLoader {
                 inputStream.close();
             }
             catch (IOException e) {
-                e.printStackTrace();
+                logger.severe(e.getMessage());
             }
         }
     }
