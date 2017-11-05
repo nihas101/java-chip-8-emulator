@@ -2,6 +2,9 @@
 
 This is an emulator for the interpreted programming language Chip-8 written in Java.
 
+## Requirements
+**Java 1.8** is required to run this program.
+
 ## Build Standalone Distribution
 
 To create a standalone distribution as a zip or tar file, run:
