@@ -5,6 +5,8 @@ import de.nihas101.chip8.unsignedDataTypes.UnsignedShort;
 
 import java.util.Stack;
 
+import static java.lang.Integer.parseInt;
+
 /**
  * A class representing a stack of a Chip-8
  */
@@ -18,12 +20,21 @@ public class Chip8Stack implements Debuggable {
         this.stack = stack;
     }
 
+    public Chip8Stack(java.util.Stack<UnsignedShort> stack, String[] strings) {
+        this.stack = stack;
+
+        if(strings.length == 1 && "".equals(strings[0]))
+            return;
+
+        for (String string : strings) stack.push(new UnsignedShort((short) parseInt(string)));
+    }
+
     /**
      * {@inheritDoc}
      */
     @Override
     public String getState() {
-        return "Stack:\t" + stack.toString();
+        return "Chip8Stack:\t" + stack.toString();
     }
 
     /**
@@ -52,5 +63,9 @@ public class Chip8Stack implements Debuggable {
 
     public void clear() {
         this.stack.clear();
+    }
+
+    public String getValues() {
+        return stack.toString();
     }
 }

@@ -3,16 +3,18 @@ package de.nihas101.chip8.hardware.memory;
 import de.nihas101.chip8.debug.Debuggable;
 import de.nihas101.chip8.unsignedDataTypes.UnsignedShort;
 
+import static java.lang.Integer.*;
+
 /**
  * A class representing an AddressRegister of a Chip-8
  */
-public class Chip8AddressRegister implements Debuggable {
+public class AddressRegister implements Debuggable {
     /**
      * The 16-bit address register I
      */
     private UnsignedShort address;
 
-    public Chip8AddressRegister(){
+    public AddressRegister(){
         this.address = new UnsignedShort((short) 0);
     }
 

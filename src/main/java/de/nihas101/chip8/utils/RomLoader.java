@@ -1,6 +1,6 @@
 package de.nihas101.chip8.utils;
 
-import de.nihas101.chip8.hardware.memory.Chip8Memory;
+import de.nihas101.chip8.hardware.memory.Memory;
 import de.nihas101.chip8.unsignedDataTypes.UnsignedByte;
 
 import java.io.*;
@@ -21,7 +21,7 @@ public class RomLoader {
      * @param romFile The file of the ROM
      * @param memory The memory to load the ROM into
      */
-    public void loadRom(File romFile, Chip8Memory memory) {
+    public void loadRom(File romFile, Memory memory) {
         InputStream inputStream = null;
         byte[] loadedRom = new byte[MEMORY_LENGTH - PROGRAM_COUNTER_START];
         int readBytes = -1;
@@ -59,7 +59,7 @@ public class RomLoader {
      * @param memory The memory to load the rom into
      * @param loadedRom The ROM to load
      */
-    private void loadIntoMemory(Chip8Memory memory, byte[] loadedRom){
+    private void loadIntoMemory(Memory memory, byte[] loadedRom){
         int MAX_ROM_LENGTH = MEMORY_LENGTH - PROGRAM_COUNTER_START;
         for(int i = 0 ; i < MAX_ROM_LENGTH ; i++){
             memory.write(PROGRAM_COUNTER_START+i, new UnsignedByte(loadedRom[i]));

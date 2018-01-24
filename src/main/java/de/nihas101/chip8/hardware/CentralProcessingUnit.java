@@ -9,7 +9,9 @@ import de.nihas101.chip8.unsignedDataTypes.UnsignedByte;
 import de.nihas101.chip8.unsignedDataTypes.UnsignedShort;
 import de.nihas101.chip8.debug.Debuggable;
 
+import javax.sound.midi.Instrument;
 import javax.sound.midi.MidiChannel;
+import javax.sound.midi.Synthesizer;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -21,12 +23,12 @@ import static de.nihas101.chip8.utils.Constants.NO_KEY;
 /**
  * A class representing a central processing unit of a Chip-8
  */
-public class Chip8CentralProcessingUnit implements Debuggable {
+public class CentralProcessingUnit implements Debuggable {
 
-    private final Chip8Memory memory;
-    private final Chip8Registers registers;
-    private final Chip8AddressRegister addressRegister;
-    private final Chip8ProgramCounter programCounter;
+    private final Memory memory;
+    private final Registers registers;
+    private final AddressRegister addressRegister;
+    private final ProgramCounter programCounter;
     private final Chip8Stack stack;
     private final ScreenMemory screenMemory;
 
@@ -42,20 +44,58 @@ public class Chip8CentralProcessingUnit implements Debuggable {
     private String opCodeString = "";
     private int cycles;
     private boolean stop = false;
+    private boolean pause = false;
 
-    private Logger logger = Logger.getLogger(Chip8CentralProcessingUnit.class.getName());
+    private Logger logger = Logger.getLogger(CentralProcessingUnit.class.getName());
 
-    public Chip8CentralProcessingUnit(Chip8Memory memory, ScreenMemory screenMemory, Chip8Registers registers,
-                                      Chip8AddressRegister addressRegister, Chip8ProgramCounter programCounter,
-                                      Chip8Stack stack, Timer timer, DelayTimer delayTimer, SoundTimer soundTimer,
-                                      Random random, MidiChannel midiChannel){
+    public CentralProcessingUnit(Memory memory, ScreenMemory screenMemory, Registers registers,
+                                 AddressRegister addressRegister, ProgramCounter programCounter,
+                                 Chip8Stack chip8Stack, Timer timer, DelayTimer delayTimer, SoundTimer soundTimer,
+                                 Random random, Synthesizer synthesizer){
         this.memory = memory;
         this.screenMemory = screenMemory;
         this.registers = registers;
         this.addressRegister = addressRegister;
 
         this.programCounter = programCounter;
-        this.stack = stack;
+        this.stack = chip8Stack;
+        this.random = random;
+
+        /* Set up timer */
+        this.timer = timer;
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                updateTimer();
+            }
+        }, HERTZ_60, HERTZ_60);
+
+        /* get and load default instrument and channel lists */
+        Instrument[] instruments = synthesizer.getDefaultSoundbank().getInstruments();
+        MidiChannel midiChannel = synthesizer.getChannels()[0];
+
+
+        synthesizer.loadInstrument(instruments[0]);
+
+        this.delayTimer = delayTimer;
+        this.soundTimer = soundTimer;
+        soundTimer.setOnValue(() -> { if(midiChannel != null) midiChannel.noteOn(70, 40); });
+        soundTimer.setOnZero(() -> { if(midiChannel != null) midiChannel.noteOff(70); });
+
+        cycles = 0;
+    }
+
+    public CentralProcessingUnit(Memory memory, ScreenMemory screenMemory, Registers registers,
+                                 AddressRegister addressRegister, ProgramCounter programCounter,
+                                 Chip8Stack chip8Stack, Timer timer, DelayTimer delayTimer, SoundTimer soundTimer,
+                                 Random random){
+        this.memory = memory;
+        this.screenMemory = screenMemory;
+        this.registers = registers;
+        this.addressRegister = addressRegister;
+
+        this.programCounter = programCounter;
+        this.stack = chip8Stack;
         this.random = random;
 
         /* Set up timer */
@@ -69,8 +109,8 @@ public class Chip8CentralProcessingUnit implements Debuggable {
 
         this.delayTimer = delayTimer;
         this.soundTimer = soundTimer;
-        soundTimer.setOnValue(() -> { if(midiChannel != null) midiChannel.noteOn(70, 40); });
-        soundTimer.setOnZero(() -> { if(midiChannel != null) midiChannel.noteOff(70); });
+        soundTimer.setOnValue(() -> { /* DO NOTHING */ });
+        soundTimer.setOnZero(() -> { /* DO NOTHING */ });
 
         cycles = 0;
     }
@@ -92,7 +132,7 @@ public class Chip8CentralProcessingUnit implements Debuggable {
     }
 
     /**
-     * Reset the {@link Chip8CentralProcessingUnit}
+     * Reset the {@link CentralProcessingUnit}
      */
     public void reset(){
         cycles = 0;
@@ -225,7 +265,7 @@ public class Chip8CentralProcessingUnit implements Debuggable {
     }
 
     /**
-     * Dumps the registers V0 ... Vx into the memory starting at the location the {@link Chip8AddressRegister} points at
+     * Dumps the registers V0 ... Vx into the memory starting at the location the {@link AddressRegister} points at
      * @param Vx The index of the registers to be dumped up to
      */
     private void dumpReg(int Vx) {
@@ -237,7 +277,7 @@ public class Chip8CentralProcessingUnit implements Debuggable {
     }
 
     /**
-     * Loads the registers V0 ... Vx into the memory starting at the location the {@link Chip8AddressRegister} points at
+     * Loads the registers V0 ... Vx into the memory starting at the location the {@link AddressRegister} points at
      * @param Vx The index of the registers to be loaded up to
      */
     private void loadReg(int Vx){
@@ -306,7 +346,7 @@ public class Chip8CentralProcessingUnit implements Debuggable {
     }
 
     /**
-     * Sets the {@link Chip8AddressRegister} to the value of the register with index Vx
+     * Sets the {@link AddressRegister} to the value of the register with index Vx
      * @param Vx The index of the register
      */
     private void setAddressReg(int Vx) {
@@ -377,7 +417,7 @@ public class Chip8CentralProcessingUnit implements Debuggable {
     }
 
     /**
-     * Sets the {@link Chip8ProgramCounter} to a value popped from a stack
+     * Sets the {@link ProgramCounter} to a value popped from a stack
      */
     private void returnFromSubRoutine() {
         opCodeString += "return;";
@@ -497,7 +537,7 @@ public class Chip8CentralProcessingUnit implements Debuggable {
     }
 
     /**
-     * Sets the {@link Chip8AddressRegister} to the given address
+     * Sets the {@link AddressRegister} to the given address
      * @param address The new address of the I register
      */
     private void setAddress(UnsignedShort address) {
@@ -507,8 +547,8 @@ public class Chip8CentralProcessingUnit implements Debuggable {
     }
 
     /**
-     * Sets the {@link Chip8ProgramCounter} to the given address
-     * @param address The new address of the {@link Chip8ProgramCounter}
+     * Sets the {@link ProgramCounter} to the given address
+     * @param address The new address of the {@link ProgramCounter}
      */
     private void setPC(UnsignedShort address) {
         opCodeString += "PC=V0+" + Integer.toHexString(address.unsignedDataType);
@@ -695,7 +735,7 @@ public class Chip8CentralProcessingUnit implements Debuggable {
     }
 
     /**
-     * Saves the current {@link Chip8ProgramCounter} and calls the subroutine located at address
+     * Saves the current {@link ProgramCounter} and calls the subroutine located at address
      * @param address The address at which the subroutine to be called is located
      */
     private void callSubRoutine(int address) {
@@ -709,7 +749,7 @@ public class Chip8CentralProcessingUnit implements Debuggable {
     }
 
     /**
-     * Writes the given address to the {@link Chip8AddressRegister}
+     * Writes the given address to the {@link AddressRegister}
      * @param address The Address to go to
      */
     private void gotoOp(int address) {
@@ -752,7 +792,7 @@ public class Chip8CentralProcessingUnit implements Debuggable {
                 + this.soundTimer.getState() + "\n";
     }
 
-    public Chip8Memory getMemory() {
+    public Memory getMemory() {
         return memory;
     }
 
@@ -760,15 +800,15 @@ public class Chip8CentralProcessingUnit implements Debuggable {
         return screenMemory;
     }
 
-    public Chip8Registers getRegisters() {
+    public Registers getRegisters() {
         return registers;
     }
 
-    public Chip8AddressRegister getAddressRegister() {
+    public AddressRegister getAddressRegister() {
         return addressRegister;
     }
 
-    public Chip8ProgramCounter getProgramCounter() {
+    public ProgramCounter getProgramCounter() {
         return programCounter;
     }
 
@@ -805,5 +845,29 @@ public class Chip8CentralProcessingUnit implements Debuggable {
 
     public void startCPU(){
         this.stop = false;
+    }
+
+    public void setPause(boolean pause){
+        this.pause = pause;
+    }
+
+    public boolean isPause(){
+        return pause;
+    }
+
+    public int getCycles() {
+        return cycles;
+    }
+
+    public String getOpCodeString() {
+        return opCodeString;
+    }
+
+    public void setCycles(int cycles) {
+        this.cycles = cycles;
+    }
+
+    public void setOpCode(String opCodeString) {
+        this.opCodeString = opCodeString;
     }
 }

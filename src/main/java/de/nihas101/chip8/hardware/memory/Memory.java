@@ -3,18 +3,21 @@ package de.nihas101.chip8.hardware.memory;
 import de.nihas101.chip8.debug.Debuggable;
 import de.nihas101.chip8.unsignedDataTypes.UnsignedByte;
 
+import java.util.Arrays;
+
 import static de.nihas101.chip8.utils.Constants.MEMORY_LENGTH;
+import static java.lang.Integer.parseInt;
 
 /**
  * A class representing the Memory of a Chip-8
  */
-public class Chip8Memory implements Debuggable {
+public class Memory implements Debuggable {
     /**
      * 0xFFF (4096) bytes of hardware
      */
     private UnsignedByte[] memory = new UnsignedByte[MEMORY_LENGTH];
 
-    public Chip8Memory(){
+    public Memory(){
         // Set Registers to 0
         for (int i=0 ; i < memory.length ; i++) memory[i] = new UnsignedByte((byte) 0);
         setupCharacterSprites();

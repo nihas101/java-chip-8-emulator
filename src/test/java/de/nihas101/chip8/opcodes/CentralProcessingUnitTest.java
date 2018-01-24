@@ -1,6 +1,6 @@
 package de.nihas101.chip8.opcodes;
 
-import de.nihas101.chip8.hardware.Chip8CentralProcessingUnit;
+import de.nihas101.chip8.hardware.CentralProcessingUnit;
 import de.nihas101.chip8.hardware.memory.*;
 import de.nihas101.chip8.hardware.timers.DelayTimer;
 import de.nihas101.chip8.hardware.timers.SoundTimer;
@@ -9,22 +9,22 @@ import de.nihas101.chip8.unsignedDataTypes.UnsignedShort;
 import org.junit.Before;
 import org.junit.Test;
 
+import javax.sound.midi.MidiUnavailableException;
 import java.util.Random;
-import java.util.Stack;
 import java.util.Timer;
 
 import static de.nihas101.chip8.hardware.memory.ScreenMemory.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
-public class Chip8CentralProcessingUnitTest {
-    private Chip8CentralProcessingUnit cpu;
-    private Chip8Memory memory;
+public class CentralProcessingUnitTest {
+    private CentralProcessingUnit cpu;
+    private Memory memory;
     private Random random;
 
     @Before
-    public void setup(){
-        memory = new Chip8Memory();
+    public void setup() throws MidiUnavailableException {
+        memory = new Memory();
         /* New random subclass for  testing, returns the same int every time */
         random = new Random(){
                     @Override
@@ -32,13 +32,13 @@ public class Chip8CentralProcessingUnitTest {
                         return 0x0011;
                     }
                 };
-        cpu = new Chip8CentralProcessingUnit(
+        cpu = new CentralProcessingUnit(
                 memory,
                 new ScreenMemory(),
-                new Chip8Registers(),
-                new Chip8AddressRegister(),
-                new Chip8ProgramCounter(new UnsignedShort((short) 0)),
-                new Chip8Stack(new Stack<>()),
+                new Registers(),
+                new AddressRegister(),
+                new ProgramCounter(new UnsignedShort((short) 0)),
+                new Chip8Stack(new java.util.Stack()),
                 new Timer("Timer"),
                 new DelayTimer(){
                     @Override
@@ -52,8 +52,7 @@ public class Chip8CentralProcessingUnitTest {
                         /* DO NOTHING*/
                     }
                 },
-                random,
-                null);
+                random);
     }
 
     @Test
@@ -787,6 +786,7 @@ public class Chip8CentralProcessingUnitTest {
         try {
             cpu.decodeNextOpCode();
         } catch (Exception e) {
+            e.printStackTrace();
             fail(e.getMessage());
         }
 

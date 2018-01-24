@@ -2,6 +2,8 @@ package de.nihas101.chip8.hardware.memory;
 
 import de.nihas101.chip8.debug.Debuggable;
 
+import java.util.Arrays;
+
 /**
  * A class used to represent a screen of a Chip-8
  */

@@ -3,7 +3,7 @@ package de.nihas101.chip8.hardware.timers;
 /**
  * A class represents a sound timer of the Chip-8
  */
-public class SoundTimer extends Chip8Timer {
+public class SoundTimer extends Timer {
     private Interrupt onValue;
 
     /**

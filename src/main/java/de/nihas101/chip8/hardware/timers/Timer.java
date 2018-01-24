@@ -5,9 +5,16 @@ import de.nihas101.chip8.debug.Debuggable;
 /**
  * A class representing an abstract timer of the Chip-8
  */
-public abstract class Chip8Timer implements Debuggable{
+public abstract class Timer implements Debuggable{
     protected int value;
     private Interrupt onZero = null;
+
+    public Timer(){
+    }
+
+    public Timer(int value){
+        this.value = value;
+    }
 
     /**
      * Sets the value of the timer

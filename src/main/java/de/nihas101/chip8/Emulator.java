@@ -1,7 +1,7 @@
 package de.nihas101.chip8;
 
 import de.nihas101.chip8.debug.Debugger;
-import de.nihas101.chip8.hardware.Chip8CentralProcessingUnit;
+import de.nihas101.chip8.hardware.CentralProcessingUnit;
 import de.nihas101.chip8.hardware.memory.*;
 import de.nihas101.chip8.hardware.timers.DelayTimer;
 import de.nihas101.chip8.hardware.timers.SoundTimer;
@@ -20,16 +20,16 @@ import javafx.util.Duration;
 
 import javax.sound.midi.*;
 import java.util.Random;
-import java.util.Stack;
 import java.util.Timer;
 import java.util.logging.Logger;
 
 import static de.nihas101.chip8.hardware.memory.ScreenMemory.SCREEN_HEIGHT;
 import static de.nihas101.chip8.hardware.memory.ScreenMemory.SCREEN_WIDTH;
 import static de.nihas101.chip8.utils.Constants.*;
+import static java.lang.Thread.*;
 
 public class Emulator extends Application{
-    private Chip8CentralProcessingUnit cpu;
+    public CentralProcessingUnit cpu;
     private ResizableCanvas canvas;
     private Synthesizer synthesizer = null;
     private Timeline timeline;

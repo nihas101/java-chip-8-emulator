@@ -6,17 +6,17 @@ import de.nihas101.chip8.unsignedDataTypes.UnsignedShort;
 /**
  * A class representing a Program Counter of a Chip-8
  */
-public class Chip8ProgramCounter implements Debuggable {
+public class ProgramCounter implements Debuggable {
     /**
      * The 16-bit program counter
      */
     private UnsignedShort count;
 
-    public Chip8ProgramCounter(UnsignedShort count){
+    public ProgramCounter(UnsignedShort count){
         this.count = count;
     }
 
-    public Chip8ProgramCounter(){
+    public ProgramCounter(){
         this.count = new UnsignedShort((short) 0);
     }
 
