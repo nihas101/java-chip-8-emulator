@@ -16,6 +16,23 @@ public class ScreenMemory implements Debuggable {
         reset();
     }
 
+    public ScreenMemory(String[] screenMemoryStrings) {
+        for (int index=0; index < screenMemoryStrings.length; index++) {
+            fillScreen(
+                    screenMemoryStrings[index]
+                            .substring(1)
+                            .split(", "),
+                    index
+            );
+        }
+    }
+
+    private void fillScreen(String[] column, int index) {
+        for(int j=0; j < SCREEN_HEIGHT; j++){
+            memory[index][j] = Boolean.parseBoolean(column[j]);
+        }
+    }
+
     public boolean[][] getMemory(){
         return memory;
     }
@@ -82,5 +99,9 @@ public class ScreenMemory implements Debuggable {
             stringBuilder.append("\n");
         }
         return stringBuilder.toString();
+    }
+
+    public String getValues() {
+        return Arrays.deepToString(memory);
     }
 }

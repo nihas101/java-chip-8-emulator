@@ -18,6 +18,10 @@ public class AddressRegister implements Debuggable {
         this.address = new UnsignedShort((short) 0);
     }
 
+    public AddressRegister(UnsignedShort address) {
+        this.address = address;
+    }
+
     /**
      * Returns the {@link UnsignedShort} representing the value of this register
      * @return The {@link UnsignedShort} representing the value of this register

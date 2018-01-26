@@ -1,19 +1,20 @@
 package de.nihas101.chip8;
 
-import de.nihas101.chip8.hardware.Chip8CentralProcessingUnit;
-import de.nihas101.chip8.hardware.memory.Chip8Memory;
+import de.nihas101.chip8.hardware.memory.Memory;
+import de.nihas101.chip8.savestates.FailedReadingStateException;
+import de.nihas101.chip8.savestates.SaveState;
+import de.nihas101.chip8.savestates.SaveStateHandler;
 import de.nihas101.chip8.utils.ResizableCanvas;
 import de.nihas101.chip8.utils.RomLoader;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ColorPicker;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TextFormatter;
+import javafx.scene.control.*;
 import javafx.stage.FileChooser;
 import javafx.stage.Window;
 
-import java.io.File;
+import java.io.*;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.function.UnaryOperator;
 import java.util.logging.Logger;
 
@@ -26,16 +27,22 @@ public class MainController {
     public ColorPicker colorPickerBackground;
     @FXML
     public TextField speedTextField;
+    public Button saveStateButton;
+    public Button loadStateButton;
+    public Button configureControlsButton;
 
-    private Chip8Memory memory;
-    private Chip8CentralProcessingUnit cpu;
+    private Memory memory;
+    private Emulator emulator;
     /* The speed of the emulation */
     private double speed = 1;
 
     private UnaryOperator<TextFormatter.Change> doubleFilter;
 
+    private FileChooser romFileChooser;
+    private FileChooser saveFileChooser;
+    private FileChooser loadFileChooser;
+    private SaveStateHandler saveStateHandler;
 
-    private FileChooser fileChooser;
     private Window ownerWindow;
     private File romFile;
     private RomLoader romLoader;
@@ -46,11 +53,11 @@ public class MainController {
 
     public void loadRom(ActionEvent actionEvent) {
         ownerWindow = romLoaderButton.getScene().getWindow();
-        romFile = fileChooser.showOpenDialog(ownerWindow);
+        romFile = romFileChooser.showOpenDialog(ownerWindow);
 
         if(romFile != null) {
             /* Stop last threadRunner */
-            cpu.stopCPU();
+            emulator.blackBox.getCentralProcessingUnit().stopCPU();
             try {
                 Thread.sleep(150);
             } catch (InterruptedException e) {
@@ -58,11 +65,11 @@ public class MainController {
                 Thread.currentThread().interrupt();
             }
             /* Clear memory and load in new ROM */
-            cpu.clearMemory();
-            cpu.reset();
+            emulator.blackBox.getCentralProcessingUnit().clearMemory();
+            emulator.blackBox.getCentralProcessingUnit().reset();
             romLoader.loadRom(romFile, memory);
             /* Start CPU */
-            cpu.startCPU();
+            emulator.blackBox.getCentralProcessingUnit().startCPU();
             threadRunner.run();
         }
     }
@@ -79,15 +86,15 @@ public class MainController {
         colorPickerBackground.getParent().requestFocus();
     }
 
-    public void setup(Runnable threadRunner, Chip8CentralProcessingUnit cpu, ResizableCanvas resizableCanvas){
-        fileChooser = new FileChooser();
-        fileChooser.setTitle("Choose a ROM to load");
+    public void setup(Runnable threadRunner, Emulator emulator, ResizableCanvas resizableCanvas){
+        setupFileChoosers();
+        saveStateHandler = new SaveStateHandler();
 
         romLoader = new RomLoader();
 
         this.threadRunner = threadRunner;
-        this.cpu = cpu;
-        this.memory = cpu.getMemory();
+        this.emulator = emulator;
+        this.memory = emulator.blackBox.getCentralProcessingUnit().getMemory();
         this.resizableCanvas = resizableCanvas;
 
         colorPickerSprite.setPromptText("Set sprite color");
@@ -109,14 +116,65 @@ public class MainController {
         speedTextField.setTextFormatter(new TextFormatter<>(doubleFilter));
     }
 
+    public void startEmulation(){
+        threadRunner.run();
+    }
+
+    private void setupFileChoosers(){
+        Path currentPath = Paths.get("").toAbsolutePath();
+
+        /* Setup RomFileChooser */
+        romFileChooser = new FileChooser();
+        romFileChooser.setTitle("Choose a ROM to load");
+
+        /* Setup SaveFileChooser */
+        saveFileChooser = new FileChooser();
+        saveFileChooser.setInitialFileName("savestate.c8s");
+        saveFileChooser.setTitle("Save memory");
+        saveFileChooser.setInitialDirectory(currentPath.toFile());
+
+        /* Setup SaveFileChooser */
+        loadFileChooser = new FileChooser();
+        loadFileChooser.setTitle("Load memory");
+        saveFileChooser.setInitialDirectory(currentPath.toFile());
+    }
+
     public void setSpeed(ActionEvent actionEvent) {
         this.speed = Double.parseDouble(speedTextField.getText());
         /* Leave Focus again */
         speedTextField.getParent().requestFocus();
-        cpu.changeTimerSpeed(speed);
+        emulator.blackBox.getCentralProcessingUnit().changeTimerSpeed(speed);
     }
 
     public double getSpeed(){
         return speed;
+    }
+
+    public void saveState(ActionEvent actionEvent) throws IOException {
+        emulator.blackBox.getCentralProcessingUnit().setPause(true);
+
+        File saveFile = saveFileChooser.showSaveDialog(ownerWindow);
+        if(saveFile != null) saveStateHandler.writeState(saveFile, emulator.createSaveState());
+
+        emulator.blackBox.getCentralProcessingUnit().setPause(false);
+    }
+
+    public void loadState(ActionEvent actionEvent) {
+        SaveState saveState = null;
+        File loadFile = loadFileChooser.showOpenDialog(ownerWindow);
+
+        if(loadFile != null) {
+            try {
+                saveState = saveStateHandler.readState(loadFile);
+            } catch (FailedReadingStateException e) {
+                logger.severe(e.getMessage());
+            }
+        }
+
+        emulator.setState(saveState);
+    }
+
+    public void configureControls(ActionEvent actionEvent) {
+        /* TODO */
     }
 }

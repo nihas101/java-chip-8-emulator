@@ -1,41 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ColorPicker?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.ToolBar?>
-<?import javafx.scene.control.Tooltip?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.RowConstraints?>
-
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="209.0" prefWidth="525.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.nihas101.chip8.MainController">
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="209.0" prefWidth="525.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.nihas101.chip8.MainController">
    <children>
       <BorderPane layoutX="-1.0" layoutY="-3.0" prefHeight="209.0" prefWidth="525.0">
          <top>
             <GridPane alignment="TOP_CENTER" prefHeight="30.0" prefWidth="525.0" BorderPane.alignment="CENTER">
               <columnConstraints>
-                <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="409.0" />
-                <ColumnConstraints halignment="RIGHT" hgrow="NEVER" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="116.0" />
+                <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="435.0" />
+                <ColumnConstraints halignment="RIGHT" hgrow="NEVER" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="90.0" />
               </columnConstraints>
               <rowConstraints>
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
               </rowConstraints>
                <children>
-                  <ToolBar prefHeight="35.0" prefWidth="263.0">
+                  <ToolBar prefHeight="35.0" prefWidth="422.0">
                     <items>
-                      <Button fx:id="romLoaderButton" mnemonicParsing="false" onAction="#loadRom" prefHeight="25.0" prefWidth="100.0" text="Load ROM" textAlignment="CENTER">
+                      <Button fx:id="romLoaderButton" mnemonicParsing="false" onAction="#loadRom" prefHeight="25.0" prefWidth="76.0" text="Load ROM" textAlignment="CENTER">
                            <tooltip>
                               <Tooltip text="Load a ROM" />
                            </tooltip></Button>
-                        <ColorPicker fx:id="colorPickerSprite" onAction="#setColorSprite" prefHeight="25.0" prefWidth="85.0" promptText="Choose Color1">
+                        <Button fx:id="configureControlsButton" mnemonicParsing="false" onAction="#configureControls" text="Config">
+                           <tooltip>
+                              <Tooltip text="Configure controls" />
+                           </tooltip>
+                        </Button>
+                        <Button fx:id="saveStateButton" mnemonicParsing="false" onAction="#saveState" text="Save state">
+                           <tooltip>
+                              <Tooltip text="Save state" />
+                           </tooltip>
+                        </Button>
+                        <Button fx:id="loadStateButton" mnemonicParsing="false" onAction="#loadState" text="Load state">
+                           <tooltip>
+                              <Tooltip text="Load state" />
+                           </tooltip>
+                        </Button>
+                        <ColorPicker fx:id="colorPickerSprite" onAction="#setColorSprite" prefHeight="25.0" prefWidth="77.0" promptText="Choose Color1">
                            <tooltip>
                               <Tooltip text="Set sprite color" />
                            </tooltip></ColorPicker>
-                        <ColorPicker fx:id="colorPickerBackground" onAction="#setColorBackground" prefHeight="25.0" prefWidth="85.0" promptText="Choose Color2">
+                        <ColorPicker fx:id="colorPickerBackground" onAction="#setColorBackground" prefHeight="25.0" prefWidth="77.0" promptText="Choose Color2">
                            <tooltip>
                               <Tooltip text="Set background color" />
                            </tooltip></ColorPicker>
@@ -43,8 +48,8 @@
                   </ToolBar>
                   <ToolBar prefHeight="40.0" prefWidth="200.0" GridPane.columnIndex="1">
                      <items>
-                        <Label prefHeight="17.0" prefWidth="59.0" text="Set Speed:" />
-                        <TextField fx:id="speedTextField" onAction="#setSpeed" prefHeight="25.0" prefWidth="40.0" promptText="Set speed" text="1.0">
+                        <Label prefHeight="17.0" prefWidth="40.0" text="Speed:" />
+                        <TextField fx:id="speedTextField" onAction="#setSpeed" prefHeight="25.0" prefWidth="33.0" promptText="Set speed" text="1.0">
                            <tooltip>
                               <Tooltip text="Set the speed of the emulation" />
                            </tooltip></TextField>

@@ -24,13 +24,13 @@ import static de.nihas101.chip8.utils.Constants.NO_KEY;
  * A class representing a central processing unit of a Chip-8
  */
 public class CentralProcessingUnit implements Debuggable {
-
     private final Memory memory;
     private final Registers registers;
     private final AddressRegister addressRegister;
     private final ProgramCounter programCounter;
     private final Chip8Stack stack;
     private final ScreenMemory screenMemory;
+    private final Synthesizer synthesizer;
 
     private final Random random;
 
@@ -60,6 +60,8 @@ public class CentralProcessingUnit implements Debuggable {
         this.programCounter = programCounter;
         this.stack = chip8Stack;
         this.random = random;
+
+        this.synthesizer = synthesizer;
 
         /* Set up timer */
         this.timer = timer;
@@ -97,6 +99,7 @@ public class CentralProcessingUnit implements Debuggable {
         this.programCounter = programCounter;
         this.stack = chip8Stack;
         this.random = random;
+        this.synthesizer = null;
 
         /* Set up timer */
         this.timer = timer;
@@ -839,6 +842,11 @@ public class CentralProcessingUnit implements Debuggable {
         this.stop = true;
     }
 
+    public void closeSynthesizer(){
+        if(synthesizer != null)
+            synthesizer.close();
+    }
+
     public boolean isStop(){
         return stop;
     }
@@ -869,5 +877,9 @@ public class CentralProcessingUnit implements Debuggable {
 
     public void setOpCode(String opCodeString) {
         this.opCodeString = opCodeString;
+    }
+
+    public Random getRandom() {
+        return random;
     }
 }

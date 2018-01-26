@@ -23,6 +23,11 @@ public class Memory implements Debuggable {
         setupCharacterSprites();
     }
 
+    public Memory(String[] memoryStrings) {
+        for(int i=0; i < memoryStrings.length ; i++)
+            memory[i] = new UnsignedByte((byte) parseInt(memoryStrings[i].trim()));
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -164,5 +169,9 @@ public class Memory implements Debuggable {
         this.memory[72] = new UnsignedByte((byte) 0b11110000);
         this.memory[73] = new UnsignedByte((byte) 0b10000000);
         this.memory[74] = new UnsignedByte((byte) 0b10000000);
+    }
+
+    public String getValues() {
+        return Arrays.toString(memory);
     }
 }

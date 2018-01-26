@@ -6,6 +6,14 @@ package de.nihas101.chip8.hardware.timers;
 public class SoundTimer extends Timer {
     private Interrupt onValue;
 
+    public SoundTimer(){
+        super();
+    }
+
+    public SoundTimer(int value) {
+        super(value);
+    }
+
     /**
      * {@inheritDoc}.
      * Additionally executes an interrupt

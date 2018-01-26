@@ -1,10 +1,13 @@
 package de.nihas101.chip8.utils;
 
 import de.nihas101.chip8.hardware.memory.ScreenMemory;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
+import javafx.util.Duration;
 
 import static de.nihas101.chip8.hardware.memory.ScreenMemory.SCREEN_HEIGHT;
 import static de.nihas101.chip8.hardware.memory.ScreenMemory.SCREEN_WIDTH;
@@ -55,6 +58,20 @@ public class ResizableCanvas extends Canvas {
     private void drawPixel(double x, double y, double width, double height, Paint paint){
         graphicsContext.setFill(paint);
         graphicsContext.fillRect(x, y, width + 1, height + 1);
+    }
+
+    public Timeline setupTimeLine(){
+        /* Setup keyframes to draw the canvas */
+        final Duration oneFrameAmt = Duration.ONE;
+        final KeyFrame oneFrame = new KeyFrame(oneFrameAmt, event -> draw());
+        Timeline timeline = new Timeline();
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.getKeyFrames().add(oneFrame);
+        return timeline;
+    }
+
+    public void setMemory(ScreenMemory memory){
+        this.memory = memory.getMemory();
     }
 
     /**

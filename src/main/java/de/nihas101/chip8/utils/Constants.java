@@ -31,4 +31,16 @@ public class Constants {
 
     public static final long CYCLE_WAIT_TIME = 2;
     public static final long STEP_WAIT_TIME = 100;
+
+    public static final char CYCLES_CHAR = 'c';
+    public static final char OPCODE_CHAR = 'o';
+    public static final char MEMORY_CHAR = 'm';
+    public static final char SCREENMEMORY_CHAR = 's';
+    public static final char REGISTERS_CHAR = 'r';
+    public static final char ADDRESS_CHAR = 'a';
+    public static final char PROGRAMCOUNTER_CHAR = 'p';
+    public static final char STACK_CHAR = 'k';
+    public static final char DELAYIMER_CHAR = 'd';
+    public static final char SOUNDTIMER_CHAR = 't';
+    public static final char RANDOM_CHAR = 'i';
 }
