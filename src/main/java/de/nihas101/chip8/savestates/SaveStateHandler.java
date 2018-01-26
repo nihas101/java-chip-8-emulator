@@ -13,7 +13,7 @@ public class SaveStateHandler {
                 fileWriter.write(state.toString());
                 fileWriter.close();
             } catch (IOException e) {
-                /* TODO: Inform user */
+                logger.severe(e.getMessage());
             }
         }
     }
