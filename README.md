@@ -2,6 +2,8 @@
 
 This is an emulator for the interpreted programming language Chip-8 written in Java.
 
+[![Click here]()](https://github.com/nihas101/java-chip-8-emulator/releases/latest)  for the latest release
+
 ## Requirements
 **Java 1.8** is required to run this program.
 
