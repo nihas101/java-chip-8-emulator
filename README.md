@@ -23,7 +23,7 @@ The distribution is placed under `build/distributions`.
 
 To run the program from the distribution, extract the zip or tar file, and run the launch script for your system in the bin folder by typing:
 ```sh
-./chip-8
+./chip8
 ```
 in the command-line interface.
 
