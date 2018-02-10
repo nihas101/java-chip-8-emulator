@@ -455,8 +455,6 @@ public class CentralProcessingUnitTest {
             fail(e.getMessage());
         }
 
-        System.out.println(Integer.toHexString(new UnsignedByte((byte) 0x0F).apply(((x,y) -> y-x), new UnsignedByte((byte) 0x01)).unsignedDataType));
-
         assertEquals(new UnsignedByte((byte) (0x01 - 0x0F)), cpu.getRegisters().peek(0x2));
         assertEquals(new UnsignedByte((byte) 0x0), cpu.getRegisters().peek(0xF));
     }
@@ -612,8 +610,6 @@ public class CentralProcessingUnitTest {
             fail(e.getMessage());
         }
 
-        System.out.println(cpu.getScreenMemory().getState());
-
         assertEquals(true, cpu.getScreenMemory().read(0,0));
         assertEquals(new UnsignedByte((byte) 0), cpu.getRegisters().peek(0xF));
         assertEquals(new UnsignedShort((short) 0x200), cpu.getAddressRegister().getAddress());
@@ -649,8 +645,6 @@ public class CentralProcessingUnitTest {
         } catch (Exception e) {
             fail(e.getMessage());
         }
-
-        System.out.println(cpu.getScreenMemory().getState());
 
         assertEquals(false, cpu.getScreenMemory().read(0,0));
         assertEquals(new UnsignedByte((byte) 1), cpu.getRegisters().peek(0xF));
