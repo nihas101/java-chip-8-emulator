@@ -33,14 +33,14 @@ public class Debugger extends Application {
 
         /* Create Scene */
         Scene scene = new Scene(root);
-        primaryStage.setTitle("CHIP-8 Emulator - Debug");
+        primaryStage.setTitle("CHIP-8 Main - Debug");
         primaryStage.setScene(scene);
+
+        primaryStage.setOnCloseRequest(windowEvent -> isDebugging = false);
 
         /* Setup keyframes to draw the canvas */
         final Duration oneFrameAmt = Duration.seconds(1);
-        final KeyFrame oneFrame = new KeyFrame(oneFrameAmt, event -> {
-            updateDebugInfo();
-        });
+        final KeyFrame oneFrame = new KeyFrame(oneFrameAmt, event -> updateDebugInfo());
         timeline = new Timeline();
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.getKeyFrames().add(oneFrame);

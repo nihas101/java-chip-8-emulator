@@ -1,6 +1,6 @@
 package de.nihas101.chip8.hardware;
 
-import de.nihas101.chip8.SynthesizerFactory;
+import de.nihas101.chip8.utils.SynthesizerFactory;
 import de.nihas101.chip8.debug.Debuggable;
 import de.nihas101.chip8.hardware.memory.*;
 import de.nihas101.chip8.hardware.timers.DelayTimer;
@@ -15,17 +15,17 @@ import java.util.logging.Logger;
 
 import static de.nihas101.chip8.utils.Constants.PROGRAM_COUNTER_START;
 
-public class BlackBox implements Debuggable {
+public class Emulator implements Debuggable {
     private CentralProcessingUnit centralProcessingUnit;
 
-    private Logger logger = Logger.getLogger(BlackBox.class.getName());
+    private Logger logger = Logger.getLogger(Emulator.class.getName());
 
-    private BlackBox(CentralProcessingUnit centralProcessingUnit){
+    private Emulator(CentralProcessingUnit centralProcessingUnit){
         this.centralProcessingUnit = centralProcessingUnit;
     }
 
-    public static BlackBox createBlackBox(){
-        return new BlackBox(setupCentralProcessingUnit());
+    public static Emulator createBlackBox(){
+        return new Emulator(setupCentralProcessingUnit());
     }
 
     private static CentralProcessingUnit setupCentralProcessingUnit() {

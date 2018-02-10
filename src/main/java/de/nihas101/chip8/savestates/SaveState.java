@@ -1,6 +1,6 @@
 package de.nihas101.chip8.savestates;
 
-import de.nihas101.chip8.SynthesizerFactory;
+import de.nihas101.chip8.utils.SynthesizerFactory;
 import de.nihas101.chip8.hardware.CentralProcessingUnit;
 import de.nihas101.chip8.hardware.memory.*;
 import de.nihas101.chip8.hardware.timers.DelayTimer;
@@ -60,8 +60,6 @@ public class SaveState {
                 case RANDOM_CHAR:         random = readRandom(string);
             }
         }
-
-        /* TODO: Put Random into savestate as well */
 
         try {
             synthesizer = SynthesizerFactory.createSynthesizer();

@@ -1,11 +1,12 @@
 package de.nihas101.chip8;
 
 import de.nihas101.chip8.debug.Debugger;
-import de.nihas101.chip8.hardware.BlackBox;
+import de.nihas101.chip8.hardware.Emulator;
 import de.nihas101.chip8.savestates.SaveState;
 import de.nihas101.chip8.utils.ResizableCanvas;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
@@ -20,13 +21,16 @@ import static de.nihas101.chip8.hardware.memory.ScreenMemory.SCREEN_WIDTH;
 import static de.nihas101.chip8.utils.Constants.*;
 import static java.lang.Thread.*;
 
-public class Emulator extends Application{
-    public BlackBox blackBox;
+public class Main extends Application{
+    public Emulator emulator;
     private Scene scene;
     private Pane root;
     private MainController mainController;
     private ResizableCanvas canvas;
     private Timeline timeline;
+
+    private EventHandler<KeyEvent> keyPressedEventEventHandler;
+    private EventHandler<KeyEvent> keyReleasedEventHandler;
 
     /* Debugging */
     private Debugger debugger;
@@ -34,12 +38,12 @@ public class Emulator extends Application{
     private boolean stepByStep = false;
     private boolean nextStep = false;
 
-    private Logger logger = Logger.getLogger(Emulator.class.getName());
+    private Logger logger = Logger.getLogger(Main.class.getName());
 
     /**
      *  Standard constructor needed for JavaFX
      */
-    public Emulator(){
+    public Main(){
     }
 
     /**
@@ -57,7 +61,6 @@ public class Emulator extends Application{
     @Override
     public void start(Stage primaryStage) throws Exception {
         /* TODO: Implement ability to reconfigure keys */
-        /* TODO: Refactor variables into data classes */
         /* TODO: Refactor */
         /* TODO: Pause when choosing ROM */
 
@@ -68,11 +71,11 @@ public class Emulator extends Application{
 
         /* Create Scene */
         scene = new Scene(root);
-        primaryStage.setTitle("CHIP-8 Emulator");
+        primaryStage.setTitle("CHIP-8 Main");
         primaryStage.setScene(scene);
 
         /* Setup emulator instance */
-        blackBox = BlackBox.createBlackBox();
+        emulator = Emulator.createBlackBox();
         //this.cpu = setupHardware();
         setupCanvas();
         setupEmulation();
@@ -89,7 +92,7 @@ public class Emulator extends Application{
             /* Close debugger if it is open on closing the main window */
             if(debugger.isDebugging()) debugger.stop();
             /* In case cpu is looking for user input interrupt it */
-            blackBox.stop();
+            emulator.stop();
         });
 
         primaryStage.show();
@@ -102,7 +105,7 @@ public class Emulator extends Application{
 
     private void setupCanvas(){
         /* Create resizable canvas and add it to the scene */
-        canvas = new ResizableCanvas(blackBox.getCentralProcessingUnit().getScreenMemory());
+        canvas = new ResizableCanvas(emulator.getCentralProcessingUnit().getScreenMemory());
         ((BorderPane)root.getChildren().get(0)).setCenter(canvas);
 
         timeline = canvas.setupTimeLine();
@@ -115,12 +118,12 @@ public class Emulator extends Application{
             new Thread(() -> {
                 double cycles = 1;
                 double leftCycle;
-                while (!blackBox.getCentralProcessingUnit().isStop()) {
-                    if (blackBox.getCentralProcessingUnit().isPause()) {
+                while (!emulator.getCentralProcessingUnit().isStop()) {
+                    if (emulator.getCentralProcessingUnit().isPause()) {
                         yield();
                         continue;
                     }
-                    leftCycle = blackBox.executeCPUCycles(cycles);
+                    leftCycle = emulator.executeCPUCycles(cycles);
                     waitForStep();
                     /* Wait and calculate how many cycles to execute */
                     if (stepByStep) cycles = 1; // Always execute one step in step-by-step mode
@@ -144,7 +147,7 @@ public class Emulator extends Application{
         try { sleep(milliseconds); }
         catch (InterruptedException e) {
             logger.severe(e.getMessage());
-            logger.severe(blackBox.getState());
+            logger.severe(emulator.getState());
             currentThread().interrupt();
         }
     }
@@ -153,9 +156,9 @@ public class Emulator extends Application{
      * Waits for the user to hit the key to calculate the next step
      */
     private void waitForStep() {
-        if(stepByStep && !blackBox.getCentralProcessingUnit().isStop()){
+        if(stepByStep && !emulator.getCentralProcessingUnit().isStop()){
             nextStep = false;
-            while(stepByStep && !nextStep && !blackBox.getCentralProcessingUnit().isStop()) waitFor(STEP_WAIT_TIME);
+            while(stepByStep && !nextStep && !emulator.getCentralProcessingUnit().isStop()) waitFor(STEP_WAIT_TIME);
         }
     }
 
@@ -165,7 +168,7 @@ public class Emulator extends Application{
     @Override
     public void stop(){
         /* Stop the thread that is used as timer */
-        blackBox.stop();
+        emulator.stop();
         timeline.stop();
         if(debugger.isDebugging()) debugger.stop();
     }
@@ -174,33 +177,45 @@ public class Emulator extends Application{
      * Sets up {@link KeyEvent}s
      */
     private void setupEventHandler() {
-        scene.addEventHandler(KeyEvent.KEY_PRESSED, (event) -> {
+        /* Remove old EventHandlers */
+        if(keyPressedEventEventHandler != null)
+            scene.removeEventHandler(KeyEvent.KEY_PRESSED, keyPressedEventEventHandler);
+        if(keyReleasedEventHandler != null)
+            scene.removeEventHandler(KeyEvent.KEY_RELEASED, keyReleasedEventHandler);
+
+        keyPressedEventEventHandler = createKeyPressedEventHandler();
+        keyReleasedEventHandler = (event) -> emulator.getCentralProcessingUnit().setKeyCode(NO_KEY);
+
+        scene.addEventHandler(KeyEvent.KEY_PRESSED, keyPressedEventEventHandler);
+        scene.addEventHandler(KeyEvent.KEY_RELEASED, keyReleasedEventHandler);
+    }
+
+    private EventHandler<KeyEvent> createKeyPressedEventHandler(){
+        return (event) -> {
             switch(event.getCode()){
-                case N: blackBox.getCentralProcessingUnit().setKeyCode(KEY_0); break;
-                case Q: blackBox.getCentralProcessingUnit().setKeyCode(KEY_1); break;
-                case W: blackBox.getCentralProcessingUnit().setKeyCode(KEY_2); break;
-                case E: blackBox.getCentralProcessingUnit().setKeyCode(KEY_3); break;
-                case A: blackBox.getCentralProcessingUnit().setKeyCode(KEY_4); break;
-                case S: blackBox.getCentralProcessingUnit().setKeyCode(KEY_5); break;
-                case D: blackBox.getCentralProcessingUnit().setKeyCode(KEY_6); break;
-                case Z: blackBox.getCentralProcessingUnit().setKeyCode(KEY_7); break;
-                case X: blackBox.getCentralProcessingUnit().setKeyCode(KEY_8); break;
-                case C: blackBox.getCentralProcessingUnit().setKeyCode(KEY_9); break;
-                case B: blackBox.getCentralProcessingUnit().setKeyCode(KEY_A); break;
-                case M: blackBox.getCentralProcessingUnit().setKeyCode(KEY_B); break;
-                case R: blackBox.getCentralProcessingUnit().setKeyCode(KEY_C); break;
-                case F: blackBox.getCentralProcessingUnit().setKeyCode(KEY_D); break;
-                case V: blackBox.getCentralProcessingUnit().setKeyCode(KEY_E); break;
-                case COMMA: blackBox.getCentralProcessingUnit().setKeyCode(KEY_F); break;
+                case N: emulator.getCentralProcessingUnit().setKeyCode(KEY_0); break;
+                case Q: emulator.getCentralProcessingUnit().setKeyCode(KEY_1); break;
+                case W: emulator.getCentralProcessingUnit().setKeyCode(KEY_2); break;
+                case E: emulator.getCentralProcessingUnit().setKeyCode(KEY_3); break;
+                case A: emulator.getCentralProcessingUnit().setKeyCode(KEY_4); break;
+                case S: emulator.getCentralProcessingUnit().setKeyCode(KEY_5); break;
+                case D: emulator.getCentralProcessingUnit().setKeyCode(KEY_6); break;
+                case Z: emulator.getCentralProcessingUnit().setKeyCode(KEY_7); break;
+                case X: emulator.getCentralProcessingUnit().setKeyCode(KEY_8); break;
+                case C: emulator.getCentralProcessingUnit().setKeyCode(KEY_9); break;
+                case B: emulator.getCentralProcessingUnit().setKeyCode(KEY_A); break;
+                case M: emulator.getCentralProcessingUnit().setKeyCode(KEY_B); break;
+                case R: emulator.getCentralProcessingUnit().setKeyCode(KEY_C); break;
+                case F: emulator.getCentralProcessingUnit().setKeyCode(KEY_D); break;
+                case V: emulator.getCentralProcessingUnit().setKeyCode(KEY_E); break;
+                case COMMA: emulator.getCentralProcessingUnit().setKeyCode(KEY_F); break;
                 case F3: nextStep = true; break;
                 case F1: handleDebugger(); break;
                 case F2: switchStepByStep(); break;
-                case F4: blackBox.getCentralProcessingUnit().reset(); break;
+                case F4: emulator.getCentralProcessingUnit().reset(); break;
                 default: /* NOP */
             }
-        });
-        /* 255 = No key pressed*/
-        scene.addEventHandler(KeyEvent.KEY_RELEASED, (event) -> blackBox.getCentralProcessingUnit().setKeyCode(NO_KEY));
+        };
     }
 
     private void switchStepByStep(){
@@ -220,11 +235,11 @@ public class Emulator extends Application{
     }
 
     private void setupEmulation(){
-        canvas.setMemory(blackBox.getCentralProcessingUnit().getScreenMemory());
+        canvas.setMemory(emulator.getCentralProcessingUnit().getScreenMemory());
         setupController();
         setupEventHandler();
         debugger = new Debugger();
-        debugger.setDebuggable(blackBox.getCentralProcessingUnit());
+        debugger.setDebuggable(emulator.getCentralProcessingUnit());
         timeline = canvas.setupTimeLine();
         timeline.play();
     }
@@ -234,12 +249,12 @@ public class Emulator extends Application{
     }
 
     public SaveState createSaveState(){
-        return SaveState.createSaveState(blackBox.getCentralProcessingUnit());
+        return SaveState.createSaveState(emulator.getCentralProcessingUnit());
     }
 
     public void setState(SaveState saveState){
         stop();
-        blackBox.setCentralProcessingUnit(saveState.cpu);
+        emulator.setCentralProcessingUnit(saveState.cpu);
         setupEmulation();
         startEmulation();
     }

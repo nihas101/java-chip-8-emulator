@@ -1,4 +1,4 @@
-package de.nihas101.chip8;
+package de.nihas101.chip8.utils;
 
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;

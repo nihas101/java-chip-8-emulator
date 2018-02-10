@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="209.0" prefWidth="525.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.nihas101.chip8.MainController">
    <children>
       <BorderPane layoutX="-1.0" layoutY="-3.0" prefHeight="209.0" prefWidth="525.0">
@@ -15,41 +18,41 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
               </rowConstraints>
                <children>
-                  <ToolBar prefHeight="35.0" prefWidth="422.0">
+                  <ToolBar prefHeight="35.0" prefWidth="422.0" styleClass="Toolbar" stylesheets="@main.css">
                     <items>
-                      <Button fx:id="romLoaderButton" mnemonicParsing="false" onAction="#loadRom" prefHeight="25.0" prefWidth="76.0" text="Load ROM" textAlignment="CENTER">
+                      <Button fx:id="romLoaderButton" mnemonicParsing="false" onAction="#loadRom" prefHeight="25.0" prefWidth="76.0" styleClass="ToolbarButton" stylesheets="@main.css" text="Load ROM" textAlignment="CENTER">
                            <tooltip>
                               <Tooltip text="Load a ROM" />
                            </tooltip></Button>
-                        <Button fx:id="configureControlsButton" mnemonicParsing="false" onAction="#configureControls" text="Config">
+                        <Button fx:id="configureControlsButton" mnemonicParsing="false" onAction="#configureControls" styleClass="ToolbarButton" stylesheets="@main.css" text="Config">
                            <tooltip>
                               <Tooltip text="Configure controls" />
                            </tooltip>
                         </Button>
-                        <Button fx:id="saveStateButton" mnemonicParsing="false" onAction="#saveState" text="Save state">
+                        <Button fx:id="saveStateButton" mnemonicParsing="false" onAction="#saveState" styleClass="ToolbarButton" stylesheets="@main.css" text="Save state">
                            <tooltip>
                               <Tooltip text="Save state" />
                            </tooltip>
                         </Button>
-                        <Button fx:id="loadStateButton" mnemonicParsing="false" onAction="#loadState" text="Load state">
+                        <Button fx:id="loadStateButton" mnemonicParsing="false" onAction="#loadState" styleClass="ToolbarButton" stylesheets="@main.css" text="Load state">
                            <tooltip>
                               <Tooltip text="Load state" />
                            </tooltip>
                         </Button>
-                        <ColorPicker fx:id="colorPickerSprite" onAction="#setColorSprite" prefHeight="25.0" prefWidth="77.0" promptText="Choose Color1">
+                        <ColorPicker fx:id="colorPickerSprite" onAction="#setColorSprite" prefHeight="25.0" prefWidth="77.0" promptText="Choose Color1" styleClass="ToolbarButton" stylesheets="@main.css">
                            <tooltip>
                               <Tooltip text="Set sprite color" />
                            </tooltip></ColorPicker>
-                        <ColorPicker fx:id="colorPickerBackground" onAction="#setColorBackground" prefHeight="25.0" prefWidth="77.0" promptText="Choose Color2">
+                        <ColorPicker fx:id="colorPickerBackground" onAction="#setColorBackground" prefHeight="25.0" prefWidth="77.0" promptText="Choose Color2" styleClass="ToolbarButton" stylesheets="@main.css">
                            <tooltip>
                               <Tooltip text="Set background color" />
                            </tooltip></ColorPicker>
                     </items>
                   </ToolBar>
-                  <ToolBar prefHeight="40.0" prefWidth="200.0" GridPane.columnIndex="1">
+                  <ToolBar prefHeight="40.0" prefWidth="200.0" styleClass="Toolbar" stylesheets="@main.css" GridPane.columnIndex="1">
                      <items>
                         <Label prefHeight="17.0" prefWidth="40.0" text="Speed:" />
-                        <TextField fx:id="speedTextField" onAction="#setSpeed" prefHeight="25.0" prefWidth="33.0" promptText="Set speed" text="1.0">
+                        <TextField fx:id="speedTextField" onAction="#setSpeed" prefHeight="25.0" prefWidth="33.0" promptText="Set speed" styleClass="ToolbarText" stylesheets="@main.css" text="1.0">
                            <tooltip>
                               <Tooltip text="Set the speed of the emulation" />
                            </tooltip></TextField>

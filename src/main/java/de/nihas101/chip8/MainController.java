@@ -18,6 +18,8 @@ import java.nio.file.Paths;
 import java.util.function.UnaryOperator;
 import java.util.logging.Logger;
 
+import static java.lang.Double.*;
+
 public class MainController {
     @FXML
     public Button romLoaderButton;
@@ -32,7 +34,7 @@ public class MainController {
     public Button configureControlsButton;
 
     private Memory memory;
-    private Emulator emulator;
+    private Main main;
     /* The speed of the emulation */
     private double speed = 1;
 
@@ -57,7 +59,7 @@ public class MainController {
 
         if(romFile != null) {
             /* Stop last threadRunner */
-            emulator.blackBox.getCentralProcessingUnit().stopCPU();
+            main.emulator.getCentralProcessingUnit().stopCPU();
             try {
                 Thread.sleep(150);
             } catch (InterruptedException e) {
@@ -65,11 +67,11 @@ public class MainController {
                 Thread.currentThread().interrupt();
             }
             /* Clear memory and load in new ROM */
-            emulator.blackBox.getCentralProcessingUnit().clearMemory();
-            emulator.blackBox.getCentralProcessingUnit().reset();
+            main.emulator.getCentralProcessingUnit().clearMemory();
+            main.emulator.getCentralProcessingUnit().reset();
             romLoader.loadRom(romFile, memory);
             /* Start CPU */
-            emulator.blackBox.getCentralProcessingUnit().startCPU();
+            main.emulator.getCentralProcessingUnit().startCPU();
             threadRunner.run();
         }
     }
@@ -86,15 +88,15 @@ public class MainController {
         colorPickerBackground.getParent().requestFocus();
     }
 
-    public void setup(Runnable threadRunner, Emulator emulator, ResizableCanvas resizableCanvas){
+    public void setup(Runnable threadRunner, Main main, ResizableCanvas resizableCanvas){
         setupFileChoosers();
         saveStateHandler = new SaveStateHandler();
 
         romLoader = new RomLoader();
 
         this.threadRunner = threadRunner;
-        this.emulator = emulator;
-        this.memory = emulator.blackBox.getCentralProcessingUnit().getMemory();
+        this.main = main;
+        this.memory = main.emulator.getCentralProcessingUnit().getMemory();
         this.resizableCanvas = resizableCanvas;
 
         colorPickerSprite.setPromptText("Set sprite color");
@@ -133,17 +135,19 @@ public class MainController {
         saveFileChooser.setTitle("Save memory");
         saveFileChooser.setInitialDirectory(currentPath.toFile());
 
-        /* Setup SaveFileChooser */
+        /* Setup LoadFileChooser */
         loadFileChooser = new FileChooser();
         loadFileChooser.setTitle("Load memory");
         saveFileChooser.setInitialDirectory(currentPath.toFile());
     }
 
     public void setSpeed(ActionEvent actionEvent) {
-        this.speed = Double.parseDouble(speedTextField.getText());
-        /* Leave Focus again */
-        speedTextField.getParent().requestFocus();
-        emulator.blackBox.getCentralProcessingUnit().changeTimerSpeed(speed);
+        if(parseDouble(speedTextField.getText()) > 0) {
+            this.speed = parseDouble(speedTextField.getText());
+            /* Leave Focus again */
+            speedTextField.getParent().requestFocus();
+            main.emulator.getCentralProcessingUnit().changeTimerSpeed(speed);
+        }
     }
 
     public double getSpeed(){
@@ -151,12 +155,12 @@ public class MainController {
     }
 
     public void saveState(ActionEvent actionEvent) throws IOException {
-        emulator.blackBox.getCentralProcessingUnit().setPause(true);
+        main.emulator.getCentralProcessingUnit().setPause(true);
 
         File saveFile = saveFileChooser.showSaveDialog(ownerWindow);
-        if(saveFile != null) saveStateHandler.writeState(saveFile, emulator.createSaveState());
+        if(saveFile != null) saveStateHandler.writeState(saveFile, main.createSaveState());
 
-        emulator.blackBox.getCentralProcessingUnit().setPause(false);
+        main.emulator.getCentralProcessingUnit().setPause(false);
     }
 
     public void loadState(ActionEvent actionEvent) {
@@ -171,7 +175,9 @@ public class MainController {
             }
         }
 
-        emulator.setState(saveState);
+        /*TODO: WHAT IF NO FILE SELECTED!!! */
+
+        main.setState(saveState);
     }
 
     public void configureControls(ActionEvent actionEvent) {
