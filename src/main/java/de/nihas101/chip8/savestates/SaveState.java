@@ -65,7 +65,6 @@ public class SaveState {
             synthesizer = SynthesizerFactory.createSynthesizer();
         } catch (MidiUnavailableException e) {
             e.printStackTrace();
-            System.exit(1);
         }
 
         CentralProcessingUnit cpu = new CentralProcessingUnit(
