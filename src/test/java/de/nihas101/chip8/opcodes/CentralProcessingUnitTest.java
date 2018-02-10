@@ -11,6 +11,7 @@ import org.junit.Test;
 
 import javax.sound.midi.MidiUnavailableException;
 import java.util.Random;
+import java.util.Stack;
 import java.util.Timer;
 
 import static de.nihas101.chip8.hardware.memory.ScreenMemory.*;
@@ -38,7 +39,7 @@ public class CentralProcessingUnitTest {
                 new Registers(),
                 new AddressRegister(),
                 new ProgramCounter(new UnsignedShort((short) 0)),
-                new Chip8Stack(new java.util.Stack()),
+                new Chip8Stack(new Stack<>()),
                 new Timer("Timer"),
                 new DelayTimer(){
                     @Override
