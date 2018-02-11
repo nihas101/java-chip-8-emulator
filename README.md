@@ -1,4 +1,4 @@
-# Chip-8 Emulator [![Build Status](https://travis-ci.org/nihas101/java-chip-8-emulator.svg?branch=master)](https://travis-ci.org/nihas101/java-chip-8-emulator)
+# Chip-8 Emulator [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![Build Status](https://travis-ci.org/nihas101/java-chip-8-emulator.svg?branch=master)](https://travis-ci.org/nihas101/java-chip-8-emulator) [![Maintainability](https://api.codeclimate.com/v1/badges/aa53a727391e465e281a/maintainability)](https://codeclimate.com/github/nihas101/java-chip-8-emulator/maintainability) [![Test Coverage](https://api.codeclimate.com/v1/badges/aa53a727391e465e281a/test_coverage)](https://codeclimate.com/github/nihas101/java-chip-8-emulator/test_coverage)
 
 This is an emulator for the interpreted programming language Chip-8 written in Java.
 
@@ -6,6 +6,14 @@ This is an emulator for the interpreted programming language Chip-8 written in J
 
 ## Requirements
 **Java 1.8** is required to run this program.
+
+## Features
+
+- Load and play ROMs
+- Reconfigure the controls
+- Change the background and sprite color
+- Adjust the speed of emulation
+- Save and load states
 
 ## Build Standalone Distribution
 
@@ -32,7 +40,7 @@ in the command-line interface.
 ## Manual
 
 ### Input
-The Emulator expects a **US keyboard layout** and has the following key assignments:
+The Emulator expects a **US keyboard layout** and has the following standard key assignments:
 
 | Chip-8 key    | Emulator key   |
 | ------------- | -------------  |
@@ -52,6 +60,10 @@ The Emulator expects a **US keyboard layout** and has the following key assignme
 | D             | F              |
 | E             | V              |
 | F             | ,              |
+
+#### Reconfiguring keys
+
+_TODO_
 
 ### Debug
 This Emulator features a simple debug-mode and can be controlled with the following keys:
