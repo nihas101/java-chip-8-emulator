@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<HBox prefHeight="240.0" prefWidth="180.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="de.nihas101.chip8.config.ConfigureController">
+   <padding>
+      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+   </padding>
+   <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="90.0" GridPane.columnIndex="1">
+      <HBox.margin>
+         <Insets/>
+      </HBox.margin>
+      <padding>
+         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+      </padding>
+      <HBox prefHeight="27.0" prefWidth="200.0">
+          <TextFlow prefHeight="40.0" prefWidth="70.0" textAlignment="CENTER">
+              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Key 0: "/>
+              <TextField fx:id="key0TextField" prefWidth="30.0"/>
+          </TextFlow>
+      </HBox>
+       <HBox prefHeight="27.0" prefWidth="200.0">
+           <TextFlow prefHeight="40.0" prefWidth="70.0" textAlignment="CENTER">
+               <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Key 1: "/>
+               <TextField fx:id="key1TextField" prefWidth="30.0"/>
+           </TextFlow>
+       </HBox>
+       <HBox prefHeight="27.0" prefWidth="200.0">
+           <TextFlow prefHeight="40.0" prefWidth="70.0" textAlignment="CENTER">
+               <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Key 2: "/>
+               <TextField fx:id="key2TextField" prefWidth="30.0"/>
+           </TextFlow>
+       </HBox>
+       <HBox prefHeight="27.0" prefWidth="200.0">
+           <TextFlow prefHeight="40.0" prefWidth="70.0" textAlignment="CENTER">
+               <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Key 3: "/>
+               <TextField fx:id="key3TextField" prefWidth="30.0"/>
+           </TextFlow>
+       </HBox>
+       <HBox prefHeight="27.0" prefWidth="200.0">
+           <TextFlow prefHeight="40.0" prefWidth="70.0" textAlignment="CENTER">
+               <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Key 4: "/>
+               <TextField fx:id="key4TextField" prefWidth="30.0"/>
+           </TextFlow>
+       </HBox>
+       <HBox prefHeight="27.0" prefWidth="200.0">
+           <TextFlow prefHeight="40.0" prefWidth="70.0" textAlignment="CENTER">
+               <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Key 5: "/>
+               <TextField fx:id="key5TextField" prefWidth="30.0"/>
+           </TextFlow>
+       </HBox>
+       <HBox prefHeight="27.0" prefWidth="200.0">
+           <TextFlow prefHeight="40.0" prefWidth="70.0" textAlignment="CENTER">
+               <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Key 6: "/>
+               <TextField fx:id="key6TextField" prefWidth="30.0"/>
+           </TextFlow>
+       </HBox>
+       <HBox prefHeight="27.0" prefWidth="200.0">
+           <TextFlow prefHeight="40.0" prefWidth="70.0" textAlignment="CENTER">
+               <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Key 7: "/>
+               <TextField fx:id="key7TextField" prefWidth="30.0"/>
+           </TextFlow>
+       </HBox>
+       <HBox prefHeight="27.0" prefWidth="200.0">
+           <TextFlow prefHeight="40.0" prefWidth="70.0" textAlignment="CENTER">
+               <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Key 8: "/>
+               <TextField fx:id="key8TextField" prefWidth="30.0"/>
+           </TextFlow>
+       </HBox>
+   </VBox>
+    <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="90.0">
+        <HBox.margin>
+            <Insets/>
+        </HBox.margin>
+        <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+        </padding>
+        <HBox prefHeight="27.0" prefWidth="200.0">
+            <TextFlow prefHeight="40.0" prefWidth="70.0" textAlignment="CENTER">
+                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Key 9: "/>
+                <TextField fx:id="key9TextField" prefWidth="30.0"/>
+            </TextFlow>
+        </HBox>
+        <HBox prefHeight="27.0" prefWidth="200.0">
+            <TextFlow prefHeight="40.0" prefWidth="70.0" textAlignment="CENTER">
+                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Key A: "/>
+                <TextField fx:id="keyATextField" prefWidth="30.0"/>
+            </TextFlow>
+        </HBox>
+        <HBox prefHeight="27.0" prefWidth="200.0">
+            <TextFlow prefHeight="40.0" prefWidth="70.0" textAlignment="CENTER">
+                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Key B: "/>
+                <TextField fx:id="keyBTextField" prefWidth="30.0"/>
+            </TextFlow>
+        </HBox>
+        <HBox prefHeight="27.0" prefWidth="200.0">
+            <TextFlow prefHeight="40.0" prefWidth="70.0" textAlignment="CENTER">
+                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Key C: "/>
+                <TextField fx:id="keyCTextField" prefWidth="30.0"/>
+            </TextFlow>
+        </HBox>
+        <HBox prefHeight="27.0" prefWidth="200.0">
+            <TextFlow prefHeight="40.0" prefWidth="70.0" textAlignment="CENTER">
+                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Key D: "/>
+                <TextField fx:id="keyDTextField" prefWidth="30.0"/>
+            </TextFlow>
+        </HBox>
+        <HBox prefHeight="27.0" prefWidth="200.0">
+            <TextFlow prefHeight="40.0" prefWidth="70.0" textAlignment="CENTER">
+                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Key E: "/>
+                <TextField fx:id="keyETextField" prefWidth="30.0"/>
+            </TextFlow>
+        </HBox>
+        <HBox prefHeight="27.0" prefWidth="200.0">
+            <TextFlow prefHeight="40.0" prefWidth="70.0" textAlignment="CENTER">
+                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Key F: "/>
+                <TextField fx:id="keyFTextField" prefWidth="30.0"/>
+            </TextFlow>
+        </HBox>
+        <Button fx:id="resetButton" mnemonicParsing="false" onAction="#resetKeyConfiguration" text="Reset"
+                textAlignment="CENTER">
+           <VBox.margin>
+               <Insets left="15.0" top="10.0"/>
+           </VBox.margin>
+        </Button>
+    </VBox>
+</HBox>

@@ -1,5 +1,6 @@
 package de.nihas101.chip8;
 
+import de.nihas101.chip8.config.ConfigureWindow;
 import de.nihas101.chip8.hardware.memory.Memory;
 import de.nihas101.chip8.savestates.FailedReadingStateException;
 import de.nihas101.chip8.savestates.SaveState;
@@ -191,7 +192,8 @@ public class MainController {
         actionEvent.consume();
     }
 
-    public void configureControls(ActionEvent actionEvent) {
+    public void openControlConfigurationWindow(ActionEvent actionEvent) {
+        ConfigureWindow.configureControls();
         /* TODO */
     }
 }
