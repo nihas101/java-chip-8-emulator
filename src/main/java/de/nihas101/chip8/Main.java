@@ -51,7 +51,6 @@ public class Main extends Application{
      * @param args The arguments for the application
      */
     public static void main(String[] args) {
-        /* Launch Application */
         launch(args);
     }
 
@@ -75,8 +74,7 @@ public class Main extends Application{
         primaryStage.setScene(scene);
 
         /* Setup emulator instance */
-        emulator = Emulator.createBlackBox();
-        //this.cpu = setupHardware();
+        emulator = Emulator.createEmulator();
         setupCanvas();
         setupEmulation();
 
@@ -191,29 +189,19 @@ public class Main extends Application{
     }
 
     private EventHandler<KeyEvent> createKeyPressedEventHandler(){
+        emulator.setStandardKeyConfiguration();
+
         return (event) -> {
-            switch(event.getCode()){
-                case N: emulator.getCentralProcessingUnit().setKeyCode(KEY_0); break;
-                case Q: emulator.getCentralProcessingUnit().setKeyCode(KEY_1); break;
-                case W: emulator.getCentralProcessingUnit().setKeyCode(KEY_2); break;
-                case E: emulator.getCentralProcessingUnit().setKeyCode(KEY_3); break;
-                case A: emulator.getCentralProcessingUnit().setKeyCode(KEY_4); break;
-                case S: emulator.getCentralProcessingUnit().setKeyCode(KEY_5); break;
-                case D: emulator.getCentralProcessingUnit().setKeyCode(KEY_6); break;
-                case Z: emulator.getCentralProcessingUnit().setKeyCode(KEY_7); break;
-                case X: emulator.getCentralProcessingUnit().setKeyCode(KEY_8); break;
-                case C: emulator.getCentralProcessingUnit().setKeyCode(KEY_9); break;
-                case B: emulator.getCentralProcessingUnit().setKeyCode(KEY_A); break;
-                case M: emulator.getCentralProcessingUnit().setKeyCode(KEY_B); break;
-                case R: emulator.getCentralProcessingUnit().setKeyCode(KEY_C); break;
-                case F: emulator.getCentralProcessingUnit().setKeyCode(KEY_D); break;
-                case V: emulator.getCentralProcessingUnit().setKeyCode(KEY_E); break;
-                case COMMA: emulator.getCentralProcessingUnit().setKeyCode(KEY_F); break;
-                case F3: nextStep = true; break;
-                case F1: handleDebugger(); break;
-                case F2: switchStepByStep(); break;
-                case F4: emulator.getCentralProcessingUnit().reset(); break;
-                default: /* NOP */
+            if (emulator.getKeyConfiguration().contains(event.getCode())) {
+                emulator.getKeyConfiguration().getOrNOP(event.getCode()).trigger();
+            } else {
+                switch (event.getCode()) {
+                    case F3: nextStep = true; break;
+                    case F1: handleDebugger(); break;
+                    case F2: switchStepByStep(); break;
+                    case F4: emulator.getCentralProcessingUnit().reset(); break;
+                    default: /* NOP */
+                }
             }
         };
     }

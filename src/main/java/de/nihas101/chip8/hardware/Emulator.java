@@ -1,5 +1,6 @@
 package de.nihas101.chip8.hardware;
 
+import de.nihas101.chip8.utils.KeyConfiguration;
 import de.nihas101.chip8.utils.SynthesizerFactory;
 import de.nihas101.chip8.debug.Debuggable;
 import de.nihas101.chip8.hardware.memory.*;
@@ -17,6 +18,7 @@ import static de.nihas101.chip8.utils.Constants.PROGRAM_COUNTER_START;
 
 public class Emulator implements Debuggable {
     private CentralProcessingUnit centralProcessingUnit;
+    private KeyConfiguration keyConfiguration;
 
     private Logger logger = Logger.getLogger(Emulator.class.getName());
 
@@ -24,8 +26,20 @@ public class Emulator implements Debuggable {
         this.centralProcessingUnit = centralProcessingUnit;
     }
 
-    public static Emulator createBlackBox(){
+    public static Emulator createEmulator(){
         return new Emulator(setupCentralProcessingUnit());
+    }
+
+    public void setStandardKeyConfiguration(){
+        keyConfiguration = KeyConfiguration.createKeyConfiguration(this);
+    }
+
+    public void setStandardKeyConfiguration(KeyConfiguration keyConfiguration) {
+        this.keyConfiguration = keyConfiguration;
+    }
+
+    public KeyConfiguration getKeyConfiguration() {
+        return keyConfiguration;
     }
 
     private static CentralProcessingUnit setupCentralProcessingUnit() {
@@ -46,7 +60,6 @@ public class Emulator implements Debuggable {
             synthesizer = SynthesizerFactory.createSynthesizer();
         } catch (MidiUnavailableException e) {
             e.printStackTrace();
-            System.exit(1);
         }
 
         return new CentralProcessingUnit(
