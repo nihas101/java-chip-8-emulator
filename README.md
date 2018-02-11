@@ -7,6 +7,13 @@ This is an emulator for the interpreted programming language Chip-8 written in J
 ## Requirements
 **Java 1.8** is required to run this program.
 
+## Features
+
+- Load and play ROMs
+- Save and load states
+- Reconfigure the controls
+- Change the background and sprite color
+
 ## Build Standalone Distribution
 
 To create a standalone distribution as a zip or tar file, run:
@@ -32,7 +39,7 @@ in the command-line interface.
 ## Manual
 
 ### Input
-The Emulator expects a **US keyboard layout** and has the following key assignments:
+The Emulator expects a **US keyboard layout** and has the following standard key assignments:
 
 | Chip-8 key    | Emulator key   |
 | ------------- | -------------  |
@@ -52,6 +59,10 @@ The Emulator expects a **US keyboard layout** and has the following key assignme
 | D             | F              |
 | E             | V              |
 | F             | ,              |
+
+#### Reconfiguring keys
+
+_TODO_
 
 ### Debug
 This Emulator features a simple debug-mode and can be controlled with the following keys:
