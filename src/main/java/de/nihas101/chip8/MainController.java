@@ -8,17 +8,21 @@ import de.nihas101.chip8.utils.ResizableCanvas;
 import de.nihas101.chip8.utils.RomLoader;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.ColorPicker;
+import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
 import javafx.stage.FileChooser;
 import javafx.stage.Window;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.function.UnaryOperator;
 import java.util.logging.Logger;
 
-import static java.lang.Double.*;
+import static java.lang.Double.parseDouble;
 
 public class MainController {
     @FXML
@@ -74,18 +78,24 @@ public class MainController {
             main.emulator.getCentralProcessingUnit().startCPU();
             threadRunner.run();
         }
+
+        actionEvent.consume();
     }
 
     public void setColorSprite(ActionEvent actionEvent) {
         resizableCanvas.setPaintOn(colorPickerSprite.getValue());
         /* Leave Focus again */
         colorPickerSprite.getParent().requestFocus();
+
+        actionEvent.consume();
     }
 
     public void setColorBackground(ActionEvent actionEvent) {
         resizableCanvas.setPaintOff(colorPickerBackground.getValue());
         /* Leave Focus again */
         colorPickerBackground.getParent().requestFocus();
+
+        actionEvent.consume();
     }
 
     public void setup(Runnable threadRunner, Main main, ResizableCanvas resizableCanvas){
@@ -148,6 +158,8 @@ public class MainController {
             speedTextField.getParent().requestFocus();
             main.emulator.getCentralProcessingUnit().changeTimerSpeed(speed);
         }
+
+        actionEvent.consume();
     }
 
     public double getSpeed(){
@@ -161,6 +173,7 @@ public class MainController {
         if(saveFile != null) saveStateHandler.writeState(saveFile, main.createSaveState());
 
         main.emulator.getCentralProcessingUnit().setPause(false);
+        actionEvent.consume();
     }
 
     public void loadState(ActionEvent actionEvent) {
@@ -168,16 +181,14 @@ public class MainController {
         File loadFile = loadFileChooser.showOpenDialog(ownerWindow);
 
         if(loadFile != null) {
-            try {
-                saveState = saveStateHandler.readState(loadFile);
-            } catch (FailedReadingStateException e) {
-                logger.severe(e.getMessage());
-            }
+            try { saveState = saveStateHandler.readState(loadFile); }
+            catch (FailedReadingStateException e) { logger.severe(e.getMessage()); }
         }
 
         /*TODO: WHAT IF NO FILE SELECTED!!! */
 
         main.setState(saveState);
+        actionEvent.consume();
     }
 
     public void configureControls(ActionEvent actionEvent) {
