@@ -10,9 +10,10 @@ This is an emulator for the interpreted programming language Chip-8 written in J
 ## Features
 
 - Load and play ROMs
-- Save and load states
 - Reconfigure the controls
 - Change the background and sprite color
+- Adjust the speed of emulation
+- Save and load states
 
 ## Build Standalone Distribution
 
