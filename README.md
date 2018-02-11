@@ -1,4 +1,4 @@
-# Chip-8 Emulator [![Build Status](https://travis-ci.org/nihas101/java-chip-8-emulator.svg?branch=master)](https://travis-ci.org/nihas101/java-chip-8-emulator) [![Code Climate](https://codeclimate.com/github/nihas101/java-chip-8-emulator/badges/gpa.svg)](https://codeclimate.com/github/nihas101/java-chip-8-emulator)
+# Chip-8 Emulator [![Build Status](https://travis-ci.org/nihas101/java-chip-8-emulator.svg?branch=master)](https://travis-ci.org/nihas101/java-chip-8-emulator) [![Maintainability](https://api.codeclimate.com/v1/badges/aa53a727391e465e281a/maintainability)](https://codeclimate.com/github/nihas101/java-chip-8-emulator/maintainability) [![Test Coverage](https://api.codeclimate.com/v1/badges/aa53a727391e465e281a/test_coverage)](https://codeclimate.com/github/nihas101/java-chip-8-emulator/test_coverage)
 
 This is an emulator for the interpreted programming language Chip-8 written in Java.
 
