@@ -61,6 +61,10 @@ public class ResizableCanvas extends Canvas {
     }
 
     public Timeline setupTimeLine(){
+        /*
+         * TODO: See if this really needs to be called every frame, as this seems to slow down
+         * TODO: Slower machines pretty hard
+         */
         /* Setup keyframes to draw the canvas */
         final Duration oneFrameAmt = Duration.ONE;
         final KeyFrame oneFrame = new KeyFrame(oneFrameAmt, event -> draw());
