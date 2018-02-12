@@ -193,18 +193,20 @@ public class Main extends Application{
         emulator.setStandardKeyConfiguration();
 
         return (event) -> {
-            if (emulator.getKeyConfiguration().contains(event.getCode())) {
+            if (emulator.getKeyConfiguration().contains(event.getCode()))
                 emulator.getKeyConfiguration().getOrNOP(event.getCode()).trigger();
-            } else {
-                switch (event.getCode()) {
-                    case F3: nextStep = true; break;
-                    case F1: handleDebugger(); break;
-                    case F2: switchStepByStep(); break;
-                    case F4: emulator.getCentralProcessingUnit().reset(); break;
-                    default: /* NOP */
-                }
-            }
+            else handleDebuggerKeyEvent(event);
         };
+    }
+
+    private void handleDebuggerKeyEvent(KeyEvent event){
+        switch (event.getCode()) {
+            case F3: nextStep = true; break;
+            case F1: handleDebugger(); break;
+            case F2: switchStepByStep(); break;
+            case F4: emulator.getCentralProcessingUnit().reset(); break;
+            default: /* NOP */
+        }
     }
 
     private void switchStepByStep(){
