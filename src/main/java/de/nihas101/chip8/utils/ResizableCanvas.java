@@ -39,25 +39,23 @@ public class ResizableCanvas extends Canvas {
         double width = this.getWidth()/SCREEN_WIDTH;
         double height = this.getHeight()/SCREEN_HEIGHT;
         /* Draw Pixels */
-        for(int x=0 ; x < SCREEN_WIDTH ; x++) {
-            for (int y = 0; y < SCREEN_HEIGHT; y++) {
-                if (!memory[x][y]) drawPixel(x * width, y * height, width, height, paintOff);
-                else               drawPixel(x * width, y * height, width, height, paintOn );
-            }
+        for(int x=0 ; x < SCREEN_WIDTH ; x++) drawColumn(x, width, height);
+    }
+
+    private void drawColumn(int row, double width, double height){
+        for (int y = 0; y < SCREEN_HEIGHT; y++) {
+            if (!memory[row][y]) drawPixel(new Pixel(row * width, y * height, width, height, paintOff));
+            else               drawPixel(new Pixel(row * width, y * height, width, height, paintOn));
         }
     }
 
     /**
      * Draws a pixel
-     * @param x The horizontal position of the pixel
-     * @param y The lateral position of the pixel
-     * @param width The width of the pixel
-     * @param height The height of the pixel
-     * @param paint The paint used to color in the pixel
+     * @param pixel The pixel to draw
      */
-    private void drawPixel(double x, double y, double width, double height, Paint paint){
-        graphicsContext.setFill(paint);
-        graphicsContext.fillRect(x, y, width + 1, height + 1);
+    private void drawPixel(Pixel pixel){
+        graphicsContext.setFill(pixel.paint);
+        graphicsContext.fillRect(pixel.x, pixel.y, pixel.width + 1, pixel.height + 1);
     }
 
     public Timeline setupTimeLine(){

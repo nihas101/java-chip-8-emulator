@@ -89,16 +89,18 @@ public class ScreenMemory implements Debuggable {
     @Override
     public String toString(){
         StringBuilder stringBuilder = new StringBuilder();
-        for (int i=0 ; i < SCREEN_HEIGHT ; i++) {
-            for (int j = 0; j < SCREEN_WIDTH; j++) {
-                if(memory[j][i])
-                    stringBuilder.append(" 1 ");
-                else
-                    stringBuilder.append(" 0 ");
-            }
-            stringBuilder.append("\n");
-        }
+        for (int i=0 ; i < SCREEN_HEIGHT ; i++) columnToString(i, stringBuilder);
         return stringBuilder.toString();
+    }
+
+    private void columnToString(int row, StringBuilder stringBuilder){
+        for (int j = 0; j < SCREEN_WIDTH; j++) stringBuilder.append(" ").append(cellToString(j, row)).append(" ");
+        stringBuilder.append("\n");
+    }
+
+    private String cellToString(int column, int row){
+        if(memory[column][row]) return "1";
+        else return "0";
     }
 
     public String getValues() {
