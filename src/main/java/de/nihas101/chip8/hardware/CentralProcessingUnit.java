@@ -8,6 +8,7 @@ import de.nihas101.chip8.opcodes.OPCode;
 import de.nihas101.chip8.opcodes.UnknownOPCodeException;
 import de.nihas101.chip8.unsignedDataTypes.UnsignedByte;
 import de.nihas101.chip8.unsignedDataTypes.UnsignedShort;
+import de.nihas101.chip8.utils.RegisterAction;
 
 import javax.sound.midi.Instrument;
 import javax.sound.midi.MidiChannel;
@@ -19,6 +20,7 @@ import java.util.logging.Logger;
 
 import static de.nihas101.chip8.utils.Constants.HERTZ_60;
 import static de.nihas101.chip8.utils.Constants.NO_KEY;
+import static de.nihas101.chip8.utils.OpCodeStringFactory.createRegOpCodeString;
 
 /**
  * A class representing a central processing unit of a Chip-8
@@ -272,11 +274,8 @@ public class CentralProcessingUnit implements Debuggable {
      * @param Vx The index of the registers to be dumped up to
      */
     private void dumpReg(int Vx) {
-        opCodeString += "reg_dump(V" + Integer.toHexString(Vx) + ", &I)";
-        for(int i=0 ; i <= Vx ; i++){
-            int address = this.addressRegister.getAddress().apply((x,y) -> x+y, new UnsignedShort((short) i)).unsignedDataType;
-            this.memory.write(address, this.registers.peek(i));
-        }
+        opCodeString += createRegOpCodeString("dump", Vx);
+        interactWithReg(Vx, (memoryAddress, registerAddress) -> this.memory.write(memoryAddress, this.registers.peek(registerAddress)));
     }
 
     /**
@@ -284,10 +283,14 @@ public class CentralProcessingUnit implements Debuggable {
      * @param Vx The index of the registers to be loaded up to
      */
     private void loadReg(int Vx){
-        opCodeString += "reg_load(V" + Integer.toHexString(Vx) + ",&I)";
+        opCodeString += createRegOpCodeString("load", Vx);
+        interactWithReg(Vx, ((memoryAddress, registerAddress) -> this.registers.poke(registerAddress,this.memory.read(memoryAddress))));
+    }
+
+    private void interactWithReg(int Vx, RegisterAction registerAction){
         for(int i=0 ; i <= Vx ; i++){
             int address = this.addressRegister.getAddress().apply((x,y) -> x+y, new UnsignedShort((short) i)).unsignedDataType;
-            this.registers.poke(i,this.memory.read(address));
+            registerAction.execute(address, i);
         }
     }
 
@@ -498,6 +501,7 @@ public class CentralProcessingUnit implements Debuggable {
      * @param height The height of the pixel
      */
     private void drawSprite(int Vx, int Vy, int height) {
+        int mask = 0x80;
         opCodeString += "draw(V" + Integer.toHexString(Vx) + ",V" + Integer.toHexString(Vy) + "," + height + ")";
 
         /* Reset flag-register */
@@ -511,8 +515,6 @@ public class CentralProcessingUnit implements Debuggable {
         for( ; yLine.unsignedDataType < height ; yLine = yLine.apply(v -> v+1)){
             /* Get memory at addressRegister + yLine */
             UnsignedByte data = this.memory.read(this.addressRegister.getAddress().apply((x1,y1) -> x1+y1, yLine).unsignedDataType);
-            /* Draw sprite */
-            int mask = 0x80;
             drawLineOfSprite(coordX, coordY, data, mask, yLine);
         }
     }
