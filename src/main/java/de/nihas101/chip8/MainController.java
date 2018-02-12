@@ -13,6 +13,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
+import javafx.scene.control.TextFormatter.Change;
 import javafx.stage.FileChooser;
 import javafx.stage.Window;
 
@@ -43,7 +44,7 @@ public class MainController {
     /* The speed of the emulation */
     private double speed = 1;
 
-    private UnaryOperator<TextFormatter.Change> doubleFilter;
+    private UnaryOperator<Change> doubleFilter;
 
     private FileChooser romFileChooser;
     private FileChooser saveFileChooser;
@@ -113,10 +114,15 @@ public class MainController {
         colorPickerSprite.setPromptText("Set sprite color");
         colorPickerBackground.setPromptText("Set background color");
 
-        /* Setup textfield | source: gist.github.com/karimsqualli96/f8d4c2995da8e11496ed */
-        doubleFilter = (TextFormatter.Change change) -> {
+        doubleFilter = setupTextFormatter();
+        speedTextField.setTextFormatter(new TextFormatter<>(doubleFilter));
+    }
+
+    private UnaryOperator<Change> setupTextFormatter(){
+        /* Source: gist.github.com/karimsqualli96/f8d4c2995da8e11496ed */
+        return (Change change) -> {
             if (change.isReplaced() && change.getText().matches("[^0-9]"))
-                    change.setText(change.getControlText().substring(change.getRangeStart(), change.getRangeEnd()));
+                change.setText(change.getControlText().substring(change.getRangeStart(), change.getRangeEnd()));
 
             if (change.isAdded()) {
                 if (change.getControlText().contains(".")) {
@@ -126,7 +132,6 @@ public class MainController {
 
             return change;
         };
-        speedTextField.setTextFormatter(new TextFormatter<>(doubleFilter));
     }
 
     public void startEmulation(){
@@ -184,16 +189,15 @@ public class MainController {
         if(loadFile != null) {
             try { saveState = saveStateHandler.readState(loadFile); }
             catch (FailedReadingStateException e) { logger.severe(e.getMessage()); }
+            main.setState(saveState);
         }
 
-        /*TODO: WHAT IF NO FILE SELECTED!!! */
-
-        main.setState(saveState);
         actionEvent.consume();
     }
 
     public void openControlConfigurationWindow(ActionEvent actionEvent) {
         ConfigureWindow.configureControls();
         /* TODO */
+        actionEvent.consume();
     }
 }
