@@ -513,17 +513,21 @@ public class CentralProcessingUnit implements Debuggable {
             UnsignedByte data = this.memory.read(this.addressRegister.getAddress().apply((x1,y1) -> x1+y1, yLine).unsignedDataType);
             /* Draw sprite */
             int mask = 0x80;
-            for(int xPixel = 0 ; xPixel < 8 ; xPixel++){
-                if(0 != data.apply((x,y) -> x&y, new UnsignedByte((byte) mask)).unsignedDataType){
-                    int x = coordX + xPixel;
-                    int y = coordY + yLine.unsignedDataType;
-                    /* Check if a collision occurred */
-                    if(screenMemory.read(x,y)) this.registers.poke(0xF, new UnsignedByte((byte) 1));
-                    /* Set the pixel */
-                    screenMemory.write(x, y, !screenMemory.read(x, y));
-                }
-                mask = mask >> 1;
+            drawLineOfSprite(coordX, coordY, data, mask, yLine);
+        }
+    }
+
+    private void drawLineOfSprite(int coordX, int coordY, UnsignedByte data, int mask, UnsignedShort yLine){
+        for(int xPixel = 0 ; xPixel < 8 ; xPixel++){
+            if(0 != data.apply((x,y) -> x&y, new UnsignedByte((byte) mask)).unsignedDataType){
+                int x = coordX + xPixel;
+                int y = coordY + yLine.unsignedDataType;
+                /* Check if a collision occurred */
+                if(screenMemory.read(x,y)) this.registers.poke(0xF, new UnsignedByte((byte) 1));
+                /* Set the pixel */
+                screenMemory.write(x, y, !screenMemory.read(x, y));
             }
+            mask = mask >> 1;
         }
     }
 
