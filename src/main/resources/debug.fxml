@@ -2,7 +2,6 @@
 
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.TextFlow?>
-
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="196.0" prefWidth="367.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.nihas101.chip8.debug.TextFlowController">
    <children>
       <TextFlow fx:id="debugTextFlow" prefHeight="196.0" prefWidth="367.0" />

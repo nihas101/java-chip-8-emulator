@@ -1,12 +1,13 @@
 package de.nihas101.chip8.hardware.memory;
 
-import de.nihas101.chip8.unsignedDataTypes.UnsignedByte;
 import de.nihas101.chip8.debug.Debuggable;
+import de.nihas101.chip8.unsignedDataTypes.UnsignedByte;
 
 import java.util.Arrays;
 
 import static de.nihas101.chip8.utils.Constants.REGISTER_LENGTH;
-import static java.lang.Integer.*;
+import static java.lang.Integer.parseInt;
+import static java.lang.Integer.toHexString;
 
 /**
  * A class representing the registers of a Chip-8

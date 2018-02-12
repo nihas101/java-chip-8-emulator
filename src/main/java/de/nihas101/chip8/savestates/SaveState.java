@@ -1,11 +1,11 @@
 package de.nihas101.chip8.savestates;
 
-import de.nihas101.chip8.utils.SynthesizerFactory;
 import de.nihas101.chip8.hardware.CentralProcessingUnit;
 import de.nihas101.chip8.hardware.memory.*;
 import de.nihas101.chip8.hardware.timers.DelayTimer;
 import de.nihas101.chip8.hardware.timers.SoundTimer;
 import de.nihas101.chip8.unsignedDataTypes.UnsignedShort;
+import de.nihas101.chip8.utils.SynthesizerFactory;
 
 import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Synthesizer;

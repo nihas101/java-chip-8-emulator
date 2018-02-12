@@ -3,7 +3,10 @@ package de.nihas101.chip8.utils;
 import de.nihas101.chip8.hardware.memory.Memory;
 import de.nihas101.chip8.unsignedDataTypes.UnsignedByte;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.logging.Logger;
 
 import static de.nihas101.chip8.utils.Constants.MEMORY_LENGTH;
