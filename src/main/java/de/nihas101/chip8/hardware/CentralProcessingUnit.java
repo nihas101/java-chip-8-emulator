@@ -1,5 +1,6 @@
 package de.nihas101.chip8.hardware;
 
+import de.nihas101.chip8.debug.Debuggable;
 import de.nihas101.chip8.hardware.memory.*;
 import de.nihas101.chip8.hardware.timers.DelayTimer;
 import de.nihas101.chip8.hardware.timers.SoundTimer;
@@ -7,7 +8,6 @@ import de.nihas101.chip8.opcodes.OPCode;
 import de.nihas101.chip8.opcodes.UnknownOPCodeException;
 import de.nihas101.chip8.unsignedDataTypes.UnsignedByte;
 import de.nihas101.chip8.unsignedDataTypes.UnsignedShort;
-import de.nihas101.chip8.debug.Debuggable;
 
 import javax.sound.midi.Instrument;
 import javax.sound.midi.MidiChannel;
@@ -627,7 +627,7 @@ public class CentralProcessingUnit implements Debuggable {
     }
 
     /**
-     * 	Adds Vy to Vx and saves the result in Vx, VF is set to 1 if a carry occurs
+     * Adds Vy to Vx and saves the result in Vx, VF is set to 1 if a carry occurs
      * @param Vx The register which will hold the result of this operation
      * @param Vy The register which value will replace the one in Vx
      */
@@ -643,7 +643,7 @@ public class CentralProcessingUnit implements Debuggable {
     }
 
     /**
-     * 	Subtracts Vy from Vx and saves the result in Vx, VF is set to 0 if a borrow occurs
+     * Subtracts Vy from Vx and saves the result in Vx, VF is set to 0 if a borrow occurs
      * @param Vx The first parameter/register
      * @param Vy The second parameter/register
      * @param Vz The register which will hold the result of the operation
