@@ -3,8 +3,6 @@ package de.nihas101.chip8.hardware.memory;
 import de.nihas101.chip8.debug.Debuggable;
 import de.nihas101.chip8.unsignedDataTypes.UnsignedShort;
 
-import static java.lang.Integer.*;
-
 /**
  * A class representing an AddressRegister of a Chip-8
  */
