@@ -89,6 +89,8 @@ public class CentralProcessingUnit implements Debuggable {
         cycles = 0;
     }
 
+    /* TODO: remove duplications!!! */
+
     public CentralProcessingUnit(Memory memory, ScreenMemory screenMemory, Registers registers,
                                  AddressRegister addressRegister, ProgramCounter programCounter,
                                  Chip8Stack chip8Stack, Timer timer, DelayTimer delayTimer, SoundTimer soundTimer,
