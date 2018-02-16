@@ -11,6 +11,7 @@ import javafx.util.Duration;
 
 import static de.nihas101.chip8.hardware.memory.ScreenMemory.SCREEN_HEIGHT;
 import static de.nihas101.chip8.hardware.memory.ScreenMemory.SCREEN_WIDTH;
+import static de.nihas101.chip8.utils.Constants.DRAW_INTERVAL_MULTIPLIER;
 
 /**
  * https://stackoverflow.com/questions/24533556/how-to-make-canvas-resizable-in-javafx
@@ -59,13 +60,9 @@ public class ResizableCanvas extends Canvas {
     }
 
     public Timeline setupTimeLine(){
-        /*
-         * TODO: See if this really needs to be called every frame, as this seems to slow down
-         * TODO: Slower machines pretty hard
-         */
         /* Setup keyframes to draw the canvas */
-        final Duration oneFrameAmt = Duration.ONE;
-        final KeyFrame oneFrame = new KeyFrame(oneFrameAmt, event -> draw());
+        final Duration frameDuration = Duration.ONE.multiply(DRAW_INTERVAL_MULTIPLIER);
+        final KeyFrame oneFrame = new KeyFrame(frameDuration, event -> draw());
         Timeline timeline = new Timeline();
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.getKeyFrames().add(oneFrame);

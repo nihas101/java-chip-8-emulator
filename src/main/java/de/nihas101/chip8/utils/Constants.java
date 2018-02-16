@@ -43,4 +43,6 @@ public class Constants {
     public static final char DELAYIMER_CHAR = 'd';
     public static final char SOUNDTIMER_CHAR = 't';
     public static final char RANDOM_CHAR = 'i';
+
+    public static final int DRAW_INTERVAL_MULTIPLIER = 35;
 }
