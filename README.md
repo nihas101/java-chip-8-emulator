@@ -44,24 +44,12 @@ in the command-line interface.
 ### Input
 The Emulator expects a **US keyboard layout** and has the following standard key assignments:
 
-| Chip-8 key    | Emulator key   |
-| ------------- | -------------  |
-| 0             | N              |
-| 1             | Q              |
-| 2             | W              |
-| 3             | E              |
-| 4             | A              |
-| 5             | S              |
-| 6             | D              |
-| 7             | Z              |
-| 8             | X              |
-| 9             | C              |
-| A             | B              |
-| B             | M              |
-| C             | R              |
-| D             | F              |
-| E             | V              |
-| F             | ,              |
+| Chip-8 keys   | Keyboard keys   |
+| ------------- | --------------  |
+| 1 2 3 C       | 1 2 3 4         |
+| 4 5 6 D       | Q W E R         |
+| 7 8 9 E       | A S D F         |
+| A 0 B F       | Z X C V         |
 
 #### Reconfiguring keys
 

@@ -39,22 +39,22 @@ public class ConfigureController {
     private HashMap<KeyCode, EmulatorKey> keyHashMap;
 
     public void resetKeyConfiguration(ActionEvent actionEvent) {
-        key0TextField.setText("N");
-        key1TextField.setText("Q");
-        key2TextField.setText("W");
-        key3TextField.setText("E");
-        key4TextField.setText("A");
-        key5TextField.setText("S");
-        key6TextField.setText("D");
-        key7TextField.setText("Z");
-        key8TextField.setText("X");
-        key9TextField.setText("C");
-        keyATextField.setText("B");
-        keyBTextField.setText("M");
-        keyCTextField.setText("R");
-        keyDTextField.setText("F");
-        keyETextField.setText("V");
-        keyFTextField.setText("COMMA");
+        key0TextField.setText("X");
+        key1TextField.setText("1");
+        key2TextField.setText("2");
+        key3TextField.setText("3");
+        key4TextField.setText("Q");
+        key5TextField.setText("W");
+        key6TextField.setText("E");
+        key7TextField.setText("A");
+        key8TextField.setText("S");
+        key9TextField.setText("D");
+        keyATextField.setText("Z");
+        keyBTextField.setText("C");
+        keyCTextField.setText("4");
+        keyDTextField.setText("R");
+        keyETextField.setText("F");
+        keyFTextField.setText("V");
         actionEvent.consume();
 
         /* TODO: Set text field to only hold one char! */
