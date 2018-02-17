@@ -20,4 +20,9 @@ public class EmulatorKey {
     public void trigger(){
         emulatorKeyEvent.trigger();
     }
+
+    @Override
+    public String toString(){
+        return keyName;
+    }
 }

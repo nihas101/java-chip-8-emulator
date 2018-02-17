@@ -4,7 +4,6 @@ import de.nihas101.chip8.hardware.memory.Memory;
 import de.nihas101.chip8.unsignedDataTypes.UnsignedByte;
 import org.junit.Test;
 
-
 import static de.nihas101.chip8.utils.Constants.MEMORY_LENGTH;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;

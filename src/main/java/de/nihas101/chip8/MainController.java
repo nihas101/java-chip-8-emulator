@@ -60,8 +60,10 @@ public class MainController {
     private Logger logger = Logger.getLogger(MainController.class.getName());
 
     public void loadRom(ActionEvent actionEvent) {
+        main.emulator.getCentralProcessingUnit().setPause(true);
         ownerWindow = romLoaderButton.getScene().getWindow();
         romFile = romFileChooser.showOpenDialog(ownerWindow);
+        main.emulator.getCentralProcessingUnit().setPause(false);
 
         if(romFile != null) {
             /* Stop last threadRunner */
@@ -114,13 +116,13 @@ public class MainController {
         colorPickerSprite.setPromptText("Set sprite color");
         colorPickerBackground.setPromptText("Set background color");
 
-        doubleFilter = setupTextFormatter();
+        doubleFilter = createDoubleFilter();
         speedTextField.setTextFormatter(new TextFormatter<>(doubleFilter));
     }
 
-    private UnaryOperator<Change> setupTextFormatter(){
+    private UnaryOperator<Change> createDoubleFilter(){
         /* Source: gist.github.com/karimsqualli96/f8d4c2995da8e11496ed */
-        return (Change change) -> {
+        return change -> {
             if (change.isReplaced() && change.getText().matches("[^0-9]"))
                 change.setText(change.getControlText().substring(change.getRangeStart(), change.getRangeEnd()));
 
@@ -196,8 +198,10 @@ public class MainController {
     }
 
     public void openControlConfigurationWindow(ActionEvent actionEvent) {
-        ConfigureWindow.configureControls(main.emulator);
-        /* TODO */
+        main.emulator.getCentralProcessingUnit().setPause(true);
+        main.emulator.setKeyConfiguration(ConfigureWindow.configureControls(main.emulator));
+        main.emulator.getCentralProcessingUnit().setPause(false);
+
         actionEvent.consume();
     }
 }

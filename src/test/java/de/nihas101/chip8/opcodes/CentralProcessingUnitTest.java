@@ -14,7 +14,8 @@ import java.util.Random;
 import java.util.Stack;
 import java.util.Timer;
 
-import static de.nihas101.chip8.hardware.memory.ScreenMemory.*;
+import static de.nihas101.chip8.hardware.memory.ScreenMemory.SCREEN_HEIGHT;
+import static de.nihas101.chip8.hardware.memory.ScreenMemory.SCREEN_WIDTH;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 

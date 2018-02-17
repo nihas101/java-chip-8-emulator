@@ -3,9 +3,12 @@ package de.nihas101.chip8.config;
 import de.nihas101.chip8.hardware.Emulator;
 import de.nihas101.chip8.hardware.keys.EmulatorKey;
 import de.nihas101.chip8.utils.KeyConfiguration;
+import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
+import javafx.scene.control.TextFormatter.Change;
 import javafx.scene.input.KeyCode;
 
 import java.util.HashMap;
@@ -35,10 +38,14 @@ public class ConfigureController {
     public TextField key2TextField;
     public TextField key1TextField;
     public TextField key0TextField;
+    public TextField[] textFields;
+
     private Emulator emulator;
     private HashMap<KeyCode, EmulatorKey> keyHashMap;
+    private boolean resetInProgress = false;
 
     public void resetKeyConfiguration(ActionEvent actionEvent) {
+        resetInProgress = true;
         key0TextField.setText("X");
         key1TextField.setText("1");
         key2TextField.setText("2");
@@ -55,10 +62,8 @@ public class ConfigureController {
         keyDTextField.setText("R");
         keyETextField.setText("F");
         keyFTextField.setText("V");
+        resetInProgress = false;
         actionEvent.consume();
-
-        /* TODO: Set text field to only hold one char! */
-        /* TODO: Think about special characters */
     }
 
     public KeyConfiguration getKeyConfiguration() {
@@ -95,10 +100,18 @@ public class ConfigureController {
     }
 
     private void setupTextFields(Set<Map.Entry<KeyCode, EmulatorKey>> entries) {
+        textFields = new TextField[]{
+                key0TextField, key1TextField, key2TextField, key3TextField, key4TextField, key5TextField,
+                key6TextField, key7TextField, key8TextField, key9TextField, keyATextField, keyBTextField,
+                keyCTextField, keyDTextField, keyETextField, keyFTextField
+        };
         entries.forEach((entry) -> setupTextField(entry.getValue(), entry.getKey()));
+        setupTextFieldInput();
     }
 
     private void setupTextField(EmulatorKey emulatorKey, KeyCode key) {
+        if(emulatorKey == null || key == null) return;
+
         switch (emulatorKey.getKeyName()){
             case "0": key0TextField.setText(key.getName()); break;
             case "1": key1TextField.setText(key.getName()); break;
@@ -117,5 +130,46 @@ public class ConfigureController {
             case "E": keyETextField.setText(key.getName()); break;
             case "F": keyFTextField.setText(key.getName()); break;
         }
+    }
+
+    private void setupTextFieldInput() {
+        for (TextField textField : textFields) textField.setTextFormatter(createSingleCharFormatter(textField));
+    }
+
+    private TextFormatter<ListChangeListener.Change> createSingleCharFormatter(TextField keyTextField){
+        return new TextFormatter<>(change -> {
+            if(change.getText().length() > 0) return handleChange(keyTextField, change);
+            else return noChange(change);
+        });
+    }
+
+    private Change handleChange(TextField keyTextField, Change change){
+        String assignment = String.valueOf(change.getText().charAt(0)).toUpperCase();
+        if(alreadyAssigned(assignment)){
+            change.setText("");
+            return change;
+        }
+
+        if (change.getControlNewText().length() > 1 && change.isAdded()) {
+            keyTextField.setText(assignment);
+            change.setText("");
+        } else change.setText(change.getText().toUpperCase());
+
+        return change;
+    }
+
+    private Change noChange(Change change){
+        change.setText("");
+        return change;
+    }
+
+    private boolean alreadyAssigned(String text) {
+        if(text == null || resetInProgress) return false;
+
+        int assignments = 0;
+        for (TextField textField : textFields)
+            if (text.equals(textField.getText())) assignments++;
+
+        return assignments > 0;
     }
 }

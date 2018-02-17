@@ -34,7 +34,7 @@ public class Emulator implements Debuggable {
         keyConfiguration = KeyConfiguration.createKeyConfiguration(this);
     }
 
-    public void setStandardKeyConfiguration(KeyConfiguration keyConfiguration) {
+    public void setKeyConfiguration(KeyConfiguration keyConfiguration) {
         this.keyConfiguration = keyConfiguration;
     }
 
