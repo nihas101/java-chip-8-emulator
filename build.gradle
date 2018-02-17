@@ -35,3 +35,10 @@ test {
         exceptionFormat 'full'
     }
 }
+
+jacocoTestReport {
+    reports {
+        xml.enabled = true
+        html.enabled = true
+    }
+}
