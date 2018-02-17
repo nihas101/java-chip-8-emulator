@@ -7,6 +7,7 @@ import javafx.scene.input.KeyCode;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import static de.nihas101.chip8.hardware.keys.EmulatorKey.createEmulatorKey;
 import static de.nihas101.chip8.utils.Constants.*;
@@ -58,6 +59,10 @@ public class KeyConfiguration {
         emulatorKeyHashMap.put(COMMA, createEmulatorKey("F", () -> centralProcessingUnit.setKeyCode(KEY_F)));
 
         return emulatorKeyHashMap;
+    }
+
+    public Set<Map.Entry<KeyCode, EmulatorKey>> entrySet(){
+        return emulatorKeyHashMap.entrySet();
     }
 
     public boolean contains(KeyCode keyCode){

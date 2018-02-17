@@ -196,7 +196,7 @@ public class MainController {
     }
 
     public void openControlConfigurationWindow(ActionEvent actionEvent) {
-        ConfigureWindow.configureControls();
+        ConfigureWindow.configureControls(main.emulator);
         /* TODO */
         actionEvent.consume();
     }

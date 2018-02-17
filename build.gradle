@@ -3,13 +3,12 @@ apply plugin: 'idea'
 apply plugin: 'maven'
 apply plugin: 'application'
 
-
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 /* Application */
-applicationName = "chip8"
-mainClassName = "de.nihas101.chip8.Main"
+applicationName = 'chip8'
+mainClassName = 'de.nihas101.chip8.Main'
 archivesBaseName = 'Chip8Emulator'
 version = '1.1-SNAPSHOT'
 
@@ -26,12 +25,12 @@ dependencies {
 }
 
 jar {
-    baseName = "Chip8Emulator"
+    baseName = 'Chip8Emulator'
 }
 
 test {
     testLogging {
-        events "passed", "skipped", "failed"
-        exceptionFormat "full"
+        events 'passed', 'skipped', 'failed'
+        exceptionFormat 'full'
     }
 }

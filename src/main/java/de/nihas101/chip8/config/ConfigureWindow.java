@@ -1,5 +1,6 @@
 package de.nihas101.chip8.config;
 
+import de.nihas101.chip8.hardware.Emulator;
 import de.nihas101.chip8.utils.KeyConfiguration;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -8,7 +9,12 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 public class ConfigureWindow extends Application {
-    ConfigureController configureController;
+    private final Emulator emulator;
+    private ConfigureController configureController;
+
+    private ConfigureWindow(Emulator emulator) {
+        this.emulator = emulator;
+    }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -16,6 +22,7 @@ public class ConfigureWindow extends Application {
         FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("configureControls.fxml"));
         Pane root = loader.load();
         configureController = loader.getController();
+        configureController.setup(emulator);
 
         /* Create Scene */
         Scene scene = new Scene(root);
@@ -25,11 +32,11 @@ public class ConfigureWindow extends Application {
         primaryStage.showAndWait();
     }
 
-    public static KeyConfiguration configureControls(){
-        ConfigureWindow configureWindow = new ConfigureWindow();
+    public static KeyConfiguration configureControls(Emulator emulator){
+        ConfigureWindow configureWindow = new ConfigureWindow(emulator);
         try { configureWindow.start(new Stage()); }
         catch (Exception e) { e.printStackTrace(); }
 
-        return configureWindow.configureController.keyConfiguration;
+        return configureWindow.configureController.getKeyConfiguration();
     }
 }

@@ -189,6 +189,7 @@ public class Main extends Application{
     }
 
     private EventHandler<KeyEvent> createKeyPressedEventHandler(){
+        /* TODO: Consider that keyConfig was set */
         emulator.setStandardKeyConfiguration();
 
         return (event) -> {
