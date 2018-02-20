@@ -3,7 +3,7 @@ package de.nihas101.chip8.unsignedDataTypes;
 /**
  * Represents a data type with no sign
  */
-public abstract class UnsignedDataType implements Comparable{
+public abstract class UnsignedDataType implements Comparable {
     public final int unsignedDataType;
 
     protected UnsignedDataType(int unsignedDataType) {
@@ -27,7 +27,7 @@ public abstract class UnsignedDataType implements Comparable{
      * {@inheritDoc}
      */
     @Override
-    public int hashCode(){
+    public int hashCode() {
         return this.unsignedDataType;
     }
 
@@ -36,34 +36,36 @@ public abstract class UnsignedDataType implements Comparable{
      */
     @Override
     public int compareTo(Object o) {
-        return unsignedDataType - ((UnsignedDataType)o).unsignedDataType;
+        return unsignedDataType - ((UnsignedDataType) o).unsignedDataType;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public String toString(){
+    public String toString() {
         return String.valueOf(unsignedDataType);
     }
 
     /**
      * Applies a binary operation on this data type
+     *
      * @param binaryOperation The operation to apply
-     * @param unsignedByte The second operand
+     * @param unsignedByte    The second operand
      * @return The result of the operation
      */
-    public UnsignedByte apply(BinaryOperation binaryOperation, UnsignedByte unsignedByte){
+    public UnsignedByte apply(BinaryOperation binaryOperation, UnsignedByte unsignedByte) {
         return new UnsignedByte((byte) binaryOperation.operation(this.unsignedDataType, unsignedByte.unsignedDataType));
     }
 
     /**
      * Applies a binary operation on this data type
+     *
      * @param binaryOperation The operation to apply
-     * @param unsignedShort The second operand
+     * @param unsignedShort   The second operand
      * @return The result of the operation
      */
-    public UnsignedShort apply(BinaryOperation binaryOperation, UnsignedShort unsignedShort){
+    public UnsignedShort apply(BinaryOperation binaryOperation, UnsignedShort unsignedShort) {
         return new UnsignedShort((short) binaryOperation.operation(this.unsignedDataType, unsignedShort.unsignedDataType));
     }
 }

@@ -12,7 +12,7 @@ public class AddressRegister implements Debuggable {
      */
     private UnsignedShort address;
 
-    public AddressRegister(){
+    public AddressRegister() {
         this.address = new UnsignedShort((short) 0);
     }
 
@@ -22,6 +22,7 @@ public class AddressRegister implements Debuggable {
 
     /**
      * Returns the {@link UnsignedShort} representing the value of this register
+     *
      * @return The {@link UnsignedShort} representing the value of this register
      */
     public UnsignedShort getAddress() {
@@ -30,9 +31,10 @@ public class AddressRegister implements Debuggable {
 
     /**
      * Sets the {@link UnsignedShort} representing the value of this register
+     *
      * @param unsignedShort The value to be set in this register
      */
-    public void setAddress(UnsignedShort unsignedShort){
+    public void setAddress(UnsignedShort unsignedShort) {
         this.address = unsignedShort;
     }
 

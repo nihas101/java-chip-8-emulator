@@ -9,12 +9,12 @@ public class TextFlowController {
     public TextFlow debugTextFlow;
     private Text debugText;
 
-    public void addText(Text debugText){
+    public void addText(Text debugText) {
         this.debugText = debugText;
         debugTextFlow.getChildren().add(debugText);
     }
 
-    public void setDebugText(String debugInfo){
+    public void setDebugText(String debugInfo) {
         debugText.setText(debugInfo);
     }
 }

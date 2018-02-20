@@ -9,7 +9,7 @@ public class EmulatorKey {
         this.emulatorKeyEvent = emulatorKeyEvent;
     }
 
-    public static EmulatorKey createEmulatorKey(String keyName, EmulatorKeyEvent emulatorKeyEvent){
+    public static EmulatorKey createEmulatorKey(String keyName, EmulatorKeyEvent emulatorKeyEvent) {
         return new EmulatorKey(keyName, emulatorKeyEvent);
     }
 
@@ -17,12 +17,12 @@ public class EmulatorKey {
         return keyName;
     }
 
-    public void trigger(){
+    public void trigger() {
         emulatorKeyEvent.trigger();
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return keyName;
     }
 }

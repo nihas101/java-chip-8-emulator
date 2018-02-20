@@ -12,30 +12,31 @@ public class ProgramCounter implements Debuggable {
      */
     private UnsignedShort count;
 
-    public ProgramCounter(UnsignedShort count){
+    public ProgramCounter(UnsignedShort count) {
         this.count = count;
     }
 
-    public ProgramCounter(){
+    public ProgramCounter() {
         this.count = new UnsignedShort((short) 0);
     }
 
     /**
      * Increments the PC by one
      */
-    public void incrementCounter(){
+    public void incrementCounter() {
         this.count = new UnsignedShort((short) (this.count.unsignedDataType + 1));
     }
 
     /**
      * Increments the PC by N
+     *
      * @param N The value by which to increment the counter by
      */
-    public void incrementCounterN(int N){
+    public void incrementCounterN(int N) {
         this.count = new UnsignedShort((short) (this.count.unsignedDataType + N));
     }
 
-    public UnsignedShort getCounter(){
+    public UnsignedShort getCounter() {
         return this.count;
     }
 
@@ -49,6 +50,7 @@ public class ProgramCounter implements Debuggable {
 
     /**
      * Sets the PC to the provided address
+     *
      * @param address The new address the PC should point to
      */
     public void jumpTo(UnsignedShort address) {

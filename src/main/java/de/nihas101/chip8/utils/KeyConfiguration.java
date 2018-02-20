@@ -15,13 +15,14 @@ import static javafx.scene.input.KeyCode.*;
 
 public class KeyConfiguration {
     private Map<KeyCode, EmulatorKey> emulatorKeyHashMap;
-    private static EmulatorKey nOpEmulatorKey = EmulatorKey.createEmulatorKey("NOP", () -> {});
+    private static EmulatorKey nOpEmulatorKey = EmulatorKey.createEmulatorKey("NOP", () -> {
+    });
 
-    private KeyConfiguration(Map<KeyCode, EmulatorKey> emulatorKeyHashMap){
+    private KeyConfiguration(Map<KeyCode, EmulatorKey> emulatorKeyHashMap) {
         this.emulatorKeyHashMap = emulatorKeyHashMap;
     }
 
-    public static KeyConfiguration createKeyConfiguration(Emulator emulator){
+    public static KeyConfiguration createKeyConfiguration(Emulator emulator) {
         CentralProcessingUnit centralProcessingUnit = emulator.getCentralProcessingUnit();
         HashMap<KeyCode, EmulatorKey> emulatorKeyHashMap = createStandardEmulatorKeyHashMap(centralProcessingUnit);
 
@@ -29,7 +30,7 @@ public class KeyConfiguration {
         return new KeyConfiguration(emulatorKeyHashMap);
     }
 
-    public static KeyConfiguration createKeyConfiguration(Map<KeyCode, EmulatorKey> emulatorKeyHashMap){
+    public static KeyConfiguration createKeyConfiguration(Map<KeyCode, EmulatorKey> emulatorKeyHashMap) {
         return new KeyConfiguration(emulatorKeyHashMap);
     }
 
@@ -37,7 +38,7 @@ public class KeyConfiguration {
         this.emulatorKeyHashMap = emulatorKeyHashMap;
     }
 
-    private static HashMap<KeyCode, EmulatorKey> createStandardEmulatorKeyHashMap(CentralProcessingUnit centralProcessingUnit){
+    private static HashMap<KeyCode, EmulatorKey> createStandardEmulatorKeyHashMap(CentralProcessingUnit centralProcessingUnit) {
         HashMap<KeyCode, EmulatorKey> emulatorKeyHashMap = new HashMap<>();
 
         emulatorKeyHashMap.put(X, createEmulatorKey("0", () -> centralProcessingUnit.setKeyCode(KEY_0)));
@@ -61,15 +62,15 @@ public class KeyConfiguration {
         return emulatorKeyHashMap;
     }
 
-    public Set<Map.Entry<KeyCode, EmulatorKey>> entrySet(){
+    public Set<Map.Entry<KeyCode, EmulatorKey>> entrySet() {
         return emulatorKeyHashMap.entrySet();
     }
 
-    public boolean contains(KeyCode keyCode){
+    public boolean contains(KeyCode keyCode) {
         return emulatorKeyHashMap.containsKey(keyCode);
     }
 
-    public EmulatorKey getOrNOP(KeyCode keyCode){
+    public EmulatorKey getOrNOP(KeyCode keyCode) {
         return emulatorKeyHashMap.getOrDefault(keyCode, nOpEmulatorKey);
     }
 }

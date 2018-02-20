@@ -5,7 +5,7 @@ package de.nihas101.chip8.hardware.timers;
  */
 public class DelayTimer extends Timer {
 
-    public DelayTimer(){
+    public DelayTimer() {
         super();
     }
 

@@ -65,7 +65,7 @@ public class MainController {
         romFile = romFileChooser.showOpenDialog(ownerWindow);
         main.emulator.getCentralProcessingUnit().setPause(false);
 
-        if(romFile != null) {
+        if (romFile != null) {
             /* Stop last threadRunner */
             main.emulator.getCentralProcessingUnit().stopCPU();
             try {
@@ -102,7 +102,7 @@ public class MainController {
         actionEvent.consume();
     }
 
-    public void setup(Runnable threadRunner, Main main, ResizableCanvas resizableCanvas){
+    public void setup(Runnable threadRunner, Main main, ResizableCanvas resizableCanvas) {
         setupFileChoosers();
         saveStateHandler = new SaveStateHandler();
 
@@ -120,7 +120,7 @@ public class MainController {
         speedTextField.setTextFormatter(new TextFormatter<>(doubleFilter));
     }
 
-    private UnaryOperator<Change> createDoubleFilter(){
+    private UnaryOperator<Change> createDoubleFilter() {
         /* Source: gist.github.com/karimsqualli96/f8d4c2995da8e11496ed */
         return change -> {
             if (change.isReplaced() && change.getText().matches("[^0-9]"))
@@ -128,7 +128,7 @@ public class MainController {
 
             if (change.isAdded()) {
                 if (change.getControlText().contains(".")) {
-                    if (change.getText().matches("[^0-9]"))     change.setText("");
+                    if (change.getText().matches("[^0-9]")) change.setText("");
                 } else if (change.getText().matches("[^0-9.]")) change.setText("");
             }
 
@@ -136,11 +136,11 @@ public class MainController {
         };
     }
 
-    public void startEmulation(){
+    public void startEmulation() {
         threadRunner.run();
     }
 
-    private void setupFileChoosers(){
+    private void setupFileChoosers() {
         Path currentPath = Paths.get("").toAbsolutePath();
 
         /* Setup RomFileChooser */
@@ -160,7 +160,7 @@ public class MainController {
     }
 
     public void setSpeed(ActionEvent actionEvent) {
-        if(parseDouble(speedTextField.getText()) > 0) {
+        if (parseDouble(speedTextField.getText()) > 0) {
             this.speed = parseDouble(speedTextField.getText());
             /* Leave Focus again */
             speedTextField.getParent().requestFocus();
@@ -170,7 +170,7 @@ public class MainController {
         actionEvent.consume();
     }
 
-    public double getSpeed(){
+    public double getSpeed() {
         return speed;
     }
 
@@ -178,7 +178,7 @@ public class MainController {
         main.emulator.getCentralProcessingUnit().setPause(true);
 
         File saveFile = saveFileChooser.showSaveDialog(ownerWindow);
-        if(saveFile != null) saveStateHandler.writeState(saveFile, main.createSaveState());
+        if (saveFile != null) saveStateHandler.writeState(saveFile, main.createSaveState());
 
         main.emulator.getCentralProcessingUnit().setPause(false);
         actionEvent.consume();
@@ -188,9 +188,12 @@ public class MainController {
         SaveState saveState = null;
         File loadFile = loadFileChooser.showOpenDialog(ownerWindow);
 
-        if(loadFile != null) {
-            try { saveState = saveStateHandler.readState(loadFile); }
-            catch (FailedReadingStateException e) { logger.severe(e.getMessage()); }
+        if (loadFile != null) {
+            try {
+                saveState = saveStateHandler.readState(loadFile);
+            } catch (FailedReadingStateException e) {
+                logger.severe(e.getMessage());
+            }
             main.setState(saveState);
         }
 

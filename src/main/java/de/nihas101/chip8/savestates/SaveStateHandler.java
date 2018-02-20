@@ -21,14 +21,14 @@ public class SaveStateHandler {
     public SaveState readState(File loadFile) throws FailedReadingStateException {
         String readState;
 
-        if(loadFile.exists()){
-            try(LineNumberReader fileReader = new LineNumberReader(new FileReader(loadFile))){
+        if (loadFile.exists()) {
+            try (LineNumberReader fileReader = new LineNumberReader(new FileReader(loadFile))) {
                 readState = readFile(fileReader);
             } catch (IOException e) {
                 logger.severe(e.getMessage());
                 throw new FailedReadingStateException(loadFile);
             }
-        }else throw new FailedReadingStateException(loadFile);
+        } else throw new FailedReadingStateException(loadFile);
 
         return SaveState.createSaveState(readState);
     }
@@ -37,7 +37,7 @@ public class SaveStateHandler {
         StringBuilder readState = new StringBuilder();
         String readLine = fileReader.readLine();
 
-        while(readLine != null){
+        while (readLine != null) {
             readState.append(readLine).append("\n");
             readLine = fileReader.readLine();
         }

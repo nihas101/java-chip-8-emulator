@@ -11,7 +11,7 @@ import static org.junit.Assert.fail;
 
 public class MemoryTest {
     @Test
-    public void testPokePeek(){
+    public void testPokePeek() {
         Memory memory = new Memory();
         memory.write(0, new UnsignedByte((byte) 255));
         memory.write(255, new UnsignedByte((byte) 5));
@@ -25,7 +25,7 @@ public class MemoryTest {
     }
 
     @Test
-    public void testPokeNeg(){
+    public void testPokeNeg() {
         Memory memory = new Memory();
         memory.write(0, new UnsignedByte((byte) -1));
 
@@ -33,7 +33,7 @@ public class MemoryTest {
     }
 
     @Test
-    public void testPoke(){
+    public void testPoke() {
         Memory memory = new Memory();
         memory.write(0, new UnsignedByte((byte) 256));
 
@@ -41,44 +41,44 @@ public class MemoryTest {
     }
 
     @Test
-    public void testIndexOutOfBoundsPokeNeg(){
+    public void testIndexOutOfBoundsPokeNeg() {
         Memory memory = new Memory();
         try {
             memory.write(-1, new UnsignedByte((byte) 255));
-        }catch (IndexOutOfBoundsException e){
+        } catch (IndexOutOfBoundsException e) {
             return;
         }
         fail("No Exception was thrown");
     }
 
     @Test
-    public void testIndexOutOfBoundsPoke(){
+    public void testIndexOutOfBoundsPoke() {
         Memory memory = new Memory();
         try {
             memory.write(MEMORY_LENGTH, new UnsignedByte((byte) 255));
-        }catch (IndexOutOfBoundsException e){
+        } catch (IndexOutOfBoundsException e) {
             return;
         }
         fail("No Exception was thrown");
     }
 
     @Test
-    public void testIndexOutOfBoundsPeekNeg(){
+    public void testIndexOutOfBoundsPeekNeg() {
         Memory memory = new Memory();
         try {
             memory.read(-1);
-        }catch (IndexOutOfBoundsException e){
+        } catch (IndexOutOfBoundsException e) {
             return;
         }
         fail("No Exception was thrown");
     }
 
     @Test
-    public void testIndexOutOfBoundsPeek(){
+    public void testIndexOutOfBoundsPeek() {
         Memory memory = new Memory();
         try {
             memory.read(MEMORY_LENGTH);
-        }catch (IndexOutOfBoundsException e){
+        } catch (IndexOutOfBoundsException e) {
             return;
         }
         fail("No Exception was thrown");

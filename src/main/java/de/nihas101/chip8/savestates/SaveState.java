@@ -22,7 +22,7 @@ import static java.lang.String.valueOf;
 public class SaveState {
     public final CentralProcessingUnit cpu;
 
-    private SaveState(CentralProcessingUnit cpu){
+    private SaveState(CentralProcessingUnit cpu) {
         this.cpu = cpu;
     }
 
@@ -30,7 +30,7 @@ public class SaveState {
         return new SaveState(cpu);
     }
 
-    public static SaveState createSaveState(String stateString){
+    public static SaveState createSaveState(String stateString) {
         Memory memory = null;
         ScreenMemory screenMemory = null;
         Registers registers = null;
@@ -46,18 +46,39 @@ public class SaveState {
         String[] strings = stateString.split("\n");
 
         for (String string : strings) {
-            switch (string.charAt(0)){
-                case CYCLES_CHAR:         cycles = readCycles(string);                   break;
-                case OPCODE_CHAR:         opCode = readOpCode(string);                   break;
-                case MEMORY_CHAR:         memory = readMemory(string);                   break;
-                case SCREENMEMORY_CHAR:   screenMemory = readScreenMemory(string);       break;
-                case REGISTERS_CHAR:      registers = readRegisters(string);             break;
-                case ADDRESS_CHAR:        addressRegister = readAddressRegister(string); break;
-                case PROGRAMCOUNTER_CHAR: programCounter = readProgramCounter(string);   break;
-                case STACK_CHAR:          chip8Stack = readChip8Stack(string);           break;
-                case DELAYIMER_CHAR:      delayTimer = readDelayTimer(string);           break;
-                case SOUNDTIMER_CHAR:     soundTimer = readSoundTimer(string);           break;
-                case RANDOM_CHAR:         random = readRandom(string);
+            switch (string.charAt(0)) {
+                case CYCLES_CHAR:
+                    cycles = readCycles(string);
+                    break;
+                case OPCODE_CHAR:
+                    opCode = readOpCode(string);
+                    break;
+                case MEMORY_CHAR:
+                    memory = readMemory(string);
+                    break;
+                case SCREENMEMORY_CHAR:
+                    screenMemory = readScreenMemory(string);
+                    break;
+                case REGISTERS_CHAR:
+                    registers = readRegisters(string);
+                    break;
+                case ADDRESS_CHAR:
+                    addressRegister = readAddressRegister(string);
+                    break;
+                case PROGRAMCOUNTER_CHAR:
+                    programCounter = readProgramCounter(string);
+                    break;
+                case STACK_CHAR:
+                    chip8Stack = readChip8Stack(string);
+                    break;
+                case DELAYIMER_CHAR:
+                    delayTimer = readDelayTimer(string);
+                    break;
+                case SOUNDTIMER_CHAR:
+                    soundTimer = readSoundTimer(string);
+                    break;
+                case RANDOM_CHAR:
+                    random = readRandom(string);
             }
         }
 
@@ -95,12 +116,12 @@ public class SaveState {
                 .replaceAll("\\s", "").split(",");
         byte[] bytes = new byte[strings.length];
 
-        for (int i=0; i < bytes.length; i++)
+        for (int i = 0; i < bytes.length; i++)
             bytes[i] = parseByte(strings[i]);
 
-        try(ObjectInputStream objectInputStream = new ObjectInputStream(new ByteArrayInputStream(bytes))){
+        try (ObjectInputStream objectInputStream = new ObjectInputStream(new ByteArrayInputStream(bytes))) {
             random = (Random) objectInputStream.readObject();
-        }catch (IOException | ClassNotFoundException e){
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
 
@@ -128,7 +149,7 @@ public class SaveState {
 
         return new Chip8Stack(
                 new java.util.Stack<>(),
-                string.trim().substring(1,string.length()-1).split(", ")
+                string.trim().substring(1, string.length() - 1).split(", ")
         );
     }
 
@@ -149,41 +170,41 @@ public class SaveState {
 
         return new Registers(
                 string.trim()
-                        .substring(1,string.length()-1)
+                        .substring(1, string.length() - 1)
                         .split(", ")
         );
     }
 
-    private static Memory readMemory(String string){
+    private static Memory readMemory(String string) {
         string = unwrap(string);
 
         return new Memory(
                 string.trim()
-                        .substring(1,string.length()-1)
+                        .substring(1, string.length() - 1)
                         .split(", ")
         );
     }
 
-    private static ScreenMemory readScreenMemory(String string){
+    private static ScreenMemory readScreenMemory(String string) {
         string = unwrap(string);
 
         return new ScreenMemory(
                 string.trim()
-                        .substring(1,string.length()-1)
+                        .substring(1, string.length() - 1)
                         .split("], ")
         );
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        try(ObjectOutputStream oos = new ObjectOutputStream(byteArrayOutputStream)){
+        try (ObjectOutputStream oos = new ObjectOutputStream(byteArrayOutputStream)) {
             oos.writeObject(cpu.getRandom());
-        }catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
-        return    wrap(CYCLES_CHAR, valueOf(cpu.getCycles()))
+        return wrap(CYCLES_CHAR, valueOf(cpu.getCycles()))
                 + wrap(OPCODE_CHAR, cpu.getOpCodeString())
                 + wrap(MEMORY_CHAR, cpu.getMemory().getValues())
                 + wrap(SCREENMEMORY_CHAR, cpu.getScreenMemory().getValues())
@@ -196,11 +217,11 @@ public class SaveState {
                 + wrap(RANDOM_CHAR, Arrays.toString(byteArrayOutputStream.toByteArray()));
     }
 
-    private String wrap(char name, String toWrap){
+    private String wrap(char name, String toWrap) {
         return name + "{" + toWrap + "}\n";
     }
 
-    private static String unwrap(String string){
-        return string.trim().substring(2,string.length()-1);
+    private static String unwrap(String string) {
+        return string.trim().substring(2, string.length() - 1);
     }
 }

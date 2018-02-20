@@ -16,14 +16,14 @@ public class Chip8Stack implements Debuggable {
      */
     private final Stack<UnsignedShort> stack;
 
-    public Chip8Stack(Stack<UnsignedShort> stack){
+    public Chip8Stack(Stack<UnsignedShort> stack) {
         this.stack = stack;
     }
 
     public Chip8Stack(java.util.Stack<UnsignedShort> stack, String[] strings) {
         this.stack = stack;
 
-        if(strings.length == 1 && "".equals(strings[0]))
+        if (strings.length == 1 && "".equals(strings[0]))
             return;
 
         for (String string : strings) stack.push(new UnsignedShort((short) parseInt(string)));
@@ -39,25 +39,28 @@ public class Chip8Stack implements Debuggable {
 
     /**
      * Pushes The value onto the stack
+     *
      * @param unsignedShort The value to be pushed onto the stack
      */
-    public void push(UnsignedShort unsignedShort){
+    public void push(UnsignedShort unsignedShort) {
         stack.push(unsignedShort);
     }
 
     /**
      * Pops a value from the stack and returns it
+     *
      * @return The retrieved value
      */
-    public UnsignedShort pop(){
+    public UnsignedShort pop() {
         return stack.pop();
     }
 
     /**
      * Returns the size of the stack
+     *
      * @return The size of the stack
      */
-    public int getSize(){
+    public int getSize() {
         return this.stack.size();
     }
 

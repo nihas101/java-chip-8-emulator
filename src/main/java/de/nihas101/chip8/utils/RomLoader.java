@@ -21,8 +21,9 @@ public class RomLoader {
 
     /**
      * Loads a ROM into memory
+     *
      * @param romFile The file of the ROM
-     * @param memory The memory to load the ROM into
+     * @param memory  The memory to load the ROM into
      */
     public void loadRom(File romFile, Memory memory) {
         InputStream inputStream = null;
@@ -38,20 +39,20 @@ public class RomLoader {
             closeFileStream(inputStream);
         }
 
-        if(readBytes > 0) loadIntoMemory(memory, loadedRom);
+        if (readBytes > 0) loadIntoMemory(memory, loadedRom);
         else logger.info("No bytes were read");
     }
 
     /**
      * Closes the {@link InputStream}
+     *
      * @param inputStream The {@link InputStream} to close
      */
-    private void closeFileStream(InputStream inputStream){
+    private void closeFileStream(InputStream inputStream) {
         if (inputStream != null) {
             try {
                 inputStream.close();
-            }
-            catch (IOException e) {
+            } catch (IOException e) {
                 logger.severe(e.getMessage());
             }
         }
@@ -59,13 +60,14 @@ public class RomLoader {
 
     /**
      * Loads a ROM into memory
-     * @param memory The memory to load the rom into
+     *
+     * @param memory    The memory to load the rom into
      * @param loadedRom The ROM to load
      */
-    private void loadIntoMemory(Memory memory, byte[] loadedRom){
+    private void loadIntoMemory(Memory memory, byte[] loadedRom) {
         int MAX_ROM_LENGTH = MEMORY_LENGTH - PROGRAM_COUNTER_START;
-        for(int i = 0 ; i < MAX_ROM_LENGTH ; i++){
-            memory.write(PROGRAM_COUNTER_START+i, new UnsignedByte(loadedRom[i]));
+        for (int i = 0; i < MAX_ROM_LENGTH; i++) {
+            memory.write(PROGRAM_COUNTER_START + i, new UnsignedByte(loadedRom[i]));
         }
     }
 }

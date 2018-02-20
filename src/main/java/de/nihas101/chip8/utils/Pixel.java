@@ -9,7 +9,7 @@ public class Pixel {
     public final double height;
     public final Paint paint;
 
-    public Pixel(double x, double y, double width, double height, Paint paint){
+    public Pixel(double x, double y, double width, double height, Paint paint) {
         this.x = x;
         this.y = y;
         this.height = height;

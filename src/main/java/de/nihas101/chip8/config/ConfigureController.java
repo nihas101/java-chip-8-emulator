@@ -89,7 +89,7 @@ public class ConfigureController {
         return createKeyConfiguration(keyHashMap);
     }
 
-    private void insertIntoKeyHashMap(String keyCodeString, String keyName, int emulatorKeyCode){
+    private void insertIntoKeyHashMap(String keyCodeString, String keyName, int emulatorKeyCode) {
         keyHashMap.put(getKeyCode(keyCodeString), createEmulatorKey(keyName, () -> emulator.getCentralProcessingUnit().setKeyCode(emulatorKeyCode)));
     }
 
@@ -110,25 +110,57 @@ public class ConfigureController {
     }
 
     private void setupTextField(EmulatorKey emulatorKey, KeyCode key) {
-        if(emulatorKey == null || key == null) return;
+        if (emulatorKey == null || key == null) return;
 
-        switch (emulatorKey.getKeyName()){
-            case "0": key0TextField.setText(key.getName()); break;
-            case "1": key1TextField.setText(key.getName()); break;
-            case "2": key2TextField.setText(key.getName()); break;
-            case "3": key3TextField.setText(key.getName()); break;
-            case "4": key4TextField.setText(key.getName()); break;
-            case "5": key5TextField.setText(key.getName()); break;
-            case "6": key6TextField.setText(key.getName()); break;
-            case "7": key7TextField.setText(key.getName()); break;
-            case "8": key8TextField.setText(key.getName()); break;
-            case "9": key9TextField.setText(key.getName()); break;
-            case "A": keyATextField.setText(key.getName()); break;
-            case "B": keyBTextField.setText(key.getName()); break;
-            case "C": keyCTextField.setText(key.getName()); break;
-            case "D": keyDTextField.setText(key.getName()); break;
-            case "E": keyETextField.setText(key.getName()); break;
-            case "F": keyFTextField.setText(key.getName()); break;
+        switch (emulatorKey.getKeyName()) {
+            case "0":
+                key0TextField.setText(key.getName());
+                break;
+            case "1":
+                key1TextField.setText(key.getName());
+                break;
+            case "2":
+                key2TextField.setText(key.getName());
+                break;
+            case "3":
+                key3TextField.setText(key.getName());
+                break;
+            case "4":
+                key4TextField.setText(key.getName());
+                break;
+            case "5":
+                key5TextField.setText(key.getName());
+                break;
+            case "6":
+                key6TextField.setText(key.getName());
+                break;
+            case "7":
+                key7TextField.setText(key.getName());
+                break;
+            case "8":
+                key8TextField.setText(key.getName());
+                break;
+            case "9":
+                key9TextField.setText(key.getName());
+                break;
+            case "A":
+                keyATextField.setText(key.getName());
+                break;
+            case "B":
+                keyBTextField.setText(key.getName());
+                break;
+            case "C":
+                keyCTextField.setText(key.getName());
+                break;
+            case "D":
+                keyDTextField.setText(key.getName());
+                break;
+            case "E":
+                keyETextField.setText(key.getName());
+                break;
+            case "F":
+                keyFTextField.setText(key.getName());
+                break;
         }
     }
 
@@ -136,16 +168,16 @@ public class ConfigureController {
         for (TextField textField : textFields) textField.setTextFormatter(createSingleCharFormatter(textField));
     }
 
-    private TextFormatter<ListChangeListener.Change> createSingleCharFormatter(TextField keyTextField){
+    private TextFormatter<ListChangeListener.Change> createSingleCharFormatter(TextField keyTextField) {
         return new TextFormatter<>(change -> {
-            if(change.getText().length() > 0) return handleChange(keyTextField, change);
+            if (change.getText().length() > 0) return handleChange(keyTextField, change);
             else return noChange(change);
         });
     }
 
-    private Change handleChange(TextField keyTextField, Change change){
+    private Change handleChange(TextField keyTextField, Change change) {
         String assignment = String.valueOf(change.getText().charAt(0)).toUpperCase();
-        if(alreadyAssigned(assignment)){
+        if (alreadyAssigned(assignment)) {
             change.setText("");
             return change;
         }
@@ -158,13 +190,13 @@ public class ConfigureController {
         return change;
     }
 
-    private Change noChange(Change change){
+    private Change noChange(Change change) {
         change.setText("");
         return change;
     }
 
     private boolean alreadyAssigned(String text) {
-        if(text == null || resetInProgress) return false;
+        if (text == null || resetInProgress) return false;
 
         int assignments = 0;
         for (TextField textField : textFields)

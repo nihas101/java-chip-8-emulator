@@ -22,15 +22,15 @@ public class Emulator implements Debuggable {
 
     private Logger logger = Logger.getLogger(Emulator.class.getName());
 
-    private Emulator(CentralProcessingUnit centralProcessingUnit){
+    private Emulator(CentralProcessingUnit centralProcessingUnit) {
         this.centralProcessingUnit = centralProcessingUnit;
     }
 
-    public static Emulator createEmulator(){
+    public static Emulator createEmulator() {
         return new Emulator(setupCentralProcessingUnit());
     }
 
-    public void setStandardKeyConfiguration(){
+    public void setStandardKeyConfiguration() {
         keyConfiguration = KeyConfiguration.createKeyConfiguration(this);
     }
 
@@ -72,6 +72,7 @@ public class Emulator implements Debuggable {
 
     /**
      * Executes CPU cycles
+     *
      * @param cycles The number of cycles to execute
      * @return The part of the cycles that wasn't  a full cycle
      * e.g. if the cpu was instructed to calculate 1.2 cycles this
@@ -79,7 +80,7 @@ public class Emulator implements Debuggable {
      * equals a full cycle
      */
     public double executeCPUCycles(double cycles) {
-        for( ; cycles >= 1 ; cycles --) {
+        for (; cycles >= 1; cycles--) {
             try {
                 centralProcessingUnit.decodeNextOpCode();
             } catch (Exception e) {
@@ -92,7 +93,7 @@ public class Emulator implements Debuggable {
     }
 
 
-    public void stop(){
+    public void stop() {
         /* Stop the thread that is used as timer */
         centralProcessingUnit.stopCPU();
         centralProcessingUnit.stopTimer();
@@ -103,7 +104,7 @@ public class Emulator implements Debuggable {
         return centralProcessingUnit;
     }
 
-    public void setCentralProcessingUnit(CentralProcessingUnit centralProcessingUnit){
+    public void setCentralProcessingUnit(CentralProcessingUnit centralProcessingUnit) {
         this.centralProcessingUnit = centralProcessingUnit;
     }
 

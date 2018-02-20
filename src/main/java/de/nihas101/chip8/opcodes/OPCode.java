@@ -7,7 +7,7 @@ public class OPCode {
     private final int[] opcode = new int[4];
     private final int fullOpCode;
 
-    public OPCode(int opcode){
+    public OPCode(int opcode) {
         fullOpCode = opcode;
 
         this.opcode[0] = (opcode & 0xF000) >> 12;
@@ -18,15 +18,17 @@ public class OPCode {
 
     /**
      * Returns the byte according to the index
+     *
      * @param index The index of the byte to be return (0-3)
      * @return The byte that corresponds to the index
      */
-    public int getByte(int index){
+    public int getByte(int index) {
         return opcode[index];
     }
 
     /**
      * Returns the full opcode
+     *
      * @return The full opcode
      */
     public int getOpCode() {
@@ -35,10 +37,11 @@ public class OPCode {
 
     /**
      * Applies a bytemask to the opcode by using AND
+     *
      * @param mask The mask to be applied
      * @return The opcode with the mask applied
      */
-    public int applyMask(int mask){
+    public int applyMask(int mask) {
         return fullOpCode & mask;
     }
 }

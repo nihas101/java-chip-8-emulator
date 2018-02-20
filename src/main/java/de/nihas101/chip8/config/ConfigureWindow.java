@@ -32,10 +32,13 @@ public class ConfigureWindow extends Application {
         primaryStage.showAndWait();
     }
 
-    public static KeyConfiguration configureControls(Emulator emulator){
+    public static KeyConfiguration configureControls(Emulator emulator) {
         ConfigureWindow configureWindow = new ConfigureWindow(emulator);
-        try { configureWindow.start(new Stage()); }
-        catch (Exception e) { e.printStackTrace(); }
+        try {
+            configureWindow.start(new Stage());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         return configureWindow.configureController.getKeyConfiguration();
     }

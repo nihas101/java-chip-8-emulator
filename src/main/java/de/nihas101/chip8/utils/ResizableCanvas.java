@@ -24,8 +24,8 @@ public class ResizableCanvas extends Canvas {
     public ResizableCanvas(ScreenMemory screenMemory) {
         /* Set initial colors */
         this.graphicsContext = this.getGraphicsContext2D();
-        paintOff = new Color(0,0,0,1);
-        paintOn = new Color(1,1,1,1);
+        paintOff = new Color(0, 0, 0, 1);
+        paintOn = new Color(1, 1, 1, 1);
         // Redraw canvas when size changes.
         widthProperty().addListener(event -> draw());
         heightProperty().addListener(event -> draw());
@@ -37,29 +37,30 @@ public class ResizableCanvas extends Canvas {
      */
     public void draw() {
         /* Calculate height and width of pixels, depending on the size of the canvas */
-        double width = this.getWidth()/SCREEN_WIDTH;
-        double height = this.getHeight()/SCREEN_HEIGHT;
+        double width = this.getWidth() / SCREEN_WIDTH;
+        double height = this.getHeight() / SCREEN_HEIGHT;
         /* Draw Pixels */
-        for(int x=0 ; x < SCREEN_WIDTH ; x++) drawColumn(x, width, height);
+        for (int x = 0; x < SCREEN_WIDTH; x++) drawColumn(x, width, height);
     }
 
-    private void drawColumn(int row, double width, double height){
+    private void drawColumn(int row, double width, double height) {
         for (int y = 0; y < SCREEN_HEIGHT; y++) {
             if (!memory[row][y]) drawPixel(new Pixel(row * width, y * height, width, height, paintOff));
-            else               drawPixel(new Pixel(row * width, y * height, width, height, paintOn));
+            else drawPixel(new Pixel(row * width, y * height, width, height, paintOn));
         }
     }
 
     /**
      * Draws a pixel
+     *
      * @param pixel The pixel to draw
      */
-    private void drawPixel(Pixel pixel){
+    private void drawPixel(Pixel pixel) {
         graphicsContext.setFill(pixel.paint);
         graphicsContext.fillRect(pixel.x, pixel.y, pixel.width + 1, pixel.height + 1);
     }
 
-    public Timeline setupTimeLine(){
+    public Timeline setupTimeLine() {
         /* Setup keyframes to draw the canvas */
         final Duration frameDuration = Duration.ONE.multiply(DRAW_INTERVAL_MULTIPLIER);
         final KeyFrame oneFrame = new KeyFrame(frameDuration, event -> draw());
@@ -69,7 +70,7 @@ public class ResizableCanvas extends Canvas {
         return timeline;
     }
 
-    public void setMemory(ScreenMemory memory){
+    public void setMemory(ScreenMemory memory) {
         this.memory = memory.getMemory();
     }
 
@@ -80,6 +81,7 @@ public class ResizableCanvas extends Canvas {
     public boolean isResizable() {
         return true;
     }
+
     /**
      * {@inheritDoc}
      */
@@ -87,6 +89,7 @@ public class ResizableCanvas extends Canvas {
     public double prefWidth(double height) {
         return getWidth();
     }
+
     /**
      * {@inheritDoc}
      */
@@ -95,11 +98,11 @@ public class ResizableCanvas extends Canvas {
         return getHeight();
     }
 
-    public void setPaintOn(Paint paint){
+    public void setPaintOn(Paint paint) {
         this.paintOn = paint;
     }
 
-    public void setPaintOff(Paint paint){
+    public void setPaintOff(Paint paint) {
         this.paintOff = paint;
     }
 }

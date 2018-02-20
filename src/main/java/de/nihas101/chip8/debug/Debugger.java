@@ -54,13 +54,13 @@ public class Debugger extends Application {
     }
 
     @Override
-    public void stop(){
+    public void stop() {
         isDebugging = false;
         timeline.stop();
         primaryStage.close();
     }
 
-    public void setDebuggable(Debuggable debuggable){
+    public void setDebuggable(Debuggable debuggable) {
         this.debuggable = debuggable;
     }
 

@@ -21,7 +21,7 @@ import static de.nihas101.chip8.hardware.memory.ScreenMemory.SCREEN_WIDTH;
 import static de.nihas101.chip8.utils.Constants.*;
 import static java.lang.Thread.*;
 
-public class Main extends Application{
+public class Main extends Application {
     /* TODO: ADD MUTE BUTTON */
     public Emulator emulator;
     private Scene scene;
@@ -42,13 +42,14 @@ public class Main extends Application{
     private Logger logger = Logger.getLogger(Main.class.getName());
 
     /**
-     *  Standard constructor needed for JavaFX
+     * Standard constructor needed for JavaFX
      */
-    public Main(){
+    public Main() {
     }
 
     /**
      * Calls the method to launch the application
+     *
      * @param args The arguments for the application
      */
     public static void main(String[] args) {
@@ -60,8 +61,8 @@ public class Main extends Application{
      */
     @Override
     public void start(Stage primaryStage) throws Exception {
-        /* TODO: Implement ability to reconfigure keys */
         /* TODO: Pause when choosing ROM */
+        /* TODO: Add savestate and saveload shortcuts */
 
         /* Load root-node */
         FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("main.fxml"));
@@ -83,12 +84,12 @@ public class Main extends Application{
         primaryStage.minHeightProperty().bind(root.widthProperty().divide(2));
 
         /* Set initial size */
-        primaryStage.setHeight(SCREEN_HEIGHT*10);
-        primaryStage.setWidth(SCREEN_WIDTH*10);
+        primaryStage.setHeight(SCREEN_HEIGHT * 10);
+        primaryStage.setWidth(SCREEN_WIDTH * 10);
 
         primaryStage.setOnCloseRequest(windowEvent -> {
             /* Close debugger if it is open on closing the main window */
-            if(debugger.isDebugging()) debugger.stop();
+            if (debugger.isDebugging()) debugger.stop();
             /* In case cpu is looking for user input interrupt it */
             emulator.stop();
         });
@@ -96,20 +97,20 @@ public class Main extends Application{
         primaryStage.show();
 
         /* Bind size properties of canvas */
-        double gridPaneHeight = ((BorderPane)root.getChildren().get(0)).getTop().getBoundsInParent().getHeight() - 8;
+        double gridPaneHeight = ((BorderPane) root.getChildren().get(0)).getTop().getBoundsInParent().getHeight() - 8;
         canvas.widthProperty().bind(root.widthProperty().add(1));
         canvas.heightProperty().bind(root.heightProperty().subtract(gridPaneHeight));
     }
 
-    private void setupCanvas(){
+    private void setupCanvas() {
         /* Create resizable canvas and add it to the scene */
         canvas = new ResizableCanvas(emulator.getCentralProcessingUnit().getScreenMemory());
-        ((BorderPane)root.getChildren().get(0)).setCenter(canvas);
+        ((BorderPane) root.getChildren().get(0)).setCenter(canvas);
 
         timeline = canvas.setupTimeLine();
     }
 
-    private void setupController(){
+    private void setupController() {
         /* Interface called to produce Threads */
         Runnable cpuThreadRunner = () -> {
             /* Start the thread to execute cpu cycles */
@@ -139,11 +140,13 @@ public class Main extends Application{
 
     /**
      * Waits for the given amount of milliseconds
+     *
      * @param milliseconds The milliseconds to wait
      */
     private void waitFor(long milliseconds) {
-        try { sleep(milliseconds); }
-        catch (InterruptedException e) {
+        try {
+            sleep(milliseconds);
+        } catch (InterruptedException e) {
             logger.severe(e.getMessage());
             logger.severe(emulator.getState());
             currentThread().interrupt();
@@ -154,9 +157,9 @@ public class Main extends Application{
      * Waits for the user to hit the key to calculate the next step
      */
     private void waitForStep() {
-        if(stepByStep && !emulator.getCentralProcessingUnit().isStop()){
+        if (stepByStep && !emulator.getCentralProcessingUnit().isStop()) {
             nextStep = false;
-            while(stepByStep && !nextStep && !emulator.getCentralProcessingUnit().isStop()) waitFor(STEP_WAIT_TIME);
+            while (stepByStep && !nextStep && !emulator.getCentralProcessingUnit().isStop()) waitFor(STEP_WAIT_TIME);
         }
     }
 
@@ -164,11 +167,11 @@ public class Main extends Application{
      * Stops the main loop executing cpu cycles
      */
     @Override
-    public void stop(){
+    public void stop() {
         /* Stop the thread that is used as timer */
         emulator.stop();
         timeline.stop();
-        if(debugger.isDebugging()) debugger.stop();
+        if (debugger.isDebugging()) debugger.stop();
     }
 
     /**
@@ -176,9 +179,9 @@ public class Main extends Application{
      */
     private void setupEventHandler() {
         /* Remove old EventHandlers */
-        if(keyPressedEventEventHandler != null)
+        if (keyPressedEventEventHandler != null)
             scene.removeEventHandler(KeyEvent.KEY_PRESSED, keyPressedEventEventHandler);
-        if(keyReleasedEventHandler != null)
+        if (keyReleasedEventHandler != null)
             scene.removeEventHandler(KeyEvent.KEY_RELEASED, keyReleasedEventHandler);
 
         keyPressedEventEventHandler = createKeyPressedEventHandler();
@@ -188,8 +191,9 @@ public class Main extends Application{
         scene.addEventHandler(KeyEvent.KEY_RELEASED, keyReleasedEventHandler);
     }
 
-    private EventHandler<KeyEvent> createKeyPressedEventHandler(){
-        /* TODO: Consider that keyConfig was set */
+    private EventHandler<KeyEvent> createKeyPressedEventHandler() {
+        /* TODO: Consider that keyConfig was set and use that setting instead */
+        /* TODO: Save settings on exit and load them the next time this is started... under config/controls.xml or something like that */
         emulator.setStandardKeyConfiguration();
 
         return (event) -> {
@@ -199,33 +203,41 @@ public class Main extends Application{
         };
     }
 
-    private void handleDebuggerKeyEvent(KeyEvent event){
+    private void handleDebuggerKeyEvent(KeyEvent event) {
         switch (event.getCode()) {
-            case F3: nextStep = true; break;
-            case F1: handleDebugger(); break;
-            case F2: switchStepByStep(); break;
-            case F4: emulator.getCentralProcessingUnit().reset(); break;
+            case F3:
+                nextStep = true;
+                break;
+            case F1:
+                handleDebugger();
+                break;
+            case F2:
+                switchStepByStep();
+                break;
+            case F4:
+                emulator.getCentralProcessingUnit().reset();
+                break;
             default: /* NOP */
         }
     }
 
-    private void switchStepByStep(){
+    private void switchStepByStep() {
         stepByStep = !stepByStep;
         debugger.setStepByStep(stepByStep);
     }
 
     private void handleDebugger() {
-        if(!debugger.isDebugging()){
+        if (!debugger.isDebugging()) {
             try {
                 debuggerStage = new Stage();
                 debugger.start(debuggerStage);
             } catch (Exception e) {
                 logger.severe(e.getMessage());
             }
-        }else debugger.stop();
+        } else debugger.stop();
     }
 
-    private void setupEmulation(){
+    private void setupEmulation() {
         canvas.setMemory(emulator.getCentralProcessingUnit().getScreenMemory());
         setupController();
         setupEventHandler();
@@ -235,15 +247,15 @@ public class Main extends Application{
         timeline.play();
     }
 
-    public void startEmulation(){
+    public void startEmulation() {
         mainController.startEmulation();
     }
 
-    public SaveState createSaveState(){
+    public SaveState createSaveState() {
         return SaveState.createSaveState(emulator.getCentralProcessingUnit());
     }
 
-    public void setState(SaveState saveState){
+    public void setState(SaveState saveState) {
         stop();
         emulator.setCentralProcessingUnit(saveState.cpu);
         setupEmulation();

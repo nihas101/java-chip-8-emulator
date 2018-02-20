@@ -7,7 +7,7 @@ import javax.sound.midi.Synthesizer;
 public class SynthesizerFactory {
     public static Synthesizer createSynthesizer() throws MidiUnavailableException {
         Synthesizer synthesizer = MidiSystem.getSynthesizer();
-            synthesizer.open();
+        synthesizer.open();
 
         return synthesizer;
     }
