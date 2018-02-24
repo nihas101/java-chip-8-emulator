@@ -525,13 +525,13 @@ public class CentralProcessingUnit implements Debuggable {
                 assign(opCode.getByte(1), opCode.getByte(2));
                 break;
             case 0x1:
-                assignOR(opCode.getByte(1), opCode.getByte(2));
+                assignLogicOperation("|", opCode.getByte(1), opCode.getByte(2));
                 break;
             case 0x2:
-                assignAND(opCode.getByte(1), opCode.getByte(2));
+                assignLogicOperation("&", opCode.getByte(1), opCode.getByte(2));
                 break;
             case 0x3:
-                assignXOR(opCode.getByte(1), opCode.getByte(2));
+                assignLogicOperation("^", opCode.getByte(1), opCode.getByte(2));
                 break;
             case 0x4:
                 add(opCode.getByte(1), opCode.getByte(2));
@@ -718,40 +718,17 @@ public class CentralProcessingUnit implements Debuggable {
         registers.poke(Vx, registers.peek(Vy));
     }
 
-    /**
-     * Sets Vx to the value of Vx | Vy
-     *
-     * @param Vx The register which will hold the result of this operation
-     * @param Vy The register which value will replace the one in Vx
-     */
-    private void assignOR(int Vx, int Vy) {
-        opCodeString += createLogicOpOpCodeString("|", Vy, Vy);
+    private void assignLogicOperation(String operation, int Vx, int Vy){
+        opCodeString += createLogicOpOpCodeString(operation, Vx, Vy);
+        UnsignedByte result;
 
-        registers.poke(Vx, registers.peek(Vx).apply((x, y) -> x | y, registers.peek(Vy)));
-    }
+        switch (operation){
+            case "|": result = registers.peek(Vx).apply((x, y) -> x | y, registers.peek(Vy)); break;
+            case "&": result = registers.peek(Vx).apply((x, y) -> x & y, registers.peek(Vy)); break;
+            default:  result = registers.peek(Vx).apply((x, y) -> x ^ y, registers.peek(Vy)); break;
+        }
 
-    /**
-     * Sets Vx to the value of Vx & Vy
-     *
-     * @param Vx The register which will hold the result of this operation
-     * @param Vy The register which value will replace the one in Vx
-     */
-    private void assignAND(int Vx, int Vy) {
-        opCodeString += createLogicOpOpCodeString("&", Vx, Vy);
-
-        registers.poke(Vx, registers.peek(Vx).apply((x, y) -> x & y, registers.peek(Vy)));
-    }
-
-    /**
-     * Sets Vx to the value of Vx XOR Vy
-     *
-     * @param Vx The register which will hold the result of this operation
-     * @param Vy The register which value will replace the one in Vx
-     */
-    private void assignXOR(int Vx, int Vy) {
-        opCodeString += createLogicOpOpCodeString("^", Vx, Vy);
-
-        registers.poke(Vx, registers.peek(Vx).apply((x, y) -> x ^ y, registers.peek(Vy)));
+        registers.poke(Vx, result);
     }
 
     /**
