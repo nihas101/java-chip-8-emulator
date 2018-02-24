@@ -33,6 +33,8 @@ public class KeyConfigurationTest {
 
         emulatorKeyHashMap.put(DIGIT0, createEmulatorKey("test", () -> {
         }));
+        emulatorKeyHashMap.get(DIGIT0).trigger();
+
         Set<Map.Entry<KeyCode, EmulatorKey>> entries = KeyConfiguration.createKeyConfiguration(emulatorKeyHashMap).entrySet();
 
         assertEquals("[DIGIT0=test]", entries.toString());
@@ -44,6 +46,9 @@ public class KeyConfigurationTest {
 
         emulatorKeyHashMap.put(DIGIT0, createEmulatorKey("test", () -> {
         }));
+
+        emulatorKeyHashMap.get(DIGIT0).trigger();
+
         boolean contains = KeyConfiguration.createKeyConfiguration(emulatorKeyHashMap).contains(DIGIT0);
 
         assertEquals(true, contains);
