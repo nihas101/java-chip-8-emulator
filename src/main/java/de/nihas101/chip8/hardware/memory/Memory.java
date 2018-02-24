@@ -96,131 +96,202 @@ public class Memory implements Debuggable {
     }
 
     private void setup0() {
-        this.memory[0] = new UnsignedByte((byte) 0b11110000); // 0
-        this.memory[1] = new UnsignedByte((byte) 0b10010000);
-        this.memory[2] = new UnsignedByte((byte) 0b10010000);
-        this.memory[3] = new UnsignedByte((byte) 0b10010000);
-        this.memory[4] = new UnsignedByte((byte) 0b11110000);
+        UnsignedByte[] zero = new UnsignedByte[]{
+                new UnsignedByte((byte) 0b11110000),
+                new UnsignedByte((byte) 0b10010000),
+                new UnsignedByte((byte) 0b10010000),
+                new UnsignedByte((byte) 0b10010000),
+                new UnsignedByte((byte) 0b11110000)
+        };
+
+        setupCharacter(0, zero);
     }
 
     private void setup1() {
-        this.memory[5] = new UnsignedByte((byte) 0b00100000); // 1
-        this.memory[6] = new UnsignedByte((byte) 0b01100000);
-        this.memory[7] = new UnsignedByte((byte) 0b00100000);
-        this.memory[8] = new UnsignedByte((byte) 0b00100000);
-        this.memory[9] = new UnsignedByte((byte) 0b01110000);
+        UnsignedByte[] one = new UnsignedByte[]{
+                new UnsignedByte((byte) 0b00100000),
+                new UnsignedByte((byte) 0b01100000),
+                new UnsignedByte((byte) 0b00100000),
+                new UnsignedByte((byte) 0b00100000),
+                new UnsignedByte((byte) 0b01110000)
+        };
+
+        setupCharacter(5, one);
     }
 
     private void setup2() {
-        this.memory[10] = new UnsignedByte((byte) 0b11110000); // 2
-        this.memory[11] = new UnsignedByte((byte) 0b00010000);
-        this.memory[12] = new UnsignedByte((byte) 0b11110000);
-        this.memory[13] = new UnsignedByte((byte) 0b10000000);
-        this.memory[14] = new UnsignedByte((byte) 0b11110000);
+        UnsignedByte[] two = new UnsignedByte[]{
+                new UnsignedByte((byte) 0b11110000),
+                new UnsignedByte((byte) 0b00010000),
+                new UnsignedByte((byte) 0b11110000),
+                new UnsignedByte((byte) 0b10000000),
+                new UnsignedByte((byte) 0b11110000)
+        };
+
+        setupCharacter(10, two);
     }
 
     private void setup3() {
-        this.memory[15] = new UnsignedByte((byte) 0b11110000); // 3
-        this.memory[16] = new UnsignedByte((byte) 0b00010000);
-        this.memory[17] = new UnsignedByte((byte) 0b11110000);
-        this.memory[18] = new UnsignedByte((byte) 0b00010000);
-        this.memory[19] = new UnsignedByte((byte) 0b11110000);
+        UnsignedByte[] three = new UnsignedByte[]{
+                new UnsignedByte((byte) 0b11110000),
+                new UnsignedByte((byte) 0b00010000),
+                new UnsignedByte((byte) 0b11110000),
+                new UnsignedByte((byte) 0b00010000),
+                new UnsignedByte((byte) 0b11110000)
+        };
+
+        setupCharacter(15, three);
     }
 
     private void setup4() {
-        this.memory[20] = new UnsignedByte((byte) 0b10010000); // 4
-        this.memory[21] = new UnsignedByte((byte) 0b10010000);
-        this.memory[22] = new UnsignedByte((byte) 0b11110000);
-        this.memory[23] = new UnsignedByte((byte) 0b00010000);
-        this.memory[24] = new UnsignedByte((byte) 0b00010000);
+        UnsignedByte[] four = new UnsignedByte[]{
+                new UnsignedByte((byte) 0b10010000),
+                new UnsignedByte((byte) 0b10010000),
+                new UnsignedByte((byte) 0b11110000),
+                new UnsignedByte((byte) 0b00010000),
+                new UnsignedByte((byte) 0b00010000)
+        };
+
+        setupCharacter(20, four);
     }
 
     private void setup5() {
-        this.memory[25] = new UnsignedByte((byte) 0b11110000); // 5
-        this.memory[26] = new UnsignedByte((byte) 0b10000000);
-        this.memory[27] = new UnsignedByte((byte) 0b11110000);
-        this.memory[28] = new UnsignedByte((byte) 0b00010000);
-        this.memory[29] = new UnsignedByte((byte) 0b11110000);
+        UnsignedByte[] five = new UnsignedByte[]{
+                new UnsignedByte((byte) 0b11110000),
+                new UnsignedByte((byte) 0b10000000),
+                new UnsignedByte((byte) 0b11110000),
+                new UnsignedByte((byte) 0b00010000),
+                new UnsignedByte((byte) 0b11110000)
+        };
+
+        setupCharacter(25, five);
     }
 
     private void setup6() {
-        this.memory[30] = new UnsignedByte((byte) 0b11110000); // 6
-        this.memory[31] = new UnsignedByte((byte) 0b10000000);
-        this.memory[32] = new UnsignedByte((byte) 0b11110000);
-        this.memory[33] = new UnsignedByte((byte) 0b10010000);
-        this.memory[34] = new UnsignedByte((byte) 0b11110000);
+        UnsignedByte[] six = new UnsignedByte[]{
+                new UnsignedByte((byte) 0b11110000),
+                new UnsignedByte((byte) 0b10000000),
+                new UnsignedByte((byte) 0b11110000),
+                new UnsignedByte((byte) 0b10010000),
+                new UnsignedByte((byte) 0b11110000)
+        };
+
+        setupCharacter(30, six);
     }
 
     private void setup7() {
-        this.memory[35] = new UnsignedByte((byte) 0b11110000); // 7
-        this.memory[36] = new UnsignedByte((byte) 0b00010000);
-        this.memory[37] = new UnsignedByte((byte) 0b00100000);
-        this.memory[38] = new UnsignedByte((byte) 0b01000000);
-        this.memory[39] = new UnsignedByte((byte) 0b01000000);
+        UnsignedByte[] seven = new UnsignedByte[]{
+                new UnsignedByte((byte) 0b11110000),
+                new UnsignedByte((byte) 0b00010000),
+                new UnsignedByte((byte) 0b00100000),
+                new UnsignedByte((byte) 0b01000000),
+                new UnsignedByte((byte) 0b01000000)
+        };
+
+        setupCharacter(35, seven);
     }
 
     private void setup8() {
-        this.memory[40] = new UnsignedByte((byte) 0b11110000); // 8
-        this.memory[41] = new UnsignedByte((byte) 0b10010000);
-        this.memory[42] = new UnsignedByte((byte) 0b11110000);
-        this.memory[43] = new UnsignedByte((byte) 0b10010000);
-        this.memory[44] = new UnsignedByte((byte) 0b11110000);
+        UnsignedByte[] eight = new UnsignedByte[]{
+                new UnsignedByte((byte) 0b11110000),
+                new UnsignedByte((byte) 0b10010000),
+                new UnsignedByte((byte) 0b11110000),
+                new UnsignedByte((byte) 0b10010000),
+                new UnsignedByte((byte) 0b11110000)
+        };
+
+        setupCharacter(40, eight);
     }
 
     private void setup9() {
-        this.memory[45] = new UnsignedByte((byte) 0b11110000); // 9
-        this.memory[46] = new UnsignedByte((byte) 0b10010000);
-        this.memory[47] = new UnsignedByte((byte) 0b11110000);
-        this.memory[48] = new UnsignedByte((byte) 0b00010000);
-        this.memory[49] = new UnsignedByte((byte) 0b11110000);
+        UnsignedByte[] nine = new UnsignedByte[]{
+                new UnsignedByte((byte) 0b11110000),
+                new UnsignedByte((byte) 0b10010000),
+                new UnsignedByte((byte) 0b11110000),
+                new UnsignedByte((byte) 0b00010000),
+                new UnsignedByte((byte) 0b11110000)
+        };
+
+        setupCharacter(45, nine);
     }
 
     private void setupA() {
-        this.memory[50] = new UnsignedByte((byte) 0b11110000); // A
-        this.memory[51] = new UnsignedByte((byte) 0b10010000);
-        this.memory[52] = new UnsignedByte((byte) 0b11110000);
-        this.memory[53] = new UnsignedByte((byte) 0b10010000);
-        this.memory[54] = new UnsignedByte((byte) 0b10010000);
+        UnsignedByte[] a = new UnsignedByte[]{
+                new UnsignedByte((byte) 0b11110000),
+                new UnsignedByte((byte) 0b10010000),
+                new UnsignedByte((byte) 0b11110000),
+                new UnsignedByte((byte) 0b10010000),
+                new UnsignedByte((byte) 0b10010000)
+        };
+
+        setupCharacter(50, a);
     }
 
     private void setupB() {
-        this.memory[55] = new UnsignedByte((byte) 0b11100000); // B
-        this.memory[56] = new UnsignedByte((byte) 0b10010000);
-        this.memory[57] = new UnsignedByte((byte) 0b11100000);
-        this.memory[58] = new UnsignedByte((byte) 0b10010000);
-        this.memory[59] = new UnsignedByte((byte) 0b11100000);
+        UnsignedByte[] b = new UnsignedByte[]{
+                new UnsignedByte((byte) 0b11100000),
+                new UnsignedByte((byte) 0b10010000),
+                new UnsignedByte((byte) 0b11100000),
+                new UnsignedByte((byte) 0b10010000),
+                new UnsignedByte((byte) 0b11100000)
+        };
+
+        setupCharacter(55, b);
     }
 
     private void setupC() {
-        this.memory[60] = new UnsignedByte((byte) 0b11110000); // C
-        this.memory[61] = new UnsignedByte((byte) 0b10000000);
-        this.memory[62] = new UnsignedByte((byte) 0b10000000);
-        this.memory[63] = new UnsignedByte((byte) 0b10000000);
-        this.memory[64] = new UnsignedByte((byte) 0b11110000);
+        UnsignedByte[] c = new UnsignedByte[]{
+                new UnsignedByte((byte) 0b11110000),
+                new UnsignedByte((byte) 0b10000000),
+                new UnsignedByte((byte) 0b10000000),
+                new UnsignedByte((byte) 0b10000000),
+                new UnsignedByte((byte) 0b11110000)
+        };
+
+        setupCharacter(60, c);
     }
 
     private void setupD() {
-        this.memory[60] = new UnsignedByte((byte) 0b11100000); // D
-        this.memory[61] = new UnsignedByte((byte) 0b10010000);
-        this.memory[62] = new UnsignedByte((byte) 0b10010000);
-        this.memory[63] = new UnsignedByte((byte) 0b10010000);
-        this.memory[64] = new UnsignedByte((byte) 0b11100000);
+        UnsignedByte[] d = new UnsignedByte[]{
+                new UnsignedByte((byte) 0b11100000),
+                new UnsignedByte((byte) 0b10010000),
+                new UnsignedByte((byte) 0b10010000),
+                new UnsignedByte((byte) 0b10010000),
+                new UnsignedByte((byte) 0b11100000)
+        };
+
+        setupCharacter(65, d);
     }
 
     private void setupE() {
-        this.memory[65] = new UnsignedByte((byte) 0b11110000); // E
-        this.memory[66] = new UnsignedByte((byte) 0b10000000);
-        this.memory[67] = new UnsignedByte((byte) 0b11110000);
-        this.memory[68] = new UnsignedByte((byte) 0b10000000);
-        this.memory[69] = new UnsignedByte((byte) 0b11110000);
+        UnsignedByte[] e = new UnsignedByte[]{
+                new UnsignedByte((byte) 0b11110000),
+                new UnsignedByte((byte) 0b10000000),
+                new UnsignedByte((byte) 0b11110000),
+                new UnsignedByte((byte) 0b10000000),
+                new UnsignedByte((byte) 0b11110000)
+        };
+
+        setupCharacter(70, e);
     }
 
     private void setupF() {
-        this.memory[70] = new UnsignedByte((byte) 0b11110000); // F
-        this.memory[71] = new UnsignedByte((byte) 0b10000000);
-        this.memory[72] = new UnsignedByte((byte) 0b11110000);
-        this.memory[73] = new UnsignedByte((byte) 0b10000000);
-        this.memory[74] = new UnsignedByte((byte) 0b10000000);
+        UnsignedByte[] f = new UnsignedByte[]{
+                new UnsignedByte((byte) 0b11110000),
+                new UnsignedByte((byte) 0b10000000),
+                new UnsignedByte((byte) 0b11110000),
+                new UnsignedByte((byte) 0b10000000),
+                new UnsignedByte((byte) 0b10000000)
+        };
+        setupCharacter(75, f);
+    }
+
+    private void setupCharacter(int startIndex, UnsignedByte[] unsignedBytes) {
+        this.memory[startIndex++] = unsignedBytes[0]; // F
+        this.memory[startIndex++] = unsignedBytes[1];
+        this.memory[startIndex++] = unsignedBytes[2];
+        this.memory[startIndex++] = unsignedBytes[3];
+        this.memory[startIndex] = unsignedBytes[4];
     }
 
     public String getValues() {
