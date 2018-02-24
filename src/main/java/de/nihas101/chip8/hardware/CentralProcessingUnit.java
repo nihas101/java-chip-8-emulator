@@ -20,6 +20,7 @@ import java.util.logging.Logger;
 
 import static de.nihas101.chip8.utils.Constants.HERTZ_60;
 import static de.nihas101.chip8.utils.Constants.NO_KEY;
+import static de.nihas101.chip8.utils.OpCodeStringFactory.createArithmeticOpCodeString;
 import static de.nihas101.chip8.utils.OpCodeStringFactory.createRegOpCodeString;
 
 /**
@@ -761,7 +762,7 @@ public class CentralProcessingUnit implements Debuggable {
      * @param Vy The register which value will replace the one in Vx
      */
     private void add(int Vx, int Vy) {
-        opCodeString += "V" + Integer.toHexString(Vx) + " += V" + Integer.toHexString(Vy);
+        opCodeString += createArithmeticOpCodeString("+", Vx, Vy);
 
         /* Set carry flag */
         if ((registers.peek(Vx).unsignedDataType + registers.peek(Vy).unsignedDataType) > 255)
@@ -772,14 +773,14 @@ public class CentralProcessingUnit implements Debuggable {
     }
 
     /**
-     * Subtracts Vy from Vx and saves the result in Vx, VF is set to 0 if a borrow occurs
+     * Subtracts Vy from Vx and saves the result in Vz, VF is set to 0 if a borrow occurs
      *
      * @param Vx The first parameter/register
      * @param Vy The second parameter/register
      * @param Vz The register which will hold the result of the operation
      */
     private void sub(int Vx, int Vy, int Vz) {
-        opCodeString += "V" + Integer.toHexString(Vx) + " -= V" + Integer.toHexString(Vy);
+        opCodeString += createArithmeticOpCodeString("-", Vx, Vy);
 
         /* Set borrow flag */
         if ((registers.peek(Vx).unsignedDataType - registers.peek(Vy).unsignedDataType) < 0)
