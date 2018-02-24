@@ -84,7 +84,7 @@ public class Emulator implements Debuggable {
             try {
                 centralProcessingUnit.decodeNextOpCode();
             } catch (Exception e) {
-                centralProcessingUnit.stopCPU();
+                centralProcessingUnit.setStop(true);
                 logger.severe(centralProcessingUnit.getState());
                 logger.severe(e.getMessage());
             }
@@ -95,7 +95,7 @@ public class Emulator implements Debuggable {
 
     public void stop() {
         /* Stop the thread that is used as timer */
-        centralProcessingUnit.stopCPU();
+        centralProcessingUnit.setStop(true);
         centralProcessingUnit.stopTimer();
         centralProcessingUnit.closeSynthesizer();
     }

@@ -907,8 +907,6 @@ public class CentralProcessingUnit implements Debuggable {
         return "State:\n"
                 + "Cycles executed: " + cycleString + "\n"
                 + "OpCode: " + opCodeString + "\n"
-                // + this.memory.getState()
-                //+ this.screenMemory.getState()
                 + this.registers.getState() + "\n"
                 + this.addressRegister.getState() + "\t"
                 + this.programCounter.getState() + "\n"
@@ -957,11 +955,8 @@ public class CentralProcessingUnit implements Debuggable {
         return soundTimer;
     }
 
-    /**
-     * Stops the cpu if it is looking for input
-     */
-    public void stopCPU() {
-        this.stop = true;
+    public void setStop(boolean isStop) {
+        this.stop = isStop;
     }
 
     public void closeSynthesizer() {
@@ -971,10 +966,6 @@ public class CentralProcessingUnit implements Debuggable {
 
     public boolean isStop() {
         return stop;
-    }
-
-    public void startCPU() {
-        this.stop = false;
     }
 
     public void setPause(boolean pause) {
@@ -1003,5 +994,9 @@ public class CentralProcessingUnit implements Debuggable {
 
     public Random getRandom() {
         return random;
+    }
+
+    public int getKeyCode() {
+        return keyCode;
     }
 }

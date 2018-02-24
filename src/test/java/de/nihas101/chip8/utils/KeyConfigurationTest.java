@@ -29,7 +29,6 @@ public class KeyConfigurationTest {
 
     @Test
     public void entrySet() {
-        AtomicBoolean fail = new AtomicBoolean(true);
         HashMap<KeyCode, EmulatorKey> emulatorKeyHashMap = new HashMap<>();
 
         emulatorKeyHashMap.put(DIGIT0, createEmulatorKey("test", () -> {

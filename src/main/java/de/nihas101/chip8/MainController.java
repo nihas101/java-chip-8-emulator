@@ -67,7 +67,7 @@ public class MainController {
 
         if (romFile != null) {
             /* Stop last threadRunner */
-            main.emulator.getCentralProcessingUnit().stopCPU();
+            main.emulator.getCentralProcessingUnit().setStop(true);
             try {
                 Thread.sleep(150);
             } catch (InterruptedException e) {
@@ -79,7 +79,7 @@ public class MainController {
             main.emulator.getCentralProcessingUnit().reset();
             romLoader.loadRom(romFile, memory);
             /* Start CPU */
-            main.emulator.getCentralProcessingUnit().startCPU();
+            main.emulator.getCentralProcessingUnit().setStop(false);
             threadRunner.run();
         }
 
