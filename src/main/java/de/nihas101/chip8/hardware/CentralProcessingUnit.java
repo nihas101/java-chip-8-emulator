@@ -21,6 +21,7 @@ import java.util.logging.Logger;
 import static de.nihas101.chip8.utils.Constants.HERTZ_60;
 import static de.nihas101.chip8.utils.Constants.NO_KEY;
 import static de.nihas101.chip8.utils.OpCodeStringFactory.*;
+import static java.lang.Integer.toHexString;
 
 /**
  * A class representing a central processing unit of a Chip-8
@@ -174,7 +175,7 @@ public class CentralProcessingUnit implements Debuggable {
      */
     public void decodeNextOpCode() throws UnknownOPCodeException {
         OPCode opCode = getNextOpCode();
-        opCodeString = Integer.toHexString(opCode.getOpCode()) + " -> ";
+        opCodeString = toHexString(opCode.getOpCode()) + " -> ";
         decodeOpCode(opCode);
         if (cycles < Integer.MAX_VALUE) cycles++;
     }
@@ -287,7 +288,7 @@ public class CentralProcessingUnit implements Debuggable {
      * @param Vx The register holding the character
      */
     private void gotoSpriteAddress(int Vx) {
-        opCodeString += "I=sprite_addr[" + Integer.toHexString(Vx) + "]";
+        opCodeString += "I=sprite_addr[" + toHexString(Vx) + "]";
         int address = this.registers.peek(Vx).apply(x -> x * 5).unsignedDataType;
         this.addressRegister.setAddress(new UnsignedShort((short) address));
     }
@@ -373,7 +374,7 @@ public class CentralProcessingUnit implements Debuggable {
      * @param Vx The index of the register from which the decimal should be read
      */
     private void storeBinaryCodedDecimals(int Vx) {
-        opCodeString += "BCD V" + Integer.toHexString(Vx);
+        opCodeString += "BCD V" + toHexString(Vx);
 
         int decimalValue = this.registers.peek(Vx).unsignedDataType;
 
@@ -433,7 +434,7 @@ public class CentralProcessingUnit implements Debuggable {
      * @param Vx The index of the register
      */
     private void setAddressReg(int Vx) {
-        opCodeString += "I +=V" + Integer.toHexString(Vx);
+        opCodeString += "I +=V" + toHexString(Vx);
 
         UnsignedShort result = this.registers.peek(Vx).apply((x, y) -> x + y, this.addressRegister.getAddress());
         this.addressRegister.setAddress(result);
@@ -467,7 +468,7 @@ public class CentralProcessingUnit implements Debuggable {
      * @param Vx The index of the register
      */
     private void waitForInput(int Vx) {
-        opCodeString += "V" + Integer.toHexString(Vx) + " = get_key()";
+        opCodeString += "V" + toHexString(Vx) + " = get_key()";
 
         /* Halt execution until a key is pressed */
         while (keyCode == NO_KEY && !stop) {
@@ -500,7 +501,7 @@ public class CentralProcessingUnit implements Debuggable {
             }
             default: {
                 /* Call RCA 1802 program at address NNN. Not necessary for most ROMs. */
-                throw new UnknownOPCodeException("RCA 1802 is not  supported: " + Integer.toHexString(opCode.getOpCode()));
+                throw new UnknownOPCodeException("RCA 1802 is not  supported: " + toHexString(opCode.getOpCode()));
             }
         }
     }
@@ -578,7 +579,7 @@ public class CentralProcessingUnit implements Debuggable {
      * @param Vx The index of the register
      */
     private void getDelayTimer(int Vx) {
-        opCodeString += "V" + Integer.toHexString(Vx) + " = get_delay()";
+        opCodeString += "V" + toHexString(Vx) + " = get_delay()";
         this.getRegisters().poke(Vx, new UnsignedByte((byte) delayTimer.getValue()));
     }
 
@@ -588,7 +589,7 @@ public class CentralProcessingUnit implements Debuggable {
      * @param Vx The value of the register
      */
     private void skipIfKeyNotPressed(int Vx) {
-        opCodeString += "if(key()!=V" + Integer.toHexString(Vx) + ")";
+        opCodeString += "if(key()!=V" + toHexString(Vx) + ")";
 
         if (!(this.registers.peek(Vx).unsignedDataType == keyCode))
             this.getProgramCounter().incrementCounterN(2);
@@ -600,7 +601,7 @@ public class CentralProcessingUnit implements Debuggable {
      * @param Vx The value of the register
      */
     private void skipIfKeyPressed(int Vx) {
-        opCodeString += "if(key()==V" + Integer.toHexString(Vx) + ")";
+        opCodeString += "if(key()==V" + toHexString(Vx) + ")";
 
         if (this.registers.peek(Vx).unsignedDataType == keyCode)
             this.getProgramCounter().incrementCounterN(2);
@@ -615,7 +616,7 @@ public class CentralProcessingUnit implements Debuggable {
      */
     private void drawSprite(int Vx, int Vy, int height) {
         int mask = 0x80;
-        opCodeString += "draw(V" + Integer.toHexString(Vx) + ",V" + Integer.toHexString(Vy) + "," + height + ")";
+        opCodeString += "draw(V" + toHexString(Vx) + ",V" + toHexString(Vy) + "," + height + ")";
 
         /* Reset flag-register */
         this.registers.poke(0xF, new UnsignedByte((byte) 0));
@@ -632,18 +633,23 @@ public class CentralProcessingUnit implements Debuggable {
         }
     }
 
-    private void drawLineOfSprite(int coordX, int coordY, UnsignedByte data, int mask, UnsignedShort yLine) {
+    private void drawLineOfSprite(int xCoordinate, int yCoordinate, UnsignedByte data, int mask, UnsignedShort yLine) {
         for (int xPixel = 0; xPixel < 8; xPixel++) {
             if (0 != data.apply((x, y) -> x & y, new UnsignedByte((byte) mask)).unsignedDataType) {
-                int x = coordX + xPixel;
-                int y = coordY + yLine.unsignedDataType;
-                /* Check if a collision occurred */
-                if (screenMemory.read(x, y)) this.registers.poke(0xF, new UnsignedByte((byte) 1));
+                int x = xCoordinate + xPixel;
+                int y = yCoordinate + yLine.unsignedDataType;
+
+                setCollisionRegister(x, y);
+
                 /* Set the pixel */
                 screenMemory.write(x, y, !screenMemory.read(x, y));
             }
             mask = mask >> 1;
         }
+    }
+
+    private void setCollisionRegister(int x, int y) {
+        if (screenMemory.read(x, y)) this.registers.poke(0xF, new UnsignedByte((byte) 1));
     }
 
     /**
@@ -653,7 +659,7 @@ public class CentralProcessingUnit implements Debuggable {
      * @param unsignedByte The number
      */
     private void randomAND(int Vx, UnsignedByte unsignedByte) {
-        opCodeString += "V" + Integer.toHexString(Vx) + "=rand()&" + unsignedByte.unsignedDataType;
+        opCodeString += "V" + toHexString(Vx) + "=rand()&" + unsignedByte.unsignedDataType;
 
         UnsignedByte result = unsignedByte.apply((x, y) -> x & y, new UnsignedByte((byte) random.nextInt(255)));
         this.getRegisters().poke(Vx, result);
@@ -665,7 +671,7 @@ public class CentralProcessingUnit implements Debuggable {
      * @param address The new address of the I register
      */
     private void setAddress(UnsignedShort address) {
-        opCodeString += "I = " + Integer.toHexString(address.unsignedDataType);
+        opCodeString += "I = " + toHexString(address.unsignedDataType);
 
         this.addressRegister.setAddress(address);
     }
@@ -676,7 +682,7 @@ public class CentralProcessingUnit implements Debuggable {
      * @param address The new address of the {@link ProgramCounter}
      */
     private void setPC(UnsignedShort address) {
-        opCodeString += "PC=V0+" + Integer.toHexString(address.unsignedDataType);
+        opCodeString += "PC=V0+" + toHexString(address.unsignedDataType);
 
         UnsignedShort result = this.getRegisters().peek(0).apply((x, y) -> x + y, address);
         this.getProgramCounter().jumpTo(result);
@@ -689,7 +695,7 @@ public class CentralProcessingUnit implements Debuggable {
      * @param unsignedByte The unsigned byte to be written into the register
      */
     private void setRegister(int Vx, UnsignedByte unsignedByte) {
-        opCodeString += "V" + Integer.toHexString(Vx) + " = " + Integer.toHexString(unsignedByte.unsignedDataType);
+        opCodeString += "V" + toHexString(Vx) + " = " + toHexString(unsignedByte.unsignedDataType);
 
         registers.poke(Vx, unsignedByte);
     }
@@ -701,7 +707,7 @@ public class CentralProcessingUnit implements Debuggable {
      * @param unsignedByte The unsigned byte to be added to the register
      */
     private void addRegister(int Vx, UnsignedByte unsignedByte) {
-        opCodeString += "V" + Integer.toHexString(Vx) + " += " + Integer.toHexString(unsignedByte.unsignedDataType);
+        opCodeString += "V" + toHexString(Vx) + " += " + toHexString(unsignedByte.unsignedDataType);
 
         registers.poke(Vx, registers.peek(Vx).apply((x, y) -> x + y, unsignedByte));
     }
@@ -713,19 +719,25 @@ public class CentralProcessingUnit implements Debuggable {
      * @param Vy The register which value will replace the one in Vx
      */
     private void assign(int Vx, int Vy) {
-        opCodeString += "V" + Integer.toHexString(Vx) + "=V" + Integer.toHexString(Vy);
+        opCodeString += "V" + toHexString(Vx) + "=V" + toHexString(Vy);
 
         registers.poke(Vx, registers.peek(Vy));
     }
 
-    private void assignLogicOperation(String operation, int Vx, int Vy){
+    private void assignLogicOperation(String operation, int Vx, int Vy) {
         opCodeString += createLogicOpOpCodeString(operation, Vx, Vy);
         UnsignedByte result;
 
-        switch (operation){
-            case "|": result = registers.peek(Vx).apply((x, y) -> x | y, registers.peek(Vy)); break;
-            case "&": result = registers.peek(Vx).apply((x, y) -> x & y, registers.peek(Vy)); break;
-            default:  result = registers.peek(Vx).apply((x, y) -> x ^ y, registers.peek(Vy)); break; // "^"
+        switch (operation) {
+            case "|":
+                result = registers.peek(Vx).apply((x, y) -> x | y, registers.peek(Vy));
+                break;
+            case "&":
+                result = registers.peek(Vx).apply((x, y) -> x & y, registers.peek(Vy));
+                break;
+            default: // "^"
+                result = registers.peek(Vx).apply((x, y) -> x ^ y, registers.peek(Vy));
+                break;
         }
 
         registers.poke(Vx, result);
@@ -766,7 +778,7 @@ public class CentralProcessingUnit implements Debuggable {
         registers.poke(Vz, registers.peek(Vx).apply((x, y) -> x - y, registers.peek(Vy)));
     }
 
-    private boolean overFlowed(int value){
+    private boolean overFlowed(int value) {
         return (value < 0 || value > 255);
     }
 
@@ -776,7 +788,7 @@ public class CentralProcessingUnit implements Debuggable {
      * @param Vx The index of the register
      */
     private void shiftRight(int Vx) {
-        opCodeString += "V" + Integer.toHexString(Vx) + " >> 1";
+        opCodeString += "V" + toHexString(Vx) + " >> 1";
 
         /* Calc flag and result */
         UnsignedByte leastSignificantBit = registers.peek(Vx).apply(x -> x & 1);
@@ -792,7 +804,7 @@ public class CentralProcessingUnit implements Debuggable {
      * @param Vx The index of the register
      */
     private void shiftLeft(int Vx) {
-        opCodeString += "V" + Integer.toHexString(Vx) + " << 1";
+        opCodeString += "V" + toHexString(Vx) + " << 1";
 
         /* Calc flag and result */
         UnsignedByte mostSignificantBit = registers.peek(Vx).apply(x -> (x & 0x80) >> 7);
@@ -809,7 +821,7 @@ public class CentralProcessingUnit implements Debuggable {
      * @param unsignedByte The value to be compared
      */
     private void skipIfNotEqual(int Vx, UnsignedByte unsignedByte) {
-        opCodeString += "if(V" + Integer.toHexString(Vx) + "!=" + Integer.toHexString(unsignedByte.unsignedDataType) + ")";
+        opCodeString += "if(V" + toHexString(Vx) + "!=" + toHexString(unsignedByte.unsignedDataType) + ")";
 
         UnsignedByte registerValue = registers.peek(Vx);
 
@@ -823,7 +835,7 @@ public class CentralProcessingUnit implements Debuggable {
      * @param unsignedByte The value to be compared
      */
     private void skipIfEqual(int Vx, UnsignedByte unsignedByte) {
-        opCodeString += "if(V" + Integer.toHexString(Vx) + "==" + Integer.toHexString(unsignedByte.unsignedDataType) + ")";
+        opCodeString += "if(V" + toHexString(Vx) + "==" + toHexString(unsignedByte.unsignedDataType) + ")";
 
         UnsignedByte registerValue = registers.peek(Vx);
 
@@ -837,7 +849,7 @@ public class CentralProcessingUnit implements Debuggable {
      * @param Vy The index of the register
      */
     private void skipIfEqualReg(int Vx, int Vy) {
-        opCodeString += "if(V" + Integer.toHexString(Vx) + "==V" + Integer.toHexString(Vy) + ")";
+        opCodeString += "if(V" + toHexString(Vx) + "==V" + toHexString(Vy) + ")";
 
         if (registers.peek(Vx).equals(registers.peek(Vy))) programCounter.incrementCounterN(2);
     }
@@ -849,7 +861,7 @@ public class CentralProcessingUnit implements Debuggable {
      * @param Vy The index of the register
      */
     private void skipIfNotEqualReg(int Vx, int Vy) {
-        opCodeString += "if(V" + Integer.toHexString(Vx) + "!=V" + Integer.toHexString(Vy) + ")";
+        opCodeString += "if(V" + toHexString(Vx) + "!=V" + toHexString(Vy) + ")";
 
         if (!registers.peek(Vx).equals(registers.peek(Vy))) programCounter.incrementCounterN(2);
     }
@@ -860,7 +872,7 @@ public class CentralProcessingUnit implements Debuggable {
      * @param address The address at which the subroutine to be called is located
      */
     private void callSubRoutine(int address) {
-        opCodeString += "*(0x" + Integer.toHexString(address) + ")()";
+        opCodeString += "*(0x" + toHexString(address) + ")()";
 
         /* Save current PC on the stack */
         stack.push(programCounter.getCounter());
@@ -875,7 +887,7 @@ public class CentralProcessingUnit implements Debuggable {
      * @param address The Address to go to
      */
     private void gotoOp(int address) {
-        opCodeString += "goto " + Integer.toHexString(address) + ";";
+        opCodeString += "goto " + toHexString(address) + ";";
         programCounter.jumpTo(new UnsignedShort((short) address));
     }
 

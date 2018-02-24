@@ -130,12 +130,12 @@ public class MainController {
         };
     }
 
-    private void replaced(Change change){
+    private void replaced(Change change) {
         if (change.isReplaced() && change.getText().matches("[^0-9]"))
             change.setText(change.getControlText().substring(change.getRangeStart(), change.getRangeEnd()));
     }
 
-    private void changed(Change change){
+    private void changed(Change change) {
         if (change.isAdded()) {
             if (change.getControlText().contains(".")) {
                 if (change.getText().matches("[^0-9]")) change.setText("");

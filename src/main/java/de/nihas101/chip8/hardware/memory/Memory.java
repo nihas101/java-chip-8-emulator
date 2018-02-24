@@ -286,7 +286,7 @@ public class Memory implements Debuggable {
         writeCharacter(75, f);
     }
 
-    private UnsignedByte[] setupCharacter(byte one, byte two, byte three, byte four, byte five){
+    private UnsignedByte[] setupCharacter(byte one, byte two, byte three, byte four, byte five) {
         return new UnsignedByte[]{
                 new UnsignedByte(one),
                 new UnsignedByte(two),
