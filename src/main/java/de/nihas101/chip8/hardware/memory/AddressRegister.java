@@ -13,7 +13,7 @@ public class AddressRegister implements Debuggable {
     private UnsignedShort address;
 
     public AddressRegister() {
-        this.address = new UnsignedShort((short) 0);
+        this.address = new UnsignedShort(0);
     }
 
     public AddressRegister(UnsignedShort address) {

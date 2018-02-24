@@ -1,11 +1,14 @@
 package de.nihas101.chip8.unsignedDataTypes;
 
+import static java.lang.Short.toUnsignedInt;
+
 /**
  * Represents an unsigned short
  */
 public class UnsignedShort extends UnsignedDataType {
-    public UnsignedShort(short signedShort) {
-        super(Short.toUnsignedInt(signedShort));
+    public UnsignedShort(int signedShort) {
+        super(toUnsignedInt((short) signedShort));
+        overflow = (signedShort < 0 || signedShort > 65535);
     }
 
     /**
@@ -15,6 +18,6 @@ public class UnsignedShort extends UnsignedDataType {
      * @return The result of the operation
      */
     public UnsignedShort apply(UnaryOperation unaryOperation) {
-        return new UnsignedShort((short) unaryOperation.operation(this.unsignedDataType));
+        return new UnsignedShort(unaryOperation.operation(this.unsignedDataType));
     }
 }

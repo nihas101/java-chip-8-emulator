@@ -39,7 +39,7 @@ public class CentralProcessingUnitTest {
                 new ScreenMemory(),
                 new Registers(),
                 new AddressRegister(),
-                new ProgramCounter(new UnsignedShort((short) 0)),
+                new ProgramCounter(new UnsignedShort(0)),
                 new Chip8Stack(new Stack<>()),
                 new Timer("Timer"),
                 new DelayTimer() {
@@ -87,7 +87,7 @@ public class CentralProcessingUnitTest {
         byte topByte = (byte) ((opcode & 0xff00) >> 8);
         byte bottomByte = (byte) (opcode & 0x00ff);
 
-        this.cpu.getStack().push(new UnsignedShort((short) 0x321));
+        this.cpu.getStack().push(new UnsignedShort(0x321));
 
         memory.write(0, new UnsignedByte(topByte));
         memory.write(1, new UnsignedByte(bottomByte));
@@ -117,7 +117,7 @@ public class CentralProcessingUnitTest {
             fail(e.getMessage());
         }
 
-        assertEquals(new UnsignedShort((short) 0x123), cpu.getProgramCounter().getCounter());
+        assertEquals(new UnsignedShort(0x123), cpu.getProgramCounter().getCounter());
     }
 
     @Test
@@ -126,7 +126,7 @@ public class CentralProcessingUnitTest {
         byte topByte = (byte) ((opcode & 0xff00) >> 8);
         byte bottomByte = (byte) (opcode & 0x00ff);
 
-        cpu.getProgramCounter().jumpTo(new UnsignedShort((short) 0x01FF));
+        cpu.getProgramCounter().jumpTo(new UnsignedShort(0x01FF));
 
         memory.write(0x01FF, new UnsignedByte(topByte));
         memory.write(0x0200, new UnsignedByte(bottomByte));
@@ -138,8 +138,8 @@ public class CentralProcessingUnitTest {
         }
 
         // 0x01FF + 0x0002 = 0x0201
-        assertEquals(new UnsignedShort((short) 0x0201), cpu.getStack().pop());
-        assertEquals(new UnsignedShort((short) 0x0123), cpu.getProgramCounter().getCounter());
+        assertEquals(new UnsignedShort(0x0201), cpu.getStack().pop());
+        assertEquals(new UnsignedShort(0x0123), cpu.getProgramCounter().getCounter());
     }
 
     @Test
@@ -151,7 +151,7 @@ public class CentralProcessingUnitTest {
         memory.write(0, new UnsignedByte(topByte));
         memory.write(1, new UnsignedByte(bottomByte));
 
-        cpu.getRegisters().poke(0, new UnsignedByte((byte) 2));
+        cpu.getRegisters().poke(0, new UnsignedByte(2));
 
         try {
             cpu.decodeNextOpCode();
@@ -159,7 +159,7 @@ public class CentralProcessingUnitTest {
             fail(e.getMessage());
         }
 
-        assertEquals(new UnsignedShort((short) 4), cpu.getProgramCounter().getCounter());
+        assertEquals(new UnsignedShort(4), cpu.getProgramCounter().getCounter());
     }
 
     @Test
@@ -171,7 +171,7 @@ public class CentralProcessingUnitTest {
         memory.write(0, new UnsignedByte(topByte));
         memory.write(1, new UnsignedByte(bottomByte));
 
-        cpu.getRegisters().poke(2, new UnsignedByte((byte) 2));
+        cpu.getRegisters().poke(2, new UnsignedByte(2));
 
         try {
             cpu.decodeNextOpCode();
@@ -180,7 +180,7 @@ public class CentralProcessingUnitTest {
             fail(e.getMessage());
         }
 
-        assertEquals(new UnsignedShort((short) 4), cpu.getProgramCounter().getCounter());
+        assertEquals(new UnsignedShort(4), cpu.getProgramCounter().getCounter());
     }
 
     @Test
@@ -189,8 +189,8 @@ public class CentralProcessingUnitTest {
         byte topByte = (byte) ((opcode & 0xff00) >> 8);
         byte bottomByte = (byte) (opcode & 0x00ff);
 
-        cpu.getRegisters().poke(2, new UnsignedByte((byte) 1));
-        cpu.getRegisters().poke(3, new UnsignedByte((byte) 1));
+        cpu.getRegisters().poke(2, new UnsignedByte(1));
+        cpu.getRegisters().poke(3, new UnsignedByte(1));
 
         memory.write(0, new UnsignedByte(topByte));
         memory.write(1, new UnsignedByte(bottomByte));
@@ -201,7 +201,7 @@ public class CentralProcessingUnitTest {
             fail(e.getMessage());
         }
 
-        assertEquals(new UnsignedShort((short) 4), cpu.getProgramCounter().getCounter());
+        assertEquals(new UnsignedShort(4), cpu.getProgramCounter().getCounter());
     }
 
     @Test
@@ -210,7 +210,7 @@ public class CentralProcessingUnitTest {
         byte topByte = (byte) ((opcode & 0xff00) >> 8);
         byte bottomByte = (byte) (opcode & 0x00ff);
 
-        cpu.getRegisters().poke(5, new UnsignedByte((byte) 100));
+        cpu.getRegisters().poke(5, new UnsignedByte(100));
 
         memory.write(0, new UnsignedByte(topByte));
         memory.write(1, new UnsignedByte(bottomByte));
@@ -221,7 +221,7 @@ public class CentralProcessingUnitTest {
             fail(e.getMessage());
         }
 
-        assertEquals(new UnsignedByte((byte) 0x512), cpu.getRegisters().peek(5));
+        assertEquals(new UnsignedByte(0x512), cpu.getRegisters().peek(5));
     }
 
     @Test
@@ -230,7 +230,7 @@ public class CentralProcessingUnitTest {
         byte topByte = (byte) ((opcode & 0xff00) >> 8);
         byte bottomByte = (byte) (opcode & 0x00ff);
 
-        cpu.getRegisters().poke(7, new UnsignedByte((byte) 100));
+        cpu.getRegisters().poke(7, new UnsignedByte(100));
 
         memory.write(0, new UnsignedByte(topByte));
         memory.write(1, new UnsignedByte(bottomByte));
@@ -241,7 +241,7 @@ public class CentralProcessingUnitTest {
             fail(e.getMessage());
         }
 
-        assertEquals(new UnsignedByte((byte) 101), cpu.getRegisters().peek(7));
+        assertEquals(new UnsignedByte(101), cpu.getRegisters().peek(7));
     }
 
     @Test
@@ -250,8 +250,8 @@ public class CentralProcessingUnitTest {
         byte topByte = (byte) ((opcode & 0xff00) >> 8);
         byte bottomByte = (byte) (opcode & 0x00ff);
 
-        cpu.getRegisters().poke(7, new UnsignedByte((byte) 90));
-        cpu.getRegisters().poke(8, new UnsignedByte((byte) 101));
+        cpu.getRegisters().poke(7, new UnsignedByte(90));
+        cpu.getRegisters().poke(8, new UnsignedByte(101));
 
         memory.write(0, new UnsignedByte(topByte));
         memory.write(1, new UnsignedByte(bottomByte));
@@ -262,7 +262,7 @@ public class CentralProcessingUnitTest {
             fail(e.getMessage());
         }
 
-        assertEquals(new UnsignedByte((byte) 101), cpu.getRegisters().peek(7));
+        assertEquals(new UnsignedByte(101), cpu.getRegisters().peek(7));
     }
 
     @Test
@@ -271,8 +271,8 @@ public class CentralProcessingUnitTest {
         byte topByte = (byte) ((opcode & 0xff00) >> 8);
         byte bottomByte = (byte) (opcode & 0x00ff);
 
-        cpu.getRegisters().poke(0x9, new UnsignedByte((byte) 0b110));
-        cpu.getRegisters().poke(0xA, new UnsignedByte((byte) 0b001));
+        cpu.getRegisters().poke(0x9, new UnsignedByte(0b110));
+        cpu.getRegisters().poke(0xA, new UnsignedByte(0b001));
 
         memory.write(0, new UnsignedByte(topByte));
         memory.write(1, new UnsignedByte(bottomByte));
@@ -283,7 +283,7 @@ public class CentralProcessingUnitTest {
             fail(e.getMessage());
         }
 
-        assertEquals(new UnsignedByte((byte) 0b111), cpu.getRegisters().peek(9));
+        assertEquals(new UnsignedByte(0b111), cpu.getRegisters().peek(9));
     }
 
     @Test
@@ -295,8 +295,8 @@ public class CentralProcessingUnitTest {
         memory.write(0, new UnsignedByte(topByte));
         memory.write(1, new UnsignedByte(bottomByte));
 
-        cpu.getRegisters().poke(0xB, new UnsignedByte((byte) 0b110));
-        cpu.getRegisters().poke(0xC, new UnsignedByte((byte) 0b101));
+        cpu.getRegisters().poke(0xB, new UnsignedByte(0b110));
+        cpu.getRegisters().poke(0xC, new UnsignedByte(0b101));
 
         try {
             cpu.decodeNextOpCode();
@@ -304,7 +304,7 @@ public class CentralProcessingUnitTest {
             fail(e.getMessage());
         }
 
-        assertEquals(new UnsignedByte((byte) 0b100), cpu.getRegisters().peek(0xB));
+        assertEquals(new UnsignedByte(0b100), cpu.getRegisters().peek(0xB));
     }
 
     @Test
@@ -313,8 +313,8 @@ public class CentralProcessingUnitTest {
         byte topByte = (byte) ((opcode & 0xff00) >> 8);
         byte bottomByte = (byte) (opcode & 0x00ff);
 
-        cpu.getRegisters().poke(0xD, new UnsignedByte((byte) 0b110));
-        cpu.getRegisters().poke(0xE, new UnsignedByte((byte) 0b101));
+        cpu.getRegisters().poke(0xD, new UnsignedByte(0b110));
+        cpu.getRegisters().poke(0xE, new UnsignedByte(0b101));
 
         memory.write(0, new UnsignedByte(topByte));
         memory.write(1, new UnsignedByte(bottomByte));
@@ -325,7 +325,7 @@ public class CentralProcessingUnitTest {
             fail(e.getMessage());
         }
 
-        assertEquals(new UnsignedByte((byte) 0b011), cpu.getRegisters().peek(0xD));
+        assertEquals(new UnsignedByte(0b011), cpu.getRegisters().peek(0xD));
     }
 
     @Test
@@ -346,8 +346,8 @@ public class CentralProcessingUnitTest {
             fail(e.getMessage());
         }
 
-        assertEquals(new UnsignedByte((byte) 0b010), cpu.getRegisters().peek(0xD));
-        assertEquals(new UnsignedByte((byte) 0), cpu.getRegisters().peek(0xF));
+        assertEquals(new UnsignedByte(0b010), cpu.getRegisters().peek(0xD));
+        assertEquals(new UnsignedByte(0), cpu.getRegisters().peek(0xF));
     }
 
     @Test
@@ -356,8 +356,8 @@ public class CentralProcessingUnitTest {
         byte topByte = (byte) ((opcode & 0xff00) >> 8);
         byte bottomByte = (byte) (opcode & 0x00ff);
 
-        cpu.getRegisters().poke(0xD, new UnsignedByte((byte) 0xFF));
-        cpu.getRegisters().poke(0xE, new UnsignedByte((byte) 0x01));
+        cpu.getRegisters().poke(0xD, new UnsignedByte(0xFF));
+        cpu.getRegisters().poke(0xE, new UnsignedByte(0x01));
 
         memory.write(0, new UnsignedByte(topByte));
         memory.write(1, new UnsignedByte(bottomByte));
@@ -369,8 +369,8 @@ public class CentralProcessingUnitTest {
             fail(e.getMessage());
         }
 
-        assertEquals(new UnsignedByte((byte) 0), cpu.getRegisters().peek(0xD));
-        assertEquals(new UnsignedByte((byte) 1), cpu.getRegisters().peek(0xF));
+        assertEquals(new UnsignedByte(0), cpu.getRegisters().peek(0xD));
+        assertEquals(new UnsignedByte(1), cpu.getRegisters().peek(0xF));
     }
 
     @Test
@@ -379,8 +379,8 @@ public class CentralProcessingUnitTest {
         byte topByte = (byte) ((opcode & 0xff00) >> 8);
         byte bottomByte = (byte) (opcode & 0x00ff);
 
-        cpu.getRegisters().poke(0x0, new UnsignedByte((byte) 0x01));
-        cpu.getRegisters().poke(0x1, new UnsignedByte((byte) 0x02));
+        cpu.getRegisters().poke(0x0, new UnsignedByte(0x01));
+        cpu.getRegisters().poke(0x1, new UnsignedByte(0x02));
 
         memory.write(0, new UnsignedByte(topByte));
         memory.write(1, new UnsignedByte(bottomByte));
@@ -391,8 +391,8 @@ public class CentralProcessingUnitTest {
             fail(e.getMessage());
         }
 
-        assertEquals(new UnsignedByte((byte) 0xFF), cpu.getRegisters().peek(0x0));
-        assertEquals(new UnsignedByte((byte) 0), cpu.getRegisters().peek(0xF));
+        assertEquals(new UnsignedByte(0xFF), cpu.getRegisters().peek(0x0));
+        assertEquals(new UnsignedByte(0), cpu.getRegisters().peek(0xF));
     }
 
     @Test
@@ -401,8 +401,8 @@ public class CentralProcessingUnitTest {
         byte topByte = (byte) ((opcode & 0xff00) >> 8);
         byte bottomByte = (byte) (opcode & 0x00ff);
 
-        cpu.getRegisters().poke(0x0, new UnsignedByte((byte) 0x01));
-        cpu.getRegisters().poke(0x1, new UnsignedByte((byte) 0x01));
+        cpu.getRegisters().poke(0x0, new UnsignedByte(0x01));
+        cpu.getRegisters().poke(0x1, new UnsignedByte(0x01));
 
         memory.write(0, new UnsignedByte(topByte));
         memory.write(1, new UnsignedByte(bottomByte));
@@ -413,8 +413,8 @@ public class CentralProcessingUnitTest {
             fail(e.getMessage());
         }
 
-        assertEquals(new UnsignedByte((byte) 0), cpu.getRegisters().peek(0x0));
-        assertEquals(new UnsignedByte((byte) 1), cpu.getRegisters().peek(0xF));
+        assertEquals(new UnsignedByte(0), cpu.getRegisters().peek(0x0));
+        assertEquals(new UnsignedByte(1), cpu.getRegisters().peek(0xF));
     }
 
     @Test
@@ -423,7 +423,7 @@ public class CentralProcessingUnitTest {
         byte topByte = (byte) ((opcode & 0xff00) >> 8);
         byte bottomByte = (byte) (opcode & 0x00ff);
 
-        cpu.getRegisters().poke(0x1, new UnsignedByte((byte) 0x0F));
+        cpu.getRegisters().poke(0x1, new UnsignedByte(0x0F));
 
         memory.write(0, new UnsignedByte(topByte));
         memory.write(1, new UnsignedByte(bottomByte));
@@ -434,8 +434,8 @@ public class CentralProcessingUnitTest {
             fail(e.getMessage());
         }
 
-        assertEquals(new UnsignedByte((byte) (0x0F >> 1)), cpu.getRegisters().peek(0x1));
-        assertEquals(new UnsignedByte((byte) 0x1), cpu.getRegisters().peek(0xF));
+        assertEquals(new UnsignedByte((0x0F >> 1)), cpu.getRegisters().peek(0x1));
+        assertEquals(new UnsignedByte(0x1), cpu.getRegisters().peek(0xF));
     }
 
     @Test
@@ -444,8 +444,8 @@ public class CentralProcessingUnitTest {
         byte topByte = (byte) ((opcode & 0xff00) >> 8);
         byte bottomByte = (byte) (opcode & 0x00ff);
 
-        cpu.getRegisters().poke(0x3, new UnsignedByte((byte) 0x01));
-        cpu.getRegisters().poke(0x2, new UnsignedByte((byte) 0x0F));
+        cpu.getRegisters().poke(0x3, new UnsignedByte(0x01));
+        cpu.getRegisters().poke(0x2, new UnsignedByte(0x0F));
 
         memory.write(0, new UnsignedByte(topByte));
         memory.write(1, new UnsignedByte(bottomByte));
@@ -456,8 +456,8 @@ public class CentralProcessingUnitTest {
             fail(e.getMessage());
         }
 
-        assertEquals(new UnsignedByte((byte) (0x01 - 0x0F)), cpu.getRegisters().peek(0x2));
-        assertEquals(new UnsignedByte((byte) 0x0), cpu.getRegisters().peek(0xF));
+        assertEquals(new UnsignedByte((0x01 - 0x0F)), cpu.getRegisters().peek(0x2));
+        assertEquals(new UnsignedByte(0x0), cpu.getRegisters().peek(0xF));
     }
 
     @Test
@@ -466,8 +466,8 @@ public class CentralProcessingUnitTest {
         byte topByte = (byte) ((opcode & 0xff00) >> 8);
         byte bottomByte = (byte) (opcode & 0x00ff);
 
-        cpu.getRegisters().poke(0x3, new UnsignedByte((byte) 0x0F));
-        cpu.getRegisters().poke(0x2, new UnsignedByte((byte) 0x01));
+        cpu.getRegisters().poke(0x3, new UnsignedByte(0x0F));
+        cpu.getRegisters().poke(0x2, new UnsignedByte(0x01));
 
         memory.write(0, new UnsignedByte(topByte));
         memory.write(1, new UnsignedByte(bottomByte));
@@ -478,8 +478,8 @@ public class CentralProcessingUnitTest {
             fail(e.getMessage());
         }
 
-        assertEquals(new UnsignedByte((byte) 0x0E), cpu.getRegisters().peek(0x2));
-        assertEquals(new UnsignedByte((byte) 0x1), cpu.getRegisters().peek(0xF));
+        assertEquals(new UnsignedByte(0x0E), cpu.getRegisters().peek(0x2));
+        assertEquals(new UnsignedByte(0x1), cpu.getRegisters().peek(0xF));
     }
 
     @Test
@@ -488,7 +488,7 @@ public class CentralProcessingUnitTest {
         byte topByte = (byte) ((opcode & 0xff00) >> 8);
         byte bottomByte = (byte) (opcode & 0x00ff);
 
-        cpu.getRegisters().poke(0x3, new UnsignedByte((byte) 0xFF));
+        cpu.getRegisters().poke(0x3, new UnsignedByte(0xFF));
 
         memory.write(0, new UnsignedByte(topByte));
         memory.write(1, new UnsignedByte(bottomByte));
@@ -499,8 +499,8 @@ public class CentralProcessingUnitTest {
             fail(e.getMessage());
         }
 
-        assertEquals(new UnsignedByte((byte) 0xFE), cpu.getRegisters().peek(0x3));
-        assertEquals(new UnsignedByte((byte) 0x1), cpu.getRegisters().peek(0xF));
+        assertEquals(new UnsignedByte(0xFE), cpu.getRegisters().peek(0x3));
+        assertEquals(new UnsignedByte(0x1), cpu.getRegisters().peek(0xF));
     }
 
     @Test
@@ -509,8 +509,8 @@ public class CentralProcessingUnitTest {
         byte topByte = (byte) ((opcode & 0xff00) >> 8);
         byte bottomByte = (byte) (opcode & 0x00ff);
 
-        cpu.getRegisters().poke(0x4, new UnsignedByte((byte) 0x0F));
-        cpu.getRegisters().poke(0x5, new UnsignedByte((byte) 0x0E));
+        cpu.getRegisters().poke(0x4, new UnsignedByte(0x0F));
+        cpu.getRegisters().poke(0x5, new UnsignedByte(0x0E));
 
         memory.write(0, new UnsignedByte(topByte));
         memory.write(1, new UnsignedByte(bottomByte));
@@ -521,7 +521,7 @@ public class CentralProcessingUnitTest {
             fail(e.getMessage());
         }
 
-        assertEquals(new UnsignedShort((short) 4), cpu.getProgramCounter().getCounter());
+        assertEquals(new UnsignedShort(4), cpu.getProgramCounter().getCounter());
     }
 
     @Test
@@ -539,7 +539,7 @@ public class CentralProcessingUnitTest {
             fail(e.getMessage());
         }
 
-        assertEquals(new UnsignedShort((short) 0x123), cpu.getAddressRegister().getAddress());
+        assertEquals(new UnsignedShort(0x123), cpu.getAddressRegister().getAddress());
     }
 
     @Test
@@ -548,7 +548,7 @@ public class CentralProcessingUnitTest {
         byte topByte = (byte) ((opcode & 0xff00) >> 8);
         byte bottomByte = (byte) (opcode & 0x00ff);
 
-        cpu.getRegisters().poke(0, new UnsignedByte((byte) 0x03));
+        cpu.getRegisters().poke(0, new UnsignedByte(0x03));
 
         memory.write(0, new UnsignedByte(topByte));
         memory.write(1, new UnsignedByte(bottomByte));
@@ -559,7 +559,7 @@ public class CentralProcessingUnitTest {
             fail(e.getMessage());
         }
 
-        assertEquals(new UnsignedShort((short) 0x126), cpu.getProgramCounter().getCounter());
+        assertEquals(new UnsignedShort(0x126), cpu.getProgramCounter().getCounter());
     }
 
     @Test
@@ -577,7 +577,7 @@ public class CentralProcessingUnitTest {
             fail(e.getMessage());
         }
 
-        assertEquals(new UnsignedByte((byte) (0x12 & random.nextInt(255))), cpu.getRegisters().peek(5));
+        assertEquals(new UnsignedByte((0x12 & random.nextInt(255))), cpu.getRegisters().peek(5));
     }
 
     @Test
@@ -586,24 +586,24 @@ public class CentralProcessingUnitTest {
         byte topByte = (byte) ((opcode & 0xff00) >> 8);
         byte bottomByte = (byte) (opcode & 0x00ff);
 
-        cpu.getRegisters().poke(0x0, new UnsignedByte((byte) 0));
-        cpu.getRegisters().poke(0x1, new UnsignedByte((byte) 0));
+        cpu.getRegisters().poke(0x0, new UnsignedByte(0));
+        cpu.getRegisters().poke(0x1, new UnsignedByte(0));
 
         memory.write(0, new UnsignedByte(topByte));
         memory.write(1, new UnsignedByte(bottomByte));
         /* Set memory for sprite to display */
-        memory.write(0x200, new UnsignedByte((byte) 0xFF));
-        memory.write(0x201, new UnsignedByte((byte) 0xF0));
-        memory.write(0x202, new UnsignedByte((byte) 0xFF));
-        memory.write(0x203, new UnsignedByte((byte) 0xF0));
-        memory.write(0x204, new UnsignedByte((byte) 0xFF));
-        memory.write(0x205, new UnsignedByte((byte) 0XF0));
-        memory.write(0x206, new UnsignedByte((byte) 0xFF));
-        memory.write(0x207, new UnsignedByte((byte) 0xF0));
-        memory.write(0x208, new UnsignedByte((byte) 0xFF));
-        memory.write(0x209, new UnsignedByte((byte) 0xF0));
-        memory.write(0x20A, new UnsignedByte((byte) 0xFF));
-        cpu.getAddressRegister().setAddress(new UnsignedShort((short) 0x200));
+        memory.write(0x200, new UnsignedByte(0xFF));
+        memory.write(0x201, new UnsignedByte(0xF0));
+        memory.write(0x202, new UnsignedByte(0xFF));
+        memory.write(0x203, new UnsignedByte(0xF0));
+        memory.write(0x204, new UnsignedByte(0xFF));
+        memory.write(0x205, new UnsignedByte(0XF0));
+        memory.write(0x206, new UnsignedByte(0xFF));
+        memory.write(0x207, new UnsignedByte(0xF0));
+        memory.write(0x208, new UnsignedByte(0xFF));
+        memory.write(0x209, new UnsignedByte(0xF0));
+        memory.write(0x20A, new UnsignedByte(0xFF));
+        cpu.getAddressRegister().setAddress(new UnsignedShort(0x200));
 
         try {
             cpu.decodeNextOpCode();
@@ -612,8 +612,8 @@ public class CentralProcessingUnitTest {
         }
 
         assertEquals(true, cpu.getScreenMemory().read(0, 0));
-        assertEquals(new UnsignedByte((byte) 0), cpu.getRegisters().peek(0xF));
-        assertEquals(new UnsignedShort((short) 0x200), cpu.getAddressRegister().getAddress());
+        assertEquals(new UnsignedByte(0), cpu.getRegisters().peek(0xF));
+        assertEquals(new UnsignedShort(0x200), cpu.getAddressRegister().getAddress());
     }
 
     @Test
@@ -628,18 +628,18 @@ public class CentralProcessingUnitTest {
         /* Write into screenmemory */
         cpu.getScreenMemory().write(0, 0, true);
         /* Set memory for sprite to display */
-        memory.write(0x200, new UnsignedByte((byte) 0xFF));
-        memory.write(0x201, new UnsignedByte((byte) 0xF0));
-        memory.write(0x202, new UnsignedByte((byte) 0xFF));
-        memory.write(0x203, new UnsignedByte((byte) 0xF0));
-        memory.write(0x204, new UnsignedByte((byte) 0xFF));
-        memory.write(0x205, new UnsignedByte((byte) 0XF0));
-        memory.write(0x206, new UnsignedByte((byte) 0xFF));
-        memory.write(0x207, new UnsignedByte((byte) 0xF0));
-        memory.write(0x208, new UnsignedByte((byte) 0xFF));
-        memory.write(0x209, new UnsignedByte((byte) 0xF0));
-        memory.write(0x20A, new UnsignedByte((byte) 0xFF));
-        cpu.getAddressRegister().setAddress(new UnsignedShort((short) 0x200));
+        memory.write(0x200, new UnsignedByte(0xFF));
+        memory.write(0x201, new UnsignedByte(0xF0));
+        memory.write(0x202, new UnsignedByte(0xFF));
+        memory.write(0x203, new UnsignedByte(0xF0));
+        memory.write(0x204, new UnsignedByte(0xFF));
+        memory.write(0x205, new UnsignedByte(0XF0));
+        memory.write(0x206, new UnsignedByte(0xFF));
+        memory.write(0x207, new UnsignedByte(0xF0));
+        memory.write(0x208, new UnsignedByte(0xFF));
+        memory.write(0x209, new UnsignedByte(0xF0));
+        memory.write(0x20A, new UnsignedByte(0xFF));
+        cpu.getAddressRegister().setAddress(new UnsignedShort(0x200));
 
         try {
             cpu.decodeNextOpCode();
@@ -648,8 +648,8 @@ public class CentralProcessingUnitTest {
         }
 
         assertEquals(false, cpu.getScreenMemory().read(0, 0));
-        assertEquals(new UnsignedByte((byte) 1), cpu.getRegisters().peek(0xF));
-        assertEquals(new UnsignedShort((short) 0x200), cpu.getAddressRegister().getAddress());
+        assertEquals(new UnsignedByte(1), cpu.getRegisters().peek(0xF));
+        assertEquals(new UnsignedShort(0x200), cpu.getAddressRegister().getAddress());
     }
 
     @Test
@@ -660,7 +660,7 @@ public class CentralProcessingUnitTest {
 
         /* Set key and key to look for */
         this.cpu.setKeyCode(1);
-        this.cpu.getRegisters().poke(0xC, new UnsignedByte((byte) 1));
+        this.cpu.getRegisters().poke(0xC, new UnsignedByte(1));
 
         memory.write(0, new UnsignedByte(topByte));
         memory.write(1, new UnsignedByte(bottomByte));
@@ -671,7 +671,7 @@ public class CentralProcessingUnitTest {
             fail(e.getMessage());
         }
 
-        assertEquals(new UnsignedShort((short) 4), this.cpu.getProgramCounter().getCounter());
+        assertEquals(new UnsignedShort(4), this.cpu.getProgramCounter().getCounter());
     }
 
     @Test
@@ -682,7 +682,7 @@ public class CentralProcessingUnitTest {
 
         /* Set key and key to look for */
         this.cpu.setKeyCode(0);
-        this.cpu.getRegisters().poke(0xE, new UnsignedByte((byte) 1));
+        this.cpu.getRegisters().poke(0xE, new UnsignedByte(1));
 
         memory.write(0, new UnsignedByte(topByte));
         memory.write(1, new UnsignedByte(bottomByte));
@@ -693,7 +693,7 @@ public class CentralProcessingUnitTest {
             fail(e.getMessage());
         }
 
-        assertEquals(new UnsignedShort((short) 4), this.cpu.getProgramCounter().getCounter());
+        assertEquals(new UnsignedShort(4), this.cpu.getProgramCounter().getCounter());
     }
 
     @Test
@@ -796,8 +796,8 @@ public class CentralProcessingUnitTest {
         byte bottomByte = (byte) (opcode & 0x00ff);
 
         /* Setup registers */
-        this.cpu.getRegisters().poke(0x9, new UnsignedByte((byte) 10));
-        this.cpu.getAddressRegister().setAddress(new UnsignedShort((short) 0x200));
+        this.cpu.getRegisters().poke(0x9, new UnsignedByte(10));
+        this.cpu.getAddressRegister().setAddress(new UnsignedShort(0x200));
 
         memory.write(0, new UnsignedByte(topByte));
         memory.write(1, new UnsignedByte(bottomByte));
@@ -833,8 +833,8 @@ public class CentralProcessingUnitTest {
         byte topByte = (byte) ((opcode & 0xff00) >> 8);
         byte bottomByte = (byte) (opcode & 0x00ff);
 
-        this.cpu.getRegisters().poke(0x7, new UnsignedByte((byte) 123));
-        this.cpu.getAddressRegister().setAddress(new UnsignedShort((short) 0x200));
+        this.cpu.getRegisters().poke(0x7, new UnsignedByte(123));
+        this.cpu.getAddressRegister().setAddress(new UnsignedShort(0x200));
 
         memory.write(0, new UnsignedByte(topByte));
         memory.write(1, new UnsignedByte(bottomByte));
@@ -856,14 +856,14 @@ public class CentralProcessingUnitTest {
         byte topByte = (byte) ((opcode & 0xff00) >> 8);
         byte bottomByte = (byte) (opcode & 0x00ff);
 
-        this.cpu.getRegisters().poke(0, new UnsignedByte((byte) 1));
-        this.cpu.getRegisters().poke(1, new UnsignedByte((byte) 2));
-        this.cpu.getRegisters().poke(2, new UnsignedByte((byte) 3));
-        this.cpu.getRegisters().poke(3, new UnsignedByte((byte) 4));
-        this.cpu.getRegisters().poke(4, new UnsignedByte((byte) 5));
-        this.cpu.getRegisters().poke(5, new UnsignedByte((byte) 6));
+        this.cpu.getRegisters().poke(0, new UnsignedByte(1));
+        this.cpu.getRegisters().poke(1, new UnsignedByte(2));
+        this.cpu.getRegisters().poke(2, new UnsignedByte(3));
+        this.cpu.getRegisters().poke(3, new UnsignedByte(4));
+        this.cpu.getRegisters().poke(4, new UnsignedByte(5));
+        this.cpu.getRegisters().poke(5, new UnsignedByte(6));
 
-        this.cpu.getAddressRegister().setAddress(new UnsignedShort((short) 0x200));
+        this.cpu.getAddressRegister().setAddress(new UnsignedShort(0x200));
 
         memory.write(0, new UnsignedByte(topByte));
         memory.write(1, new UnsignedByte(bottomByte));
@@ -897,7 +897,7 @@ public class CentralProcessingUnitTest {
         this.memory.write(0x20B, new UnsignedByte((byte) 7));
         this.memory.write(0x20C, new UnsignedByte((byte) 8));
 
-        this.cpu.getAddressRegister().setAddress(new UnsignedShort((short) 0x205));
+        this.cpu.getAddressRegister().setAddress(new UnsignedShort(0x205));
 
         memory.write(0, new UnsignedByte(topByte));
         memory.write(1, new UnsignedByte(bottomByte));

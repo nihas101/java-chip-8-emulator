@@ -1,11 +1,14 @@
 package de.nihas101.chip8.unsignedDataTypes;
 
+import static java.lang.Byte.toUnsignedInt;
+
 /**
  * Represents an unsigned byte
  */
 public class UnsignedByte extends UnsignedDataType {
-    public UnsignedByte(byte signedByte) {
-        super(Byte.toUnsignedInt(signedByte));
+    public UnsignedByte(int signedByte) {
+        super(toUnsignedInt((byte) signedByte));
+        overflow = (signedByte < 0 || signedByte > 255);
     }
 
     /**

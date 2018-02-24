@@ -5,6 +5,7 @@ package de.nihas101.chip8.unsignedDataTypes;
  */
 public abstract class UnsignedDataType implements Comparable {
     public final int unsignedDataType;
+    protected boolean overflow = false;
 
     protected UnsignedDataType(int unsignedDataType) {
         this.unsignedDataType = unsignedDataType;
@@ -55,7 +56,7 @@ public abstract class UnsignedDataType implements Comparable {
      * @return The result of the operation
      */
     public UnsignedByte apply(BinaryOperation binaryOperation, UnsignedByte unsignedByte) {
-        return new UnsignedByte((byte) binaryOperation.operation(this.unsignedDataType, unsignedByte.unsignedDataType));
+        return new UnsignedByte(binaryOperation.operation(this.unsignedDataType, unsignedByte.unsignedDataType));
     }
 
     /**
@@ -66,6 +67,10 @@ public abstract class UnsignedDataType implements Comparable {
      * @return The result of the operation
      */
     public UnsignedShort apply(BinaryOperation binaryOperation, UnsignedShort unsignedShort) {
-        return new UnsignedShort((short) binaryOperation.operation(this.unsignedDataType, unsignedShort.unsignedDataType));
+        return new UnsignedShort(binaryOperation.operation(this.unsignedDataType, unsignedShort.unsignedDataType));
+    }
+
+    public boolean lastOperationLeadToOverflow() {
+        return overflow;
     }
 }

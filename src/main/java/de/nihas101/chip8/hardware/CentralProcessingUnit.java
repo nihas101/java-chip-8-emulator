@@ -8,6 +8,7 @@ import de.nihas101.chip8.opcodes.OPCode;
 import de.nihas101.chip8.opcodes.UnknownOPCodeException;
 import de.nihas101.chip8.unsignedDataTypes.BinaryOperation;
 import de.nihas101.chip8.unsignedDataTypes.UnsignedByte;
+import de.nihas101.chip8.unsignedDataTypes.UnsignedDataType;
 import de.nihas101.chip8.unsignedDataTypes.UnsignedShort;
 import de.nihas101.chip8.utils.RegisterAction;
 
@@ -149,9 +150,9 @@ public class CentralProcessingUnit implements Debuggable {
     public void reset() {
         cycles = 0;
         registers.clear();
-        programCounter.jumpTo(new UnsignedShort((short) 0x200));
+        programCounter.jumpTo(new UnsignedShort(0x200));
         screenMemory.reset();
-        addressRegister.setAddress(new UnsignedShort((short) 0));
+        addressRegister.setAddress(new UnsignedShort(0));
         delayTimer.reset();
         soundTimer.reset();
         stack.clear();
@@ -201,12 +202,12 @@ public class CentralProcessingUnit implements Debuggable {
                 break;
             case 0x3: {
                 /* Extract X and NN from opCode */
-                skipIfEqual(opCode.getByte(1), new UnsignedByte((byte) opCode.applyMask(0x00FF)));
+                skipIfEqual(opCode.getByte(1), new UnsignedByte(opCode.applyMask(0x00FF)));
                 break;
             }
             case 0x4: {
                 /* Extract X and NN from opCode */
-                skipIfNotEqual(opCode.getByte(1), new UnsignedByte((byte) opCode.applyMask(0x00FF)));
+                skipIfNotEqual(opCode.getByte(1), new UnsignedByte(opCode.applyMask(0x00FF)));
                 break;
             }
             case 0x5:
@@ -214,12 +215,12 @@ public class CentralProcessingUnit implements Debuggable {
                 break;
             case 0x6: {
                 /* Extract X and NN from opCode */
-                setRegister(opCode.getByte(1), new UnsignedByte((byte) opCode.applyMask(0x00FF)));
+                setRegister(opCode.getByte(1), new UnsignedByte(opCode.applyMask(0x00FF)));
                 break;
             }
             case 0x7: {
                 /* Extract X and NN from opCode */
-                addRegister(opCode.getByte(1), new UnsignedByte((byte) opCode.applyMask(0x00FF)));
+                addRegister(opCode.getByte(1), new UnsignedByte(opCode.applyMask(0x00FF)));
                 break;
             }
             case 0x8:
@@ -229,13 +230,13 @@ public class CentralProcessingUnit implements Debuggable {
                 skipIfNotEqualReg(opCode.getByte(1), opCode.getByte(2));
                 break;
             case 0xA:
-                setAddress(new UnsignedShort((short) opCode.applyMask(0x0FFF)));
+                setAddress(new UnsignedShort(opCode.applyMask(0x0FFF)));
                 break;
             case 0xB:
-                setPC(new UnsignedShort((short) opCode.applyMask(0x0FFF)));
+                setPC(new UnsignedShort(opCode.applyMask(0x0FFF)));
                 break;
             case 0xC:
-                randomAND(opCode.getByte(1), new UnsignedByte((byte) opCode.applyMask(0x00FF)));
+                randomAND(opCode.getByte(1), new UnsignedByte(opCode.applyMask(0x00FF)));
                 break;
             case 0xD:
                 drawSprite(opCode.getByte(1), opCode.getByte(2), opCode.getByte(3));
@@ -291,7 +292,7 @@ public class CentralProcessingUnit implements Debuggable {
     private void gotoSpriteAddress(int Vx) {
         opCodeString += "I=sprite_addr[" + toHexString(Vx) + "]";
         int address = this.registers.peek(Vx).apply(x -> x * 5).unsignedDataType;
-        this.addressRegister.setAddress(new UnsignedShort((short) address));
+        this.addressRegister.setAddress(new UnsignedShort(address));
     }
 
     /**
@@ -348,7 +349,7 @@ public class CentralProcessingUnit implements Debuggable {
 
     private void interactWithReg(int Vx, RegisterAction registerAction) {
         for (int i = 0; i <= Vx; i++) {
-            int address = this.addressRegister.getAddress().apply((x, y) -> x + y, new UnsignedShort((short) i)).unsignedDataType;
+            int address = this.addressRegister.getAddress().apply((x, y) -> x + y, new UnsignedShort(i)).unsignedDataType;
             registerAction.execute(address, i);
         }
     }
@@ -379,9 +380,9 @@ public class CentralProcessingUnit implements Debuggable {
 
         int decimalValue = this.registers.peek(Vx).unsignedDataType;
 
-        UnsignedByte hundreds = new UnsignedByte((byte) (decimalValue / 100));
-        UnsignedByte tens = new UnsignedByte((byte) ((decimalValue % 100) / 10));
-        UnsignedByte units = new UnsignedByte((byte) ((decimalValue % 100) % 10));
+        UnsignedByte hundreds = new UnsignedByte((decimalValue / 100));
+        UnsignedByte tens = new UnsignedByte(((decimalValue % 100) / 10));
+        UnsignedByte units = new UnsignedByte(((decimalValue % 100) % 10));
 
         this.memory.write(this.addressRegister.getAddress().unsignedDataType, hundreds);
         this.memory.write(this.addressRegister.getAddress().apply(x -> x + 1).unsignedDataType, tens);
@@ -480,7 +481,7 @@ public class CentralProcessingUnit implements Debuggable {
                 Thread.currentThread().interrupt();
             }
         }
-        this.registers.poke(Vx, new UnsignedByte((byte) keyCode));
+        this.registers.poke(Vx, new UnsignedByte(keyCode));
     }
 
     /**
@@ -581,7 +582,7 @@ public class CentralProcessingUnit implements Debuggable {
      */
     private void getDelayTimer(int Vx) {
         opCodeString += "V" + toHexString(Vx) + " = get_delay()";
-        this.getRegisters().poke(Vx, new UnsignedByte((byte) delayTimer.getValue()));
+        this.getRegisters().poke(Vx, new UnsignedByte(delayTimer.getValue()));
     }
 
     /**
@@ -620,13 +621,13 @@ public class CentralProcessingUnit implements Debuggable {
         opCodeString += "draw(V" + toHexString(Vx) + ",V" + toHexString(Vy) + "," + height + ")";
 
         /* Reset flag-register */
-        this.registers.poke(0xF, new UnsignedByte((byte) 0));
+        this.registers.poke(0xF, new UnsignedByte(0));
 
         /* Get coordinates of sprite */
         int coordX = this.registers.peek(Vx).unsignedDataType;
         int coordY = this.registers.peek(Vy).unsignedDataType;
 
-        UnsignedShort yLine = new UnsignedShort((byte) 0);
+        UnsignedShort yLine = new UnsignedShort(0);
         for (; yLine.unsignedDataType < height; yLine = yLine.apply(v -> v + 1)) {
             /* Get memory at addressRegister + yLine */
             UnsignedByte data = this.memory.read(this.addressRegister.getAddress().apply((x1, y1) -> x1 + y1, yLine).unsignedDataType);
@@ -636,7 +637,7 @@ public class CentralProcessingUnit implements Debuggable {
 
     private void drawLineOfSprite(int xCoordinate, int yCoordinate, UnsignedByte data, int mask, UnsignedShort yLine) {
         for (int xPixel = 0; xPixel < 8; xPixel++) {
-            if (0 != data.apply((x, y) -> x & y, new UnsignedByte((byte) mask)).unsignedDataType) {
+            if (0 != data.apply((x, y) -> x & y, new UnsignedByte(mask)).unsignedDataType) {
                 int x = xCoordinate + xPixel;
                 int y = yCoordinate + yLine.unsignedDataType;
 
@@ -650,7 +651,7 @@ public class CentralProcessingUnit implements Debuggable {
     }
 
     private void setCollisionRegister(int x, int y) {
-        if (screenMemory.read(x, y)) this.registers.poke(0xF, new UnsignedByte((byte) 1));
+        if (screenMemory.read(x, y)) this.registers.poke(0xF, new UnsignedByte(1));
     }
 
     /**
@@ -662,7 +663,7 @@ public class CentralProcessingUnit implements Debuggable {
     private void randomAND(int Vx, UnsignedByte unsignedByte) {
         opCodeString += "V" + toHexString(Vx) + "=rand()&" + unsignedByte.unsignedDataType;
 
-        UnsignedByte result = unsignedByte.apply((x, y) -> x & y, new UnsignedByte((byte) random.nextInt(255)));
+        UnsignedByte result = unsignedByte.apply((x, y) -> x & y, new UnsignedByte(random.nextInt(255)));
         this.getRegisters().poke(Vx, result);
     }
 
@@ -750,32 +751,25 @@ public class CentralProcessingUnit implements Debuggable {
 
         switch (operation) {
             case "+":
-                result = arithmeticOperation(
-                        Vx, Vy, (registers.peek(Vx).unsignedDataType + registers.peek(Vy).unsignedDataType),
-                        ((x, y) -> x + y), (byte) 1, (byte) 0);
+                result = arithmeticOperation(Vx, Vy, ((x, y) -> x + y), 1, 0);
                 break;
             default: // "-"
-                result = arithmeticOperation(
-                        Vx, Vy, (registers.peek(Vx).unsignedDataType - registers.peek(Vy).unsignedDataType),
-                        ((x, y) -> x - y), (byte) 0, (byte) 1);
+                result = arithmeticOperation(Vx, Vy, ((x, y) -> x - y), 0, 1);
                 break;
         }
 
         registers.poke(Vz, result);
     }
 
-    private UnsignedByte arithmeticOperation(int Vx, int Vy, int rawResult, BinaryOperation arithmeticOperation, byte onOverFlow, byte noOverFlow) {
-        setBorrowCarryFlag(rawResult, onOverFlow, noOverFlow);
-        return registers.peek(Vx).apply(arithmeticOperation, registers.peek(Vy));
+    private UnsignedByte arithmeticOperation(int Vx, int Vy, BinaryOperation arithmeticOperation, int onOverFlow, int noOverFlow) {
+        UnsignedByte unsignedByte = registers.peek(Vx).apply(arithmeticOperation, registers.peek(Vy));
+        setBorrowCarryFlag(unsignedByte, onOverFlow, noOverFlow);
+        return unsignedByte;
     }
 
-    private void setBorrowCarryFlag(int value, byte onOverFlow, byte noOverFlow) {
-        if (overFlowed(value)) registers.poke(0xF, new UnsignedByte(onOverFlow));
+    private void setBorrowCarryFlag(UnsignedDataType unsignedDataType, int onOverFlow, int noOverFlow) {
+        if (unsignedDataType.lastOperationLeadToOverflow()) registers.poke(0xF, new UnsignedByte(onOverFlow));
         else registers.poke(0xF, new UnsignedByte(noOverFlow));
-    }
-
-    private boolean overFlowed(int value) {
-        return (value < 0 || value > 255);
     }
 
     /**
@@ -874,7 +868,7 @@ public class CentralProcessingUnit implements Debuggable {
         stack.push(programCounter.getCounter());
 
         /* Update PC */
-        programCounter.jumpTo(new UnsignedShort((short) address));
+        programCounter.jumpTo(new UnsignedShort(address));
     }
 
     /**
@@ -884,7 +878,7 @@ public class CentralProcessingUnit implements Debuggable {
      */
     private void gotoOp(int address) {
         opCodeString += "goto " + toHexString(address) + ";";
-        programCounter.jumpTo(new UnsignedShort((short) address));
+        programCounter.jumpTo(new UnsignedShort(address));
     }
 
     /**

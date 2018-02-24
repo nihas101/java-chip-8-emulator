@@ -155,13 +155,13 @@ public class SaveState {
 
     private static ProgramCounter readProgramCounter(String string) {
         return new ProgramCounter(
-                new UnsignedShort((short) parseInt(unwrap(string)))
+                new UnsignedShort(parseInt(unwrap(string)))
         );
     }
 
     private static AddressRegister readAddressRegister(String string) {
         return new AddressRegister(
-                new UnsignedShort((short) parseInt(unwrap(string)))
+                new UnsignedShort(parseInt(unwrap(string)))
         );
     }
 

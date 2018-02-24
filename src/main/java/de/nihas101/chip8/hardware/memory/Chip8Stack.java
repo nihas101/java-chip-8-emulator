@@ -26,7 +26,7 @@ public class Chip8Stack implements Debuggable {
         if (strings.length == 1 && "".equals(strings[0]))
             return;
 
-        for (String string : strings) stack.push(new UnsignedShort((short) parseInt(string)));
+        for (String string : strings) stack.push(new UnsignedShort(parseInt(string)));
     }
 
     /**

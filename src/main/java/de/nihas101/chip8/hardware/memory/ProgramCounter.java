@@ -17,14 +17,14 @@ public class ProgramCounter implements Debuggable {
     }
 
     public ProgramCounter() {
-        this.count = new UnsignedShort((short) 0);
+        this.count = new UnsignedShort(0);
     }
 
     /**
      * Increments the PC by one
      */
     public void incrementCounter() {
-        this.count = new UnsignedShort((short) (this.count.unsignedDataType + 1));
+        this.count = new UnsignedShort((this.count.unsignedDataType + 1));
     }
 
     /**
@@ -33,7 +33,7 @@ public class ProgramCounter implements Debuggable {
      * @param N The value by which to increment the counter by
      */
     public void incrementCounterN(int N) {
-        this.count = new UnsignedShort((short) (this.count.unsignedDataType + N));
+        this.count = new UnsignedShort((this.count.unsignedDataType + N));
     }
 
     public UnsignedShort getCounter() {
