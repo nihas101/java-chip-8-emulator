@@ -96,194 +96,204 @@ public class Memory implements Debuggable {
     }
 
     private void setup0() {
-        UnsignedByte[] zero = new UnsignedByte[]{
-                new UnsignedByte((byte) 0b11110000),
-                new UnsignedByte((byte) 0b10010000),
-                new UnsignedByte((byte) 0b10010000),
-                new UnsignedByte((byte) 0b10010000),
-                new UnsignedByte((byte) 0b11110000)
-        };
+        UnsignedByte[] zero = setupCharacter(
+                (byte) 0b11110000,
+                (byte) 0b10010000,
+                (byte) 0b10010000,
+                (byte) 0b10010000,
+                (byte) 0b11110000
+        );
 
-        setupCharacter(0, zero);
+        writeCharacter(0, zero);
     }
 
     private void setup1() {
-        UnsignedByte[] one = new UnsignedByte[]{
-                new UnsignedByte((byte) 0b00100000),
-                new UnsignedByte((byte) 0b01100000),
-                new UnsignedByte((byte) 0b00100000),
-                new UnsignedByte((byte) 0b00100000),
-                new UnsignedByte((byte) 0b01110000)
-        };
+        UnsignedByte[] one = setupCharacter(
+                (byte) 0b00100000,
+                (byte) 0b01100000,
+                (byte) 0b00100000,
+                (byte) 0b00100000,
+                (byte) 0b01110000
+        );
 
-        setupCharacter(5, one);
+        writeCharacter(5, one);
     }
 
     private void setup2() {
-        UnsignedByte[] two = new UnsignedByte[]{
-                new UnsignedByte((byte) 0b11110000),
-                new UnsignedByte((byte) 0b00010000),
-                new UnsignedByte((byte) 0b11110000),
-                new UnsignedByte((byte) 0b10000000),
-                new UnsignedByte((byte) 0b11110000)
-        };
+        UnsignedByte[] two = setupCharacter(
+                (byte) 0b11110000,
+                (byte) 0b00010000,
+                (byte) 0b11110000,
+                (byte) 0b10000000,
+                (byte) 0b11110000
+        );
 
-        setupCharacter(10, two);
+        writeCharacter(10, two);
     }
 
     private void setup3() {
-        UnsignedByte[] three = new UnsignedByte[]{
-                new UnsignedByte((byte) 0b11110000),
-                new UnsignedByte((byte) 0b00010000),
-                new UnsignedByte((byte) 0b11110000),
-                new UnsignedByte((byte) 0b00010000),
-                new UnsignedByte((byte) 0b11110000)
-        };
+        UnsignedByte[] three = setupCharacter(
+                (byte) 0b11110000,
+                (byte) 0b00010000,
+                (byte) 0b11110000,
+                (byte) 0b00010000,
+                (byte) 0b11110000
+        );
 
-        setupCharacter(15, three);
+        writeCharacter(15, three);
     }
 
     private void setup4() {
-        UnsignedByte[] four = new UnsignedByte[]{
-                new UnsignedByte((byte) 0b10010000),
-                new UnsignedByte((byte) 0b10010000),
-                new UnsignedByte((byte) 0b11110000),
-                new UnsignedByte((byte) 0b00010000),
-                new UnsignedByte((byte) 0b00010000)
-        };
+        UnsignedByte[] four = setupCharacter(
+                (byte) 0b10010000,
+                (byte) 0b10010000,
+                (byte) 0b11110000,
+                (byte) 0b00010000,
+                (byte) 0b00010000
+        );
 
-        setupCharacter(20, four);
+        writeCharacter(20, four);
     }
 
     private void setup5() {
-        UnsignedByte[] five = new UnsignedByte[]{
-                new UnsignedByte((byte) 0b11110000),
-                new UnsignedByte((byte) 0b10000000),
-                new UnsignedByte((byte) 0b11110000),
-                new UnsignedByte((byte) 0b00010000),
-                new UnsignedByte((byte) 0b11110000)
-        };
+        UnsignedByte[] five = setupCharacter(
+                (byte) 0b11110000,
+                (byte) 0b10000000,
+                (byte) 0b11110000,
+                (byte) 0b00010000,
+                (byte) 0b11110000
+        );
 
-        setupCharacter(25, five);
+        writeCharacter(25, five);
     }
 
     private void setup6() {
-        UnsignedByte[] six = new UnsignedByte[]{
-                new UnsignedByte((byte) 0b11110000),
-                new UnsignedByte((byte) 0b10000000),
-                new UnsignedByte((byte) 0b11110000),
-                new UnsignedByte((byte) 0b10010000),
-                new UnsignedByte((byte) 0b11110000)
-        };
+        UnsignedByte[] six = setupCharacter(
+                (byte) 0b11110000,
+                (byte) 0b10000000,
+                (byte) 0b11110000,
+                (byte) 0b10010000,
+                (byte) 0b11110000
+        );
 
-        setupCharacter(30, six);
+        writeCharacter(30, six);
     }
 
     private void setup7() {
-        UnsignedByte[] seven = new UnsignedByte[]{
-                new UnsignedByte((byte) 0b11110000),
-                new UnsignedByte((byte) 0b00010000),
-                new UnsignedByte((byte) 0b00100000),
-                new UnsignedByte((byte) 0b01000000),
-                new UnsignedByte((byte) 0b01000000)
-        };
+        UnsignedByte[] seven = setupCharacter(
+                (byte) 0b11110000,
+                (byte) 0b00010000,
+                (byte) 0b00100000,
+                (byte) 0b01000000,
+                (byte) 0b01000000
+        );
 
-        setupCharacter(35, seven);
+        writeCharacter(35, seven);
     }
 
     private void setup8() {
-        UnsignedByte[] eight = new UnsignedByte[]{
-                new UnsignedByte((byte) 0b11110000),
-                new UnsignedByte((byte) 0b10010000),
-                new UnsignedByte((byte) 0b11110000),
-                new UnsignedByte((byte) 0b10010000),
-                new UnsignedByte((byte) 0b11110000)
-        };
+        UnsignedByte[] eight = setupCharacter(
+                (byte) 0b11110000,
+                (byte) 0b10010000,
+                (byte) 0b11110000,
+                (byte) 0b10010000,
+                (byte) 0b11110000
+        );
 
-        setupCharacter(40, eight);
+        writeCharacter(40, eight);
     }
 
     private void setup9() {
-        UnsignedByte[] nine = new UnsignedByte[]{
-                new UnsignedByte((byte) 0b11110000),
-                new UnsignedByte((byte) 0b10010000),
-                new UnsignedByte((byte) 0b11110000),
-                new UnsignedByte((byte) 0b00010000),
-                new UnsignedByte((byte) 0b11110000)
-        };
+        UnsignedByte[] nine = setupCharacter(
+                (byte) 0b11110000,
+                (byte) 0b10010000,
+                (byte) 0b11110000,
+                (byte) 0b00010000,
+                (byte) 0b11110000
+        );
 
-        setupCharacter(45, nine);
+        writeCharacter(45, nine);
     }
 
     private void setupA() {
-        UnsignedByte[] a = new UnsignedByte[]{
-                new UnsignedByte((byte) 0b11110000),
-                new UnsignedByte((byte) 0b10010000),
-                new UnsignedByte((byte) 0b11110000),
-                new UnsignedByte((byte) 0b10010000),
-                new UnsignedByte((byte) 0b10010000)
-        };
+        UnsignedByte[] a = setupCharacter(
+                (byte) 0b11110000,
+                (byte) 0b10010000,
+                (byte) 0b11110000,
+                (byte) 0b10010000,
+                (byte) 0b10010000
+        );
 
-        setupCharacter(50, a);
+        writeCharacter(50, a);
     }
 
     private void setupB() {
-        UnsignedByte[] b = new UnsignedByte[]{
-                new UnsignedByte((byte) 0b11100000),
-                new UnsignedByte((byte) 0b10010000),
-                new UnsignedByte((byte) 0b11100000),
-                new UnsignedByte((byte) 0b10010000),
-                new UnsignedByte((byte) 0b11100000)
-        };
+        UnsignedByte[] b = setupCharacter(
+                (byte) 0b11100000,
+                (byte) 0b10010000,
+                (byte) 0b11100000,
+                (byte) 0b10010000,
+                (byte) 0b11100000
+        );
 
-        setupCharacter(55, b);
+        writeCharacter(55, b);
     }
 
     private void setupC() {
-        UnsignedByte[] c = new UnsignedByte[]{
-                new UnsignedByte((byte) 0b11110000),
-                new UnsignedByte((byte) 0b10000000),
-                new UnsignedByte((byte) 0b10000000),
-                new UnsignedByte((byte) 0b10000000),
-                new UnsignedByte((byte) 0b11110000)
-        };
+        UnsignedByte[] c = setupCharacter(
+                (byte) 0b11110000,
+                (byte) 0b10000000,
+                (byte) 0b10000000,
+                (byte) 0b10000000,
+                (byte) 0b11110000
+        );
 
-        setupCharacter(60, c);
+        writeCharacter(60, c);
     }
 
     private void setupD() {
-        UnsignedByte[] d = new UnsignedByte[]{
-                new UnsignedByte((byte) 0b11100000),
-                new UnsignedByte((byte) 0b10010000),
-                new UnsignedByte((byte) 0b10010000),
-                new UnsignedByte((byte) 0b10010000),
-                new UnsignedByte((byte) 0b11100000)
-        };
+        UnsignedByte[] d = setupCharacter(
+                (byte) 0b11100000,
+                (byte) 0b10010000,
+                (byte) 0b10010000,
+                (byte) 0b10010000,
+                (byte) 0b11100000
+        );
 
-        setupCharacter(65, d);
+        writeCharacter(65, d);
     }
 
     private void setupE() {
-        UnsignedByte[] e = new UnsignedByte[]{
-                new UnsignedByte((byte) 0b11110000),
-                new UnsignedByte((byte) 0b10000000),
-                new UnsignedByte((byte) 0b11110000),
-                new UnsignedByte((byte) 0b10000000),
-                new UnsignedByte((byte) 0b11110000)
-        };
+        UnsignedByte[] e = setupCharacter(
+                (byte) 0b11110000,
+                (byte) 0b10000000,
+                (byte) 0b11110000,
+                (byte) 0b10000000,
+                (byte) 0b11110000
+        );
 
-        setupCharacter(70, e);
+        writeCharacter(70, e);
     }
 
     private void setupF() {
-        UnsignedByte[] f = new UnsignedByte[]{
-                new UnsignedByte((byte) 0b11110000),
-                new UnsignedByte((byte) 0b10000000),
-                new UnsignedByte((byte) 0b11110000),
-                new UnsignedByte((byte) 0b10000000),
-                new UnsignedByte((byte) 0b10000000)
+        UnsignedByte[] f = setupCharacter(
+                (byte) 0b11110000,
+                (byte) 0b10000000,
+                (byte) 0b11110000,
+                (byte) 0b10000000,
+                (byte) 0b10000000
+        );
+        writeCharacter(75, f);
+    }
+
+    private UnsignedByte[] setupCharacter(byte one, byte two, byte three, byte four, byte five){
+        return new UnsignedByte[]{
+                new UnsignedByte(one),
+                new UnsignedByte(two),
+                new UnsignedByte(three),
+                new UnsignedByte(four),
+                new UnsignedByte(five)
         };
-        setupCharacter(75, f);
     }
 
     private void writeCharacter(int startIndex, UnsignedByte[] unsignedBytes) {
