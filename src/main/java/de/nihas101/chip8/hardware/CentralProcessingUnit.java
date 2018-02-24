@@ -753,9 +753,11 @@ public class CentralProcessingUnit implements Debuggable {
         opCodeString += createArithmeticOpCodeString("+", Vx, Vy);
 
         /* Set carry flag */
-        if (overFlowed(registers.peek(Vx).unsignedDataType + registers.peek(Vy).unsignedDataType))
-            registers.poke(0xF, new UnsignedByte((byte) 1));
-        else registers.poke(0xF, new UnsignedByte((byte) 0));
+        setBorrow_CarryFlag(
+                (registers.peek(Vx).unsignedDataType + registers.peek(Vy).unsignedDataType),
+                (byte) 1,
+                (byte) 0
+        );
         /* Perform operation */
         registers.poke(Vx, registers.peek(Vx).apply((x, y) -> x + y, registers.peek(Vy)));
     }
@@ -771,11 +773,18 @@ public class CentralProcessingUnit implements Debuggable {
         opCodeString += createArithmeticOpCodeString("-", Vx, Vy);
 
         /* Set borrow flag */
-        if (overFlowed(registers.peek(Vx).unsignedDataType - registers.peek(Vy).unsignedDataType))
-            registers.poke(0xF, new UnsignedByte((byte) 0));
-        else registers.poke(0xF, new UnsignedByte((byte) 1));
+        setBorrow_CarryFlag(
+                (registers.peek(Vx).unsignedDataType - registers.peek(Vy).unsignedDataType),
+                (byte) 0,
+                (byte) 1
+        );
         /* Perform operation */
         registers.poke(Vz, registers.peek(Vx).apply((x, y) -> x - y, registers.peek(Vy)));
+    }
+
+    private void setBorrow_CarryFlag(int value, byte onOverFlow, byte noOverFlow){
+        if (overFlowed(value)) registers.poke(0xF, new UnsignedByte(onOverFlow));
+        else registers.poke(0xF, new UnsignedByte(noOverFlow));
     }
 
     private boolean overFlowed(int value) {
