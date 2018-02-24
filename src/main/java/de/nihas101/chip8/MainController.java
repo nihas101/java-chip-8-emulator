@@ -123,17 +123,24 @@ public class MainController {
     private UnaryOperator<Change> createDoubleFilter() {
         /* Source: gist.github.com/karimsqualli96/f8d4c2995da8e11496ed */
         return change -> {
-            if (change.isReplaced() && change.getText().matches("[^0-9]"))
-                change.setText(change.getControlText().substring(change.getRangeStart(), change.getRangeEnd()));
-
-            if (change.isAdded()) {
-                if (change.getControlText().contains(".")) {
-                    if (change.getText().matches("[^0-9]")) change.setText("");
-                } else if (change.getText().matches("[^0-9.]")) change.setText("");
-            }
+            replaced(change);
+            changed(change);
 
             return change;
         };
+    }
+
+    private void replaced(Change change){
+        if (change.isReplaced() && change.getText().matches("[^0-9]"))
+            change.setText(change.getControlText().substring(change.getRangeStart(), change.getRangeEnd()));
+    }
+
+    private void changed(Change change){
+        if (change.isAdded()) {
+            if (change.getControlText().contains(".")) {
+                if (change.getText().matches("[^0-9]")) change.setText("");
+            } else if (change.getText().matches("[^0-9.]")) change.setText("");
+        }
     }
 
     public void startEmulation() {

@@ -725,7 +725,7 @@ public class CentralProcessingUnit implements Debuggable {
         switch (operation){
             case "|": result = registers.peek(Vx).apply((x, y) -> x | y, registers.peek(Vy)); break;
             case "&": result = registers.peek(Vx).apply((x, y) -> x & y, registers.peek(Vy)); break;
-            default:  result = registers.peek(Vx).apply((x, y) -> x ^ y, registers.peek(Vy)); break;
+            default:  result = registers.peek(Vx).apply((x, y) -> x ^ y, registers.peek(Vy)); break; // "^"
         }
 
         registers.poke(Vx, result);
