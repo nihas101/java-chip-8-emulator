@@ -20,9 +20,7 @@ import java.util.logging.Logger;
 
 import static de.nihas101.chip8.utils.Constants.HERTZ_60;
 import static de.nihas101.chip8.utils.Constants.NO_KEY;
-import static de.nihas101.chip8.utils.OpCodeStringFactory.createArithmeticOpCodeString;
-import static de.nihas101.chip8.utils.OpCodeStringFactory.createLogicOpOpCodeString;
-import static de.nihas101.chip8.utils.OpCodeStringFactory.createRegOpCodeString;
+import static de.nihas101.chip8.utils.OpCodeStringFactory.*;
 
 /**
  * A class representing a central processing unit of a Chip-8
@@ -447,7 +445,7 @@ public class CentralProcessingUnit implements Debuggable {
      * @param Vx The index of the register
      */
     private void setSoundTimer(int Vx) {
-        opCodeString += "sound_timer(V" + Integer.toHexString(Vx) + ")";
+        opCodeString += createTimerOpString("sound_timer", Vx);
 
         this.soundTimer.setValue(this.registers.peek(Vx).unsignedDataType);
     }
@@ -458,7 +456,7 @@ public class CentralProcessingUnit implements Debuggable {
      * @param Vx The index of the register
      */
     private void setDelayTimer(int Vx) {
-        opCodeString += "delay_timer(V" + Integer.toHexString(Vx) + ")";
+        opCodeString += createTimerOpString("delay_timer", Vx);
 
         this.delayTimer.setValue(this.registers.peek(Vx).unsignedDataType);
     }
