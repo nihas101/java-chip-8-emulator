@@ -9,7 +9,8 @@ public abstract class Timer implements Debuggable {
     protected int value;
     private Interrupt onZero = null;
 
-    public Timer() { }
+    public Timer() {
+    }
 
     public Timer(int value) {
         this.value = value;
