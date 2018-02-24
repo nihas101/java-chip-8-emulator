@@ -6,14 +6,16 @@ import org.junit.Test;
 import java.io.File;
 import java.io.IOException;
 
-import static org.junit.Assert.*;
+import static de.nihas101.chip8.hardware.Emulator.createEmulator;
+import static de.nihas101.chip8.savestates.SaveState.createSaveState;
+import static org.junit.Assert.assertEquals;
 
 public class SaveStateHandlerTest {
 
     @Test
     public void readWriteState() throws IOException, FailedReadingStateException {
-        Emulator emulator = Emulator.createEmulator();
-        SaveState saveState = SaveState.createSaveState(emulator.getCentralProcessingUnit());
+        Emulator emulator = createEmulator();
+        SaveState saveState = createSaveState(emulator.getCentralProcessingUnit());
         SaveStateHandler saveStateHandler = new SaveStateHandler();
 
         File file = new File("src/test/resources/savestateTest.c8s");

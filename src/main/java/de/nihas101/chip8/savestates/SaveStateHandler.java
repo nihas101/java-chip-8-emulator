@@ -3,6 +3,8 @@ package de.nihas101.chip8.savestates;
 import java.io.*;
 import java.util.logging.Logger;
 
+import static de.nihas101.chip8.savestates.SaveState.createSaveState;
+
 public class SaveStateHandler {
     private Logger logger = Logger.getLogger(SaveStateHandler.class.getName());
 
@@ -30,7 +32,7 @@ public class SaveStateHandler {
             }
         } else throw new FailedReadingStateException(loadFile);
 
-        return SaveState.createSaveState(readState);
+        return createSaveState(readState);
     }
 
     private String readFile(LineNumberReader fileReader) throws IOException {
