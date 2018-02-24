@@ -286,8 +286,8 @@ public class Memory implements Debuggable {
         setupCharacter(75, f);
     }
 
-    private void setupCharacter(int startIndex, UnsignedByte[] unsignedBytes) {
-        this.memory[startIndex++] = unsignedBytes[0]; // F
+    private void writeCharacter(int startIndex, UnsignedByte[] unsignedBytes) {
+        this.memory[startIndex++] = unsignedBytes[0];
         this.memory[startIndex++] = unsignedBytes[1];
         this.memory[startIndex++] = unsignedBytes[2];
         this.memory[startIndex++] = unsignedBytes[3];
