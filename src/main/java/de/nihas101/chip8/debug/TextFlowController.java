@@ -4,7 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
-public class TextFlowController {
+public final class TextFlowController {
     @FXML
     public TextFlow debugTextFlow;
     private Text debugText;

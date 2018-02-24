@@ -26,7 +26,7 @@ import java.util.logging.Logger;
 
 import static java.lang.Double.parseDouble;
 
-public class MainController {
+public final class MainController {
     @FXML
     public Button romLoaderButton;
     @FXML

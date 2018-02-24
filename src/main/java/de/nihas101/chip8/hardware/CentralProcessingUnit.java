@@ -179,7 +179,7 @@ public class CentralProcessingUnit implements Debuggable {
         OPCode opCode = getNextOpCode();
         opCodeString = toHexString(opCode.getOpCode()) + " -> ";
         decodeOpCode(opCode);
-        if (cycles < Integer.MAX_VALUE) cycles++;
+        if (!stop && !pause && cycles < Integer.MAX_VALUE) cycles++;
     }
 
     /**

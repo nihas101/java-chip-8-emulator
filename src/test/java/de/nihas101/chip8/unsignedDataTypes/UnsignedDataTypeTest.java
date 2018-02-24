@@ -35,4 +35,24 @@ public class UnsignedDataTypeTest {
 
         assertEquals(5, unsignedShort.apply((x, y) -> x - y, new UnsignedShort((byte) 5)).unsignedDataType);
     }
+
+    @Test
+    public void hashCodeTest() {
+        assertEquals(5, new UnsignedShort(5).hashCode());
+    }
+
+    @Test
+    public void toStringTest() {
+        assertEquals("5", new UnsignedShort(5).toString());
+    }
+
+    @Test
+    public void lastOperationLeadToOverflow255() {
+        assertEquals(true, new UnsignedByte(254).apply(x -> x + 1).lastOperationLeadToOverflow());
+    }
+
+    @Test
+    public void lastOperationLeadToOverflow_1() {
+        assertEquals(true, new UnsignedByte(0).apply(x -> x - 1).lastOperationLeadToOverflow());
+    }
 }

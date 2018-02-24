@@ -22,7 +22,7 @@ import static de.nihas101.chip8.hardware.memory.ScreenMemory.SCREEN_WIDTH;
 import static de.nihas101.chip8.utils.Constants.*;
 import static java.lang.Thread.*;
 
-public class Main extends Application {
+public final class Main extends Application {
     /* TODO: ADD MUTE BUTTON */
     public Emulator emulator;
     private Scene scene;

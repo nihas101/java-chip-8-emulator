@@ -8,7 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
-public class ConfigureWindow extends Application {
+public final class ConfigureWindow extends Application {
     private final Emulator emulator;
     private ConfigureController configureController;
 

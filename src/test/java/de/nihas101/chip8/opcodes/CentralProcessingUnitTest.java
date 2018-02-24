@@ -16,6 +16,8 @@ import java.util.Timer;
 import static de.nihas101.chip8.hardware.memory.ScreenMemory.SCREEN_HEIGHT;
 import static de.nihas101.chip8.hardware.memory.ScreenMemory.SCREEN_WIDTH;
 import static de.nihas101.chip8.utils.Constants.PROGRAM_COUNTER_START;
+import static java.lang.Thread.currentThread;
+import static java.lang.Thread.sleep;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
@@ -607,10 +609,10 @@ public class CentralProcessingUnitTest {
         /* Set a keycode after waiting a little bit */
         new Thread(() -> {
             try {
-                Thread.sleep(600);
+                sleep(600);
             } catch (InterruptedException e) {
                 e.printStackTrace();
-                Thread.currentThread().interrupt();
+                currentThread().interrupt();
             }
             /* Set a keycode */
             this.cpu.setKeyCode(1);

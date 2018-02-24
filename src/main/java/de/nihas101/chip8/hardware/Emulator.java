@@ -15,8 +15,9 @@ import java.util.Timer;
 import java.util.logging.Logger;
 
 import static de.nihas101.chip8.utils.Constants.PROGRAM_COUNTER_START;
+import static de.nihas101.chip8.utils.KeyConfiguration.createKeyConfiguration;
 
-public class Emulator implements Debuggable {
+public final class Emulator implements Debuggable {
     private CentralProcessingUnit centralProcessingUnit;
     private KeyConfiguration keyConfiguration;
 
@@ -31,7 +32,7 @@ public class Emulator implements Debuggable {
     }
 
     public void setStandardKeyConfiguration() {
-        keyConfiguration = KeyConfiguration.createKeyConfiguration(this);
+        setKeyConfiguration(createKeyConfiguration(this));
     }
 
     public void setKeyConfiguration(KeyConfiguration keyConfiguration) {

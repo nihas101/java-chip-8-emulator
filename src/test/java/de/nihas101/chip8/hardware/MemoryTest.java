@@ -83,4 +83,26 @@ public class MemoryTest {
         }
         fail("No Exception was thrown");
     }
+
+    @Test
+    public void getState() {
+        Memory memory = new Memory();
+        Memory memory1 = new Memory();
+
+        memory.write(0x205, new UnsignedByte(10));
+        memory1.write(0x205, new UnsignedByte(10));
+        memory.write(0x206, new UnsignedByte(11));
+        memory1.write(0x206, new UnsignedByte(11));
+        memory.write(0x205, new UnsignedByte(12));
+        memory1.write(0x205, new UnsignedByte(12));
+        memory.write(0x206, new UnsignedByte(110));
+        memory1.write(0x206, new UnsignedByte(110));
+        memory.write(0x207, new UnsignedByte(120));
+        memory1.write(0x207, new UnsignedByte(120));
+        memory.write(0x208, new UnsignedByte(20));
+        memory1.write(0x208, new UnsignedByte(20));
+
+
+        assertEquals(memory1.getState(), memory.getState());
+    }
 }

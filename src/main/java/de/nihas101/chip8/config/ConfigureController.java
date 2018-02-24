@@ -20,7 +20,7 @@ import static de.nihas101.chip8.utils.Constants.*;
 import static de.nihas101.chip8.utils.KeyConfiguration.createKeyConfiguration;
 import static javafx.scene.input.KeyCode.getKeyCode;
 
-public class ConfigureController {
+public final class ConfigureController {
     public Button resetButton;
     public TextField keyFTextField;
     public TextField keyETextField;

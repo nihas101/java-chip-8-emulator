@@ -13,7 +13,7 @@ import javafx.util.Duration;
 /**
  * A class for displaying debugger information of {@link Debuggable} instances
  */
-public class Debugger extends Application {
+public final class Debugger extends Application {
     private Debuggable debuggable;
     private Timeline timeline;
     private volatile boolean isDebugging = false;

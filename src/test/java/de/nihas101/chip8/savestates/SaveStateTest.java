@@ -1,6 +1,15 @@
 package de.nihas101.chip8.savestates;
 
+import de.nihas101.chip8.hardware.CentralProcessingUnit;
+import de.nihas101.chip8.hardware.memory.*;
+import de.nihas101.chip8.hardware.timers.DelayTimer;
+import de.nihas101.chip8.hardware.timers.SoundTimer;
+import de.nihas101.chip8.unsignedDataTypes.UnsignedShort;
 import org.junit.Test;
+
+import java.util.Random;
+import java.util.Stack;
+import java.util.Timer;
 
 import static org.junit.Assert.assertEquals;
 
@@ -35,5 +44,38 @@ public class SaveStateTest {
         assertEquals("[]", saveState.cpu.getStack().getValues());
         assertEquals(0, saveState.cpu.getDelayTimer().getValue());
         assertEquals(0, saveState.cpu.getSoundTimer().getValue());
+    }
+
+    @Test
+    public void createSaveState1() {
+        CentralProcessingUnit cpu = new CentralProcessingUnit(
+                new Memory(),
+                new ScreenMemory(),
+                new Registers(),
+                new AddressRegister(),
+                new ProgramCounter(new UnsignedShort(0)),
+                new Chip8Stack(new Stack<>()),
+                new Timer("Timer"),
+                new DelayTimer() {
+                    @Override
+                    public void decrementValue() {
+                        /* DO NOTHING*/
+                    }
+                },
+                new SoundTimer() {
+                    @Override
+                    public void decrementValue() {
+                        /* DO NOTHING*/
+                    }
+                },
+                new Random()
+        );
+
+        SaveState saveState = SaveState.createSaveState(cpu);
+        String saveStateString = saveState.toString();
+
+        SaveState saveState1 = SaveState.createSaveState(saveStateString);
+
+        assertEquals(saveState.cpu.getState(), saveState1.cpu.getState());
     }
 }
