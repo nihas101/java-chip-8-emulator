@@ -765,7 +765,7 @@ public class CentralProcessingUnit implements Debuggable {
         opCodeString += createArithmeticOpCodeString("+", Vx, Vy);
 
         /* Set carry flag */
-        if ((registers.peek(Vx).unsignedDataType + registers.peek(Vy).unsignedDataType) > 255)
+        if (overFlowed(registers.peek(Vx).unsignedDataType + registers.peek(Vy).unsignedDataType))
             registers.poke(0xF, new UnsignedByte((byte) 1));
         else registers.poke(0xF, new UnsignedByte((byte) 0));
         /* Perform operation */
@@ -783,11 +783,15 @@ public class CentralProcessingUnit implements Debuggable {
         opCodeString += createArithmeticOpCodeString("-", Vx, Vy);
 
         /* Set borrow flag */
-        if ((registers.peek(Vx).unsignedDataType - registers.peek(Vy).unsignedDataType) < 0)
+        if (overFlowed(registers.peek(Vx).unsignedDataType - registers.peek(Vy).unsignedDataType))
             registers.poke(0xF, new UnsignedByte((byte) 0));
         else registers.poke(0xF, new UnsignedByte((byte) 1));
         /* Perform operation */
         registers.poke(Vz, registers.peek(Vx).apply((x, y) -> x - y, registers.peek(Vy)));
+    }
+
+    private boolean overFlowed(int value){
+        return (value < 0 || value > 255);
     }
 
     /**
