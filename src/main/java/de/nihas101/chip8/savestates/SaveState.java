@@ -56,7 +56,7 @@ public class SaveState {
                 case MEMORY_CHAR:
                     memory = readMemory(string);
                     break;
-                case SCREENMEMORY_CHAR:
+                case SCREEN_MEMORY_CHAR:
                     screenMemory = readScreenMemory(string);
                     break;
                 case REGISTERS_CHAR:
@@ -65,16 +65,16 @@ public class SaveState {
                 case ADDRESS_CHAR:
                     addressRegister = readAddressRegister(string);
                     break;
-                case PROGRAMCOUNTER_CHAR:
+                case PROGRAM_COUNTER_CHAR:
                     programCounter = readProgramCounter(string);
                     break;
                 case STACK_CHAR:
                     chip8Stack = readChip8Stack(string);
                     break;
-                case DELAYIMER_CHAR:
+                case DELAY_TIMER_CHAR:
                     delayTimer = readDelayTimer(string);
                     break;
-                case SOUNDTIMER_CHAR:
+                case SOUND_TIMER_CHAR:
                     soundTimer = readSoundTimer(string);
                     break;
                 case RANDOM_CHAR:
@@ -207,13 +207,13 @@ public class SaveState {
         return wrap(CYCLES_CHAR, valueOf(cpu.getCycles()))
                 + wrap(OPCODE_CHAR, cpu.getOpCodeString())
                 + wrap(MEMORY_CHAR, cpu.getMemory().getValues())
-                + wrap(SCREENMEMORY_CHAR, cpu.getScreenMemory().getValues())
+                + wrap(SCREEN_MEMORY_CHAR, cpu.getScreenMemory().getValues())
                 + wrap(REGISTERS_CHAR, cpu.getRegisters().getValues())
                 + wrap(ADDRESS_CHAR, valueOf(cpu.getAddressRegister().getAddress()))
-                + wrap(PROGRAMCOUNTER_CHAR, valueOf(cpu.getProgramCounter().getCounter()))
+                + wrap(PROGRAM_COUNTER_CHAR, valueOf(cpu.getProgramCounter().getCounter()))
                 + wrap(STACK_CHAR, cpu.getStack().getValues())
-                + wrap(DELAYIMER_CHAR, valueOf(cpu.getDelayTimer().getValue()))
-                + wrap(SOUNDTIMER_CHAR, valueOf(cpu.getSoundTimer().getValue()))
+                + wrap(DELAY_TIMER_CHAR, valueOf(cpu.getDelayTimer().getValue()))
+                + wrap(SOUND_TIMER_CHAR, valueOf(cpu.getSoundTimer().getValue()))
                 + wrap(RANDOM_CHAR, Arrays.toString(byteArrayOutputStream.toByteArray()));
     }
 

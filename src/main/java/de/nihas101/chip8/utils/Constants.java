@@ -35,13 +35,13 @@ public class Constants {
     public static final char CYCLES_CHAR = 'c';
     public static final char OPCODE_CHAR = 'o';
     public static final char MEMORY_CHAR = 'm';
-    public static final char SCREENMEMORY_CHAR = 's';
+    public static final char SCREEN_MEMORY_CHAR = 's';
     public static final char REGISTERS_CHAR = 'r';
     public static final char ADDRESS_CHAR = 'a';
-    public static final char PROGRAMCOUNTER_CHAR = 'p';
+    public static final char PROGRAM_COUNTER_CHAR = 'p';
     public static final char STACK_CHAR = 'k';
-    public static final char DELAYIMER_CHAR = 'd';
-    public static final char SOUNDTIMER_CHAR = 't';
+    public static final char DELAY_TIMER_CHAR = 'd';
+    public static final char SOUND_TIMER_CHAR = 't';
     public static final char RANDOM_CHAR = 'i';
 
     public static final int DRAW_INTERVAL_MULTIPLIER = 35;

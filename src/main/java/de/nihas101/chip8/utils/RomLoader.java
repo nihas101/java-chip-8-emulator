@@ -66,8 +66,7 @@ public class RomLoader {
      */
     private void loadIntoMemory(Memory memory, byte[] loadedRom) {
         int MAX_ROM_LENGTH = MEMORY_LENGTH - PROGRAM_COUNTER_START;
-        for (int i = 0; i < MAX_ROM_LENGTH; i++) {
+        for (int i = 0; i < MAX_ROM_LENGTH; i++)
             memory.write(PROGRAM_COUNTER_START + i, new UnsignedByte(loadedRom[i]));
-        }
     }
 }
