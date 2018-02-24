@@ -6,6 +6,7 @@ import de.nihas101.chip8.hardware.timers.DelayTimer;
 import de.nihas101.chip8.hardware.timers.SoundTimer;
 import de.nihas101.chip8.opcodes.OPCode;
 import de.nihas101.chip8.opcodes.UnknownOPCodeException;
+import de.nihas101.chip8.unsignedDataTypes.BinaryOperation;
 import de.nihas101.chip8.unsignedDataTypes.UnsignedByte;
 import de.nihas101.chip8.unsignedDataTypes.UnsignedShort;
 import de.nihas101.chip8.utils.RegisterAction;
@@ -535,16 +536,16 @@ public class CentralProcessingUnit implements Debuggable {
                 assignLogicOperation("^", opCode.getByte(1), opCode.getByte(2));
                 break;
             case 0x4:
-                add(opCode.getByte(1), opCode.getByte(2));
+                assignArithmeticOperation("+", opCode.getByte(1), opCode.getByte(2), opCode.getByte(1));
                 break;
             case 0x5:
-                sub(opCode.getByte(1), opCode.getByte(2), opCode.getByte(1));
+                assignArithmeticOperation("-", opCode.getByte(1), opCode.getByte(2), opCode.getByte(1));
                 break;
             case 0x6:
                 shiftRight(opCode.getByte(1));
                 break;
             case 0x7:
-                sub(opCode.getByte(2), opCode.getByte(1), opCode.getByte(1));
+                assignArithmeticOperation("-", opCode.getByte(2), opCode.getByte(1), opCode.getByte(1));
                 break;
             case 0xE:
                 shiftLeft(opCode.getByte(1));
@@ -743,46 +744,32 @@ public class CentralProcessingUnit implements Debuggable {
         registers.poke(Vx, result);
     }
 
-    /**
-     * Adds Vy to Vx and saves the result in Vx, VF is set to 1 if a carry occurs
-     *
-     * @param Vx The register which will hold the result of this operation
-     * @param Vy The register which value will replace the one in Vx
-     */
-    private void add(int Vx, int Vy) {
-        opCodeString += createArithmeticOpCodeString("+", Vx, Vy);
+    private void assignArithmeticOperation(String operation, int Vx, int Vy, int Vz) {
+        opCodeString += createArithmeticOpCodeString(operation, Vx, Vy);
+        UnsignedByte result;
 
-        /* Set carry flag */
-        setBorrow_CarryFlag(
-                (registers.peek(Vx).unsignedDataType + registers.peek(Vy).unsignedDataType),
-                (byte) 1,
-                (byte) 0
-        );
-        /* Perform operation */
-        registers.poke(Vx, registers.peek(Vx).apply((x, y) -> x + y, registers.peek(Vy)));
+        switch (operation) {
+            case "+":
+                result = arithmeticOperation(
+                        Vx, Vy, (registers.peek(Vx).unsignedDataType + registers.peek(Vy).unsignedDataType),
+                        ((x, y) -> x + y), (byte) 1, (byte) 0);
+                break;
+            default: // "-"
+                result = arithmeticOperation(
+                        Vx, Vy, (registers.peek(Vx).unsignedDataType - registers.peek(Vy).unsignedDataType),
+                        ((x, y) -> x - y), (byte) 0, (byte) 1);
+                break;
+        }
+
+        registers.poke(Vz, result);
     }
 
-    /**
-     * Subtracts Vy from Vx and saves the result in Vz, VF is set to 0 if a borrow occurs
-     *
-     * @param Vx The first parameter/register
-     * @param Vy The second parameter/register
-     * @param Vz The register which will hold the result of the operation
-     */
-    private void sub(int Vx, int Vy, int Vz) {
-        opCodeString += createArithmeticOpCodeString("-", Vx, Vy);
-
-        /* Set borrow flag */
-        setBorrow_CarryFlag(
-                (registers.peek(Vx).unsignedDataType - registers.peek(Vy).unsignedDataType),
-                (byte) 0,
-                (byte) 1
-        );
-        /* Perform operation */
-        registers.poke(Vz, registers.peek(Vx).apply((x, y) -> x - y, registers.peek(Vy)));
+    private UnsignedByte arithmeticOperation(int Vx, int Vy, int rawResult, BinaryOperation arithmeticOperation, byte onOverFlow, byte noOverFlow) {
+        setBorrowCarryFlag(rawResult, onOverFlow, noOverFlow);
+        return registers.peek(Vx).apply(arithmeticOperation, registers.peek(Vy));
     }
 
-    private void setBorrow_CarryFlag(int value, byte onOverFlow, byte noOverFlow){
+    private void setBorrowCarryFlag(int value, byte onOverFlow, byte noOverFlow) {
         if (overFlowed(value)) registers.poke(0xF, new UnsignedByte(onOverFlow));
         else registers.poke(0xF, new UnsignedByte(noOverFlow));
     }
