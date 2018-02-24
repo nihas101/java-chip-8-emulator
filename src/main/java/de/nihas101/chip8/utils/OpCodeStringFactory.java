@@ -10,4 +10,8 @@ public class OpCodeStringFactory {
     public static String createArithmeticOpCodeString(String operation, int targetRegister, int sourceRegister){
         return "V" + toHexString(targetRegister) + " " + operation + "= V" + toHexString(sourceRegister);
     }
+
+    public static String createLogicOpOpCodeString(String operation, int targetRegister, int sourceRegister){
+        return "V" + toHexString(targetRegister) + "=V" + toHexString(targetRegister) +  operation + "V" + toHexString(sourceRegister);
+    }
 }

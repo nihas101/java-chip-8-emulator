@@ -21,6 +21,7 @@ import java.util.logging.Logger;
 import static de.nihas101.chip8.utils.Constants.HERTZ_60;
 import static de.nihas101.chip8.utils.Constants.NO_KEY;
 import static de.nihas101.chip8.utils.OpCodeStringFactory.createArithmeticOpCodeString;
+import static de.nihas101.chip8.utils.OpCodeStringFactory.createLogicOpOpCodeString;
 import static de.nihas101.chip8.utils.OpCodeStringFactory.createRegOpCodeString;
 
 /**
@@ -726,7 +727,7 @@ public class CentralProcessingUnit implements Debuggable {
      * @param Vy The register which value will replace the one in Vx
      */
     private void assignOR(int Vx, int Vy) {
-        opCodeString += "V" + Integer.toHexString(Vx) + "=V" + Integer.toHexString(Vx) + "|V" + Integer.toHexString(Vy);
+        opCodeString += createLogicOpOpCodeString("|", Vy, Vy);
 
         registers.poke(Vx, registers.peek(Vx).apply((x, y) -> x | y, registers.peek(Vy)));
     }
@@ -738,7 +739,7 @@ public class CentralProcessingUnit implements Debuggable {
      * @param Vy The register which value will replace the one in Vx
      */
     private void assignAND(int Vx, int Vy) {
-        opCodeString += "V" + Integer.toHexString(Vx) + "=V" + Integer.toHexString(Vx) + "&V" + Integer.toHexString(Vy);
+        opCodeString += createLogicOpOpCodeString("&", Vx, Vy);
 
         registers.poke(Vx, registers.peek(Vx).apply((x, y) -> x & y, registers.peek(Vy)));
     }
@@ -750,7 +751,7 @@ public class CentralProcessingUnit implements Debuggable {
      * @param Vy The register which value will replace the one in Vx
      */
     private void assignXOR(int Vx, int Vy) {
-        opCodeString += "V" + Integer.toHexString(Vx) + "=V" + Integer.toHexString(Vx) + "^V" + Integer.toHexString(Vy);
+        opCodeString += createLogicOpOpCodeString("^", Vx, Vy);
 
         registers.poke(Vx, registers.peek(Vx).apply((x, y) -> x ^ y, registers.peek(Vy)));
     }
