@@ -22,11 +22,13 @@ public class ResizableCanvas extends Canvas {
     private Paint paintOff, paintOn;
 
     public ResizableCanvas(ScreenMemory screenMemory) {
-        /* Set initial colors */
-        this.graphicsContext = this.getGraphicsContext2D();
         setInitialColors();
         setRedrawOnSizeChange();
         this.memory = screenMemory.getMemory();
+    }
+
+    public void setupGraphicsContext() {
+        this.graphicsContext = this.getGraphicsContext2D();
     }
 
     private void setInitialColors() {

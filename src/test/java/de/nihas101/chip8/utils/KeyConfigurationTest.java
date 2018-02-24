@@ -9,9 +9,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import static de.nihas101.chip8.hardware.Emulator.createEmulator;
 import static de.nihas101.chip8.hardware.keys.EmulatorKey.createEmulatorKey;
-import static javafx.scene.input.KeyCode.DIGIT0;
-import static javafx.scene.input.KeyCode.DIGIT1;
+import static javafx.scene.input.KeyCode.*;
 import static org.junit.Assert.assertEquals;
 
 public class KeyConfigurationTest {
@@ -58,5 +58,24 @@ public class KeyConfigurationTest {
         KeyConfiguration.createKeyConfiguration(emulatorKeyHashMap).getOrNOP(DIGIT1).trigger();
 
         assertEquals(true, atomicBoolean.get());
+    }
+
+    @Test
+    public void createKeyConfigurationEmulator() {
+        KeyConfiguration keyConfiguration = KeyConfiguration.createKeyConfiguration(createEmulator());
+
+        assertEquals("1", keyConfiguration.getOrNOP(DIGIT1).getKeyName());
+        assertEquals("2", keyConfiguration.getOrNOP(DIGIT2).getKeyName());
+        assertEquals("3", keyConfiguration.getOrNOP(DIGIT3).getKeyName());
+        assertEquals("C", keyConfiguration.getOrNOP(DIGIT4).getKeyName());
+    }
+
+    @Test
+    public void setEmulatorKeyHashMap() {
+        KeyConfiguration keyConfiguration = KeyConfiguration.createKeyConfiguration(createEmulator());
+
+        keyConfiguration.setEmulatorKeyHashMap(new HashMap<>());
+
+        assertEquals("NOP", keyConfiguration.getOrNOP(DIGIT1).getKeyName());
     }
 }

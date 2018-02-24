@@ -113,11 +113,10 @@ public class MainController {
         this.memory = main.emulator.getCentralProcessingUnit().getMemory();
         this.resizableCanvas = resizableCanvas;
 
-        colorPickerSprite.setPromptText("Set sprite color");
-        colorPickerBackground.setPromptText("Set background color");
-
-        doubleFilter = createDoubleFilter();
-        speedTextField.setTextFormatter(new TextFormatter<>(doubleFilter));
+        if (speedTextField != null) {
+            doubleFilter = createDoubleFilter();
+            speedTextField.setTextFormatter(new TextFormatter<>(doubleFilter));
+        }
     }
 
     private UnaryOperator<Change> createDoubleFilter() {

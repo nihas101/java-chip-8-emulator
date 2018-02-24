@@ -16,6 +16,7 @@ import javafx.stage.Stage;
 
 import java.util.logging.Logger;
 
+import static de.nihas101.chip8.hardware.Emulator.createEmulator;
 import static de.nihas101.chip8.hardware.memory.ScreenMemory.SCREEN_HEIGHT;
 import static de.nihas101.chip8.hardware.memory.ScreenMemory.SCREEN_WIDTH;
 import static de.nihas101.chip8.utils.Constants.*;
@@ -75,7 +76,7 @@ public class Main extends Application {
         primaryStage.setScene(scene);
 
         /* Setup emulator instance */
-        emulator = Emulator.createEmulator();
+        emulator = createEmulator();
         setupCanvas();
         setupEmulation();
 
@@ -105,6 +106,7 @@ public class Main extends Application {
     private void setupCanvas() {
         /* Create resizable canvas and add it to the scene */
         canvas = new ResizableCanvas(emulator.getCentralProcessingUnit().getScreenMemory());
+        canvas.setupGraphicsContext();
         ((BorderPane) root.getChildren().get(0)).setCenter(canvas);
 
         timeline = canvas.setupTimeLine();
