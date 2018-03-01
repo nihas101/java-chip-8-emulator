@@ -42,7 +42,7 @@ in the command-line interface.
 ## Manual
 
 ### Input
-The Emulator expects a **US keyboard layout** and has the following standard key assignments:
+The emulator expects a **US keyboard layout** and has the following standard key assignments:
 
 | Chip-8 keys   | Keyboard keys   |
 | ------------- | --------------  |
