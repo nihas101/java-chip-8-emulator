@@ -23,7 +23,6 @@ import static de.nihas101.chip8.utils.Constants.*;
 import static java.lang.Thread.*;
 
 public final class Main extends Application {
-    /* TODO: ADD MUTE BUTTON */
     public Emulator emulator;
     private Scene scene;
     private Pane root;
@@ -62,7 +61,6 @@ public final class Main extends Application {
      */
     @Override
     public void start(Stage primaryStage) throws Exception {
-        /* TODO: Pause when choosing ROM */
         /* TODO: Add savestate and saveload shortcuts */
 
         /* Load root-node */
