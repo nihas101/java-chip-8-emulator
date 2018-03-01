@@ -156,12 +156,12 @@ public final class MainController {
         /* Setup SaveFileChooser */
         saveFileChooser = new FileChooser();
         saveFileChooser.setInitialFileName("savestate.c8s");
-        saveFileChooser.setTitle("Save memory");
+        saveFileChooser.setTitle("Save state");
         saveFileChooser.setInitialDirectory(currentPath.toFile());
 
         /* Setup LoadFileChooser */
         loadFileChooser = new FileChooser();
-        loadFileChooser.setTitle("Load memory");
+        loadFileChooser.setTitle("Load state");
         saveFileChooser.setInitialDirectory(currentPath.toFile());
     }
 

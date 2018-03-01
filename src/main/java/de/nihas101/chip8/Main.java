@@ -61,8 +61,6 @@ public final class Main extends Application {
      */
     @Override
     public void start(Stage primaryStage) throws Exception {
-        /* TODO: Add savestate and saveload shortcuts */
-
         /* Load root-node */
         FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("main.fxml"));
         root = loader.load();
@@ -90,6 +88,7 @@ public final class Main extends Application {
             /* Close debugger if it is open on closing the main window */
             if (debugger.isDebugging()) debugger.stop();
             /* In case cpu is looking for user input interrupt it */
+            /* TODO: Save settings on exit and load them the next time this is started... under config/controls.xml or something like that */
             emulator.stop();
         });
 
@@ -193,17 +192,16 @@ public final class Main extends Application {
 
     private EventHandler<KeyEvent> createKeyPressedEventHandler() {
         /* TODO: Consider that keyConfig was set and use that setting instead */
-        /* TODO: Save settings on exit and load them the next time this is started... under config/controls.xml or something like that */
         emulator.setStandardKeyConfiguration();
 
         return (event) -> {
             if (emulator.getKeyConfiguration().contains(event.getCode()))
                 emulator.getKeyConfiguration().getOrNOP(event.getCode()).trigger();
-            else handleDebuggerKeyEvent(event);
+            else handleSpecialEmulatorKeyEvents(event);
         };
     }
 
-    private void handleDebuggerKeyEvent(KeyEvent event) {
+    private void handleSpecialEmulatorKeyEvents(KeyEvent event) {
         switch (event.getCode()) {
             case F3:
                 nextStep = true;
@@ -216,6 +214,12 @@ public final class Main extends Application {
                 break;
             case F4:
                 emulator.getCentralProcessingUnit().reset();
+                break;
+            case F5:
+                mainController.saveStateButton.fire();
+                break;
+            case F6:
+                mainController.loadStateButton.fire();
                 break;
             default: /* NOP */
         }
