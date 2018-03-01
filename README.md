@@ -55,6 +55,17 @@ The Emulator expects a **US keyboard layout** and has the following standard key
 
 _TODO_
 
+### Loading and saving states
+
+This emulator allows to load and save the states, by clicking on the corresponding buttons in the interface
+or using the following buttons:
+
+| Key           | Action                                     |
+| ------------- | -----------------------------------------  |
+| F5            | Save state                                 |
+| F6            | Load state                                 |
+
+
 ### Debug
 This Emulator features a simple debug-mode and can be controlled with the following keys:
 
