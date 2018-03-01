@@ -89,7 +89,6 @@ public final class Main extends Application {
             if (debugger.isDebugging()) debugger.stop();
             /* In case cpu is looking for user input interrupt it */
             emulator.stop();
-            windowEvent.consume();
         });
 
         primaryStage.show();

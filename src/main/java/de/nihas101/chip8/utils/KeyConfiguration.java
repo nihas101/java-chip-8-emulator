@@ -7,6 +7,7 @@ import javafx.scene.input.KeyCode;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import static de.nihas101.chip8.hardware.keys.EmulatorKey.createEmulatorKey;
@@ -62,7 +63,7 @@ public class KeyConfiguration {
         return emulatorKeyHashMap;
     }
 
-    public Set<Map.Entry<KeyCode, EmulatorKey>> entrySet() {
+    public Set<Entry<KeyCode, EmulatorKey>> entrySet() {
         return emulatorKeyHashMap.entrySet();
     }
 
@@ -72,5 +73,15 @@ public class KeyConfiguration {
 
     public EmulatorKey getOrNOP(KeyCode keyCode) {
         return emulatorKeyHashMap.getOrDefault(keyCode, nOpEmulatorKey);
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder stringBuilder = new StringBuilder();
+        emulatorKeyHashMap.forEach((entry, value) ->
+                stringBuilder.append(entry).append(" = ").append(value).append("\n")
+        );
+
+        return stringBuilder.toString();
     }
 }

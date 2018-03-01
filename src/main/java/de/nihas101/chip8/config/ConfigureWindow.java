@@ -2,6 +2,7 @@ package de.nihas101.chip8.config;
 
 import de.nihas101.chip8.hardware.Emulator;
 import de.nihas101.chip8.utils.KeyConfiguration;
+import de.nihas101.chip8.utils.KeyConfigurationManager;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -29,10 +30,7 @@ public final class ConfigureWindow extends Application {
         primaryStage.setTitle("Configure controls");
         primaryStage.setScene(scene);
 
-        primaryStage.setOnCloseRequest(windowEvent -> {
-            /* TODO: Save settings on exit and load them the next time this is started... under config/controls.xml or something like that */
-            windowEvent.consume();
-        });
+        primaryStage.setOnCloseRequest(windowEvent -> new KeyConfigurationManager().save(configureController.getKeyConfiguration()));
 
         primaryStage.showAndWait();
     }
