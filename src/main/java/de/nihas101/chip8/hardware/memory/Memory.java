@@ -5,6 +5,7 @@ import de.nihas101.chip8.unsignedDataTypes.UnsignedByte;
 
 import java.util.Arrays;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 import static de.nihas101.chip8.utils.Constants.MEMORY_LENGTH;
 import static java.lang.Integer.parseInt;
@@ -98,7 +99,7 @@ public class Memory implements Debuggable {
         createThread(this::setupF, latch).start();
 
         try {
-            latch.await();
+            latch.await(2, TimeUnit.SECONDS);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
