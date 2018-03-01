@@ -42,6 +42,7 @@ in the command-line interface.
 ## Manual
 
 ### Input
+
 The emulator expects a **US keyboard layout** and has the following standard key assignments:
 
 | Chip-8 keys   | Keyboard keys   |
@@ -53,7 +54,12 @@ The emulator expects a **US keyboard layout** and has the following standard key
 
 #### Reconfiguring keys
 
-_TODO_
+To reconfigure the key assignments, click on the ``config`` button in the interface to
+open the configuration window, change the configuration to your liking and close the window again.
+
+The configuration will be saved under ../config/controls.xml upon closing the window.
+
+To reset the configuration simply, click the reset button in the configuration window.
 
 ### Loading and saving states
 
