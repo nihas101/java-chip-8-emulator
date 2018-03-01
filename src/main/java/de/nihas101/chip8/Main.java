@@ -88,8 +88,8 @@ public final class Main extends Application {
             /* Close debugger if it is open on closing the main window */
             if (debugger.isDebugging()) debugger.stop();
             /* In case cpu is looking for user input interrupt it */
-            /* TODO: Save settings on exit and load them the next time this is started... under config/controls.xml or something like that */
             emulator.stop();
+            windowEvent.consume();
         });
 
         primaryStage.show();

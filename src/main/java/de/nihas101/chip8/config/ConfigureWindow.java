@@ -29,6 +29,11 @@ public final class ConfigureWindow extends Application {
         primaryStage.setTitle("Configure controls");
         primaryStage.setScene(scene);
 
+        primaryStage.setOnCloseRequest(windowEvent -> {
+            /* TODO: Save settings on exit and load them the next time this is started... under config/controls.xml or something like that */
+            windowEvent.consume();
+        });
+
         primaryStage.showAndWait();
     }
 
