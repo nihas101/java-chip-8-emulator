@@ -17,8 +17,15 @@ public class KeyConfigurationManager {
         /* TODO: TEST */
         String data = keyConfiguration.toString();
 
+        try {
+            saveTo.createNewFile();
+        }catch (IOException exception){
+            exception.printStackTrace();
+        }
+
         try (FileWriter fileWriter = new FileWriter(saveTo)) {
             fileWriter.write(data);
+            fileWriter.close();
         } catch (IOException exception) {
             exception.printStackTrace();
         }
@@ -26,14 +33,14 @@ public class KeyConfigurationManager {
 
     public static KeyConfiguration loadKeyConfiguration(Emulator emulator) {
         /* TODO: TEST */
-        return loadKeyConfiguration(emulator, new File(KEY_CONFIG_STANDARD_SAVE_LOCATION));
+        return loadKeyConfiguration(new File(KEY_CONFIG_STANDARD_SAVE_LOCATION), emulator);
     }
 
-    public static KeyConfiguration loadKeyConfiguration(Emulator emulator, File loadFrom) {
+    public static KeyConfiguration loadKeyConfiguration(File loadFrom, Emulator emulator) {
         KeyConfiguration keyConfiguration = createKeyConfiguration(emulator);
 
         try {
-            keyConfiguration = tryToLoadKeyConfiguration(emulator, loadFrom);
+            keyConfiguration = tryToLoadKeyConfiguration(loadFrom, emulator);
         } catch (IOException exception) {
             /* DO NOTHING AND CONTINUE WITH STANDARD KEY CONFIGURATION */
         }
@@ -42,21 +49,23 @@ public class KeyConfigurationManager {
         return keyConfiguration;
     }
 
-    private static KeyConfiguration tryToLoadKeyConfiguration(Emulator emulator, File loadFrom) throws IOException {
+    private static KeyConfiguration tryToLoadKeyConfiguration(File loadFrom, Emulator emulator) throws IOException {
         String readFile = readFile(loadFrom);
         return createKeyConfiguration(emulator, readFile);
     }
 
     private static String readFile(File loadFrom) throws IOException {
-        LineNumberReader lineNumberReader = new LineNumberReader(new FileReader(loadFrom));
         StringBuilder stringBuilder = new StringBuilder();
-        String readLine = lineNumberReader.readLine();
 
-        while (readLine != null) {
-            stringBuilder.append(readLine);
-            readLine = lineNumberReader.readLine();
+        try(LineNumberReader lineNumberReader = new LineNumberReader(new FileReader(loadFrom))) {
+            String readLine = lineNumberReader.readLine();
+
+            while (readLine != null) {
+                stringBuilder.append(readLine).append("\n");
+                readLine = lineNumberReader.readLine();
+            }
         }
 
-        return stringBuilder.toString();
+        return stringBuilder.toString().trim();
     }
 }
