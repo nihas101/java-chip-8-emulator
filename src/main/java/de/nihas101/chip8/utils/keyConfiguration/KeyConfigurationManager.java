@@ -14,12 +14,11 @@ public class KeyConfigurationManager {
     }
 
     public static void saveKeyConfiguration(File saveTo, KeyConfiguration keyConfiguration) {
-        /* TODO: TEST */
         String data = keyConfiguration.toString();
 
         try {
             saveTo.createNewFile();
-        }catch (IOException exception){
+        } catch (IOException exception) {
             exception.printStackTrace();
         }
 
@@ -32,7 +31,6 @@ public class KeyConfigurationManager {
     }
 
     public static KeyConfiguration loadKeyConfiguration(Emulator emulator) {
-        /* TODO: TEST */
         return loadKeyConfiguration(new File(KEY_CONFIG_STANDARD_SAVE_LOCATION), emulator);
     }
 
@@ -57,7 +55,7 @@ public class KeyConfigurationManager {
     private static String readFile(File loadFrom) throws IOException {
         StringBuilder stringBuilder = new StringBuilder();
 
-        try(LineNumberReader lineNumberReader = new LineNumberReader(new FileReader(loadFrom))) {
+        try (LineNumberReader lineNumberReader = new LineNumberReader(new FileReader(loadFrom))) {
             String readLine = lineNumberReader.readLine();
 
             while (readLine != null) {

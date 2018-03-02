@@ -1,15 +1,17 @@
 package de.nihas101.chip8.utils.keyConfiguration;
 
 import de.nihas101.chip8.hardware.Emulator;
-import javafx.scene.input.KeyCode;
 import org.junit.Test;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.LineNumberReader;
 
 import static de.nihas101.chip8.hardware.Emulator.createEmulator;
 import static de.nihas101.chip8.utils.keyConfiguration.KeyConfiguration.createKeyConfiguration;
 import static javafx.scene.input.KeyCode.*;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class KeyConfigurationManagerTest {
 
@@ -59,7 +61,7 @@ public class KeyConfigurationManagerTest {
     private String readFile(File file) throws IOException {
         StringBuilder stringBuilder = new StringBuilder();
 
-        try(LineNumberReader lineNumberReader = new LineNumberReader(new FileReader(file))){
+        try (LineNumberReader lineNumberReader = new LineNumberReader(new FileReader(file))) {
             String readLine = lineNumberReader.readLine();
 
             while (readLine != null) {
