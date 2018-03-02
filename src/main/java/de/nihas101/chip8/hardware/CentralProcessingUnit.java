@@ -21,8 +21,8 @@ import java.util.TimerTask;
 import java.util.logging.Logger;
 
 import static de.nihas101.chip8.utils.Constants.HERTZ_60;
-import static de.nihas101.chip8.utils.Constants.NO_KEY;
 import static de.nihas101.chip8.utils.OpCodeStringFactory.*;
+import static de.nihas101.chip8.utils.keyConfiguration.Keys.NO_KEY;
 import static java.lang.Integer.toHexString;
 
 /**

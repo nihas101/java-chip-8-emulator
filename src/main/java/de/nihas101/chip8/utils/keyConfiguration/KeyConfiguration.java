@@ -1,4 +1,4 @@
-package de.nihas101.chip8.utils;
+package de.nihas101.chip8.utils.keyConfiguration;
 
 import de.nihas101.chip8.hardware.CentralProcessingUnit;
 import de.nihas101.chip8.hardware.Emulator;
@@ -11,7 +11,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import static de.nihas101.chip8.hardware.keys.EmulatorKey.createEmulatorKey;
-import static de.nihas101.chip8.utils.Constants.*;
+import static de.nihas101.chip8.utils.keyConfiguration.Keys.*;
 import static javafx.scene.input.KeyCode.*;
 
 public class KeyConfiguration {
@@ -33,6 +33,32 @@ public class KeyConfiguration {
 
     public static KeyConfiguration createKeyConfiguration(Map<KeyCode, EmulatorKey> emulatorKeyHashMap) {
         return new KeyConfiguration(emulatorKeyHashMap);
+    }
+
+    public static KeyConfiguration createKeyConfiguration(Emulator emulator, String keyConfigurationString) {
+        Map<KeyCode, EmulatorKey> emulatorKeyHashMap = new HashMap<>();
+        String[] lines = keyConfigurationString.split("\n");
+
+        for (String line : lines) processLine(emulatorKeyHashMap, line, emulator);
+
+        return new KeyConfiguration(emulatorKeyHashMap);
+    }
+
+    private static void processLine(Map<KeyCode, EmulatorKey> emulatorKeyHashMap, String line, Emulator emulator) {
+        if (!"config{".equals(line) && !"}".equals(line)) {
+            String[] entry_value = line.trim().split("=");
+            KeyCode keyCode = KeyCode.valueOf(entry_value[0].trim());
+            try {
+                EmulatorKey emulatorKey = EmulatorKey.createEmulatorKey(entry_value[1].trim(), emulator.getCentralProcessingUnit());
+                emulatorKeyHashMap.put(keyCode, emulatorKey);
+            } catch (UnknownEmulatorKeyException e) {
+                /* Unknown EmulatorKey -> Skip it */
+            }
+        }
+    }
+
+    private static void insertIntoHashMap(String entry, String value) {
+
     }
 
     public void setEmulatorKeyHashMap(Map<KeyCode, EmulatorKey> emulatorKeyHashMap) {
@@ -78,9 +104,13 @@ public class KeyConfiguration {
     @Override
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("config{\n");
+
         emulatorKeyHashMap.forEach((entry, value) ->
                 stringBuilder.append(entry).append(" = ").append(value).append("\n")
         );
+
+        stringBuilder.append("}");
 
         return stringBuilder.toString();
     }

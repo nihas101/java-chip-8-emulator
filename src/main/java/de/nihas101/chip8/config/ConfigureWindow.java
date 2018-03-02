@@ -1,13 +1,14 @@
 package de.nihas101.chip8.config;
 
 import de.nihas101.chip8.hardware.Emulator;
-import de.nihas101.chip8.utils.KeyConfiguration;
-import de.nihas101.chip8.utils.KeyConfigurationManager;
+import de.nihas101.chip8.utils.keyConfiguration.KeyConfiguration;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+
+import static de.nihas101.chip8.utils.keyConfiguration.KeyConfigurationManager.saveKeyConfiguration;
 
 public final class ConfigureWindow extends Application {
     private final Emulator emulator;
@@ -30,7 +31,7 @@ public final class ConfigureWindow extends Application {
         primaryStage.setTitle("Configure controls");
         primaryStage.setScene(scene);
 
-        primaryStage.setOnCloseRequest(windowEvent -> new KeyConfigurationManager().save(configureController.getKeyConfiguration()));
+        primaryStage.setOnCloseRequest(windowEvent -> saveKeyConfiguration(configureController.getKeyConfiguration()));
 
         primaryStage.showAndWait();
     }

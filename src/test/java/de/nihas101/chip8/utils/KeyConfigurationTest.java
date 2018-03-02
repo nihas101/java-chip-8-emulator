@@ -1,6 +1,7 @@
 package de.nihas101.chip8.utils;
 
 import de.nihas101.chip8.hardware.keys.EmulatorKey;
+import de.nihas101.chip8.utils.keyConfiguration.KeyConfiguration;
 import javafx.scene.input.KeyCode;
 import org.junit.Test;
 

@@ -19,7 +19,10 @@ import java.util.logging.Logger;
 import static de.nihas101.chip8.hardware.Emulator.createEmulator;
 import static de.nihas101.chip8.hardware.memory.ScreenMemory.SCREEN_HEIGHT;
 import static de.nihas101.chip8.hardware.memory.ScreenMemory.SCREEN_WIDTH;
-import static de.nihas101.chip8.utils.Constants.*;
+import static de.nihas101.chip8.utils.Constants.CYCLE_WAIT_TIME;
+import static de.nihas101.chip8.utils.Constants.STEP_WAIT_TIME;
+import static de.nihas101.chip8.utils.keyConfiguration.KeyConfigurationManager.loadKeyConfiguration;
+import static de.nihas101.chip8.utils.keyConfiguration.Keys.NO_KEY;
 import static java.lang.Thread.*;
 
 public final class Main extends Application {
@@ -190,8 +193,7 @@ public final class Main extends Application {
     }
 
     private EventHandler<KeyEvent> createKeyPressedEventHandler() {
-        /* TODO: Consider that keyConfig was set and use that setting instead */
-        emulator.setStandardKeyConfiguration();
+        emulator.setKeyConfiguration(loadKeyConfiguration(emulator));
 
         return (event) -> {
             if (emulator.getKeyConfiguration().contains(event.getCode()))

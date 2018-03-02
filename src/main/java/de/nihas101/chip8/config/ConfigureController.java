@@ -2,7 +2,7 @@ package de.nihas101.chip8.config;
 
 import de.nihas101.chip8.hardware.Emulator;
 import de.nihas101.chip8.hardware.keys.EmulatorKey;
-import de.nihas101.chip8.utils.KeyConfiguration;
+import de.nihas101.chip8.utils.keyConfiguration.KeyConfiguration;
 import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
@@ -16,8 +16,8 @@ import java.util.Map;
 import java.util.Set;
 
 import static de.nihas101.chip8.hardware.keys.EmulatorKey.createEmulatorKey;
-import static de.nihas101.chip8.utils.Constants.*;
-import static de.nihas101.chip8.utils.KeyConfiguration.createKeyConfiguration;
+import static de.nihas101.chip8.utils.keyConfiguration.KeyConfiguration.createKeyConfiguration;
+import static de.nihas101.chip8.utils.keyConfiguration.Keys.*;
 import static javafx.scene.input.KeyCode.getKeyCode;
 
 public final class ConfigureController {

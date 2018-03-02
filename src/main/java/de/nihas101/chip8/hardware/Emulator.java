@@ -5,8 +5,8 @@ import de.nihas101.chip8.hardware.memory.*;
 import de.nihas101.chip8.hardware.timers.DelayTimer;
 import de.nihas101.chip8.hardware.timers.SoundTimer;
 import de.nihas101.chip8.unsignedDataTypes.UnsignedShort;
-import de.nihas101.chip8.utils.KeyConfiguration;
 import de.nihas101.chip8.utils.SynthesizerFactory;
+import de.nihas101.chip8.utils.keyConfiguration.KeyConfiguration;
 
 import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Synthesizer;
@@ -15,7 +15,7 @@ import java.util.Timer;
 import java.util.logging.Logger;
 
 import static de.nihas101.chip8.utils.Constants.PROGRAM_COUNTER_START;
-import static de.nihas101.chip8.utils.KeyConfiguration.createKeyConfiguration;
+import static de.nihas101.chip8.utils.keyConfiguration.KeyConfiguration.createKeyConfiguration;
 
 public final class Emulator implements Debuggable {
     private CentralProcessingUnit centralProcessingUnit;
