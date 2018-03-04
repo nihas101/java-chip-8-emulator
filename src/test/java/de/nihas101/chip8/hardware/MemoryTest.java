@@ -11,23 +11,41 @@ import static org.junit.Assert.fail;
 
 public class MemoryTest {
     @Test
-    public void testPokePeek() {
+    public void testPokePeek1() {
         Memory memory = new Memory();
-        memory.write(0, new UnsignedByte((byte) 255));
-        memory.write(255, new UnsignedByte((byte) 5));
-        memory.write(232, new UnsignedByte((byte) 25));
-        memory.write(10, new UnsignedByte((byte) 12));
+        memory.write(0, new UnsignedByte(255));
 
-        assertEquals(new UnsignedByte((byte) 255), memory.read(0));
-        assertEquals(new UnsignedByte((byte) 5), memory.read(255));
-        assertEquals(new UnsignedByte((byte) 25), memory.read(232));
-        assertEquals(new UnsignedByte((byte) 12), memory.read(10));
+        assertEquals(new UnsignedByte(255), memory.read(0));
+    }
+
+    @Test
+    public void testPokePeek2() {
+        Memory memory = new Memory();
+        memory.write(255, new UnsignedByte(5));
+
+        assertEquals(new UnsignedByte(5), memory.read(255));
+    }
+
+    @Test
+    public void testPokePeek3() {
+        Memory memory = new Memory();
+        memory.write(232, new UnsignedByte(25));
+
+        assertEquals(new UnsignedByte(25), memory.read(232));
+    }
+
+    @Test
+    public void testPokePeek4() {
+        Memory memory = new Memory();
+        memory.write(10, new UnsignedByte(12));
+
+        assertEquals(new UnsignedByte(12), memory.read(10));
     }
 
     @Test
     public void testPokeNeg() {
         Memory memory = new Memory();
-        memory.write(0, new UnsignedByte((byte) -1));
+        memory.write(0, new UnsignedByte(-1));
 
         assertEquals(255, memory.read(0).unsignedDataType);
     }
@@ -35,7 +53,7 @@ public class MemoryTest {
     @Test
     public void testPoke() {
         Memory memory = new Memory();
-        memory.write(0, new UnsignedByte((byte) 256));
+        memory.write(0, new UnsignedByte(256));
 
         assertEquals(0, memory.read(0).unsignedDataType);
     }
@@ -44,7 +62,7 @@ public class MemoryTest {
     public void testIndexOutOfBoundsPokeNeg() {
         Memory memory = new Memory();
         try {
-            memory.write(-1, new UnsignedByte((byte) 255));
+            memory.write(-1, new UnsignedByte(255));
         } catch (IndexOutOfBoundsException e) {
             return;
         }
@@ -91,14 +109,19 @@ public class MemoryTest {
 
         memory.write(0x205, new UnsignedByte(10));
         memory1.write(0x205, new UnsignedByte(10));
+
         memory.write(0x206, new UnsignedByte(11));
         memory1.write(0x206, new UnsignedByte(11));
+
         memory.write(0x205, new UnsignedByte(12));
         memory1.write(0x205, new UnsignedByte(12));
+
         memory.write(0x206, new UnsignedByte(110));
         memory1.write(0x206, new UnsignedByte(110));
+
         memory.write(0x207, new UnsignedByte(120));
         memory1.write(0x207, new UnsignedByte(120));
+
         memory.write(0x208, new UnsignedByte(20));
         memory1.write(0x208, new UnsignedByte(20));
 
