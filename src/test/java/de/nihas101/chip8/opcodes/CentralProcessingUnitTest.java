@@ -16,8 +16,6 @@ import java.util.Timer;
 import static de.nihas101.chip8.hardware.memory.ScreenMemory.SCREEN_HEIGHT;
 import static de.nihas101.chip8.hardware.memory.ScreenMemory.SCREEN_WIDTH;
 import static de.nihas101.chip8.utils.Constants.PROGRAM_COUNTER_START;
-import static java.lang.Thread.currentThread;
-import static java.lang.Thread.sleep;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
@@ -81,7 +79,7 @@ public class CentralProcessingUnitTest {
     }
 
     @Test
-    public void test00EE() throws UnknownOPCodeException {   // return from subroutine
+    public void test00EEStack() throws UnknownOPCodeException {   // return from subroutine
         int opcode = 0x00EE;
         byte topByte = (byte) ((opcode & 0xff00) >> 8);
         byte bottomByte = (byte) (opcode & 0x00ff);
@@ -94,17 +92,21 @@ public class CentralProcessingUnitTest {
         cpu.decodeNextOpCode();
 
         assertEquals(0, this.cpu.getStack().getSize());
+    }
+
+    @Test
+    public void test00EEProgramCounter() throws UnknownOPCodeException {   // return from subroutine
+        setOpCode(0x00EE);
+        cpu.getStack().push(new UnsignedShort(0x321));
+
+        cpu.decodeNextOpCode();
+
         assertEquals(0x321, this.cpu.getProgramCounter().getCounter().unsignedDataType);
     }
 
     @Test
     public void test1NNN() throws UnknownOPCodeException {   // jump to address NNN
-        int opcode = 0x1123;
-        byte topByte = (byte) ((opcode & 0xff00) >> 8);
-        byte bottomByte = (byte) (opcode & 0x00ff);
-
-        memory.write(0, new UnsignedByte(topByte));
-        memory.write(1, new UnsignedByte(bottomByte));
+        setOpCode(0x1123);
 
         cpu.decodeNextOpCode();
 
@@ -112,31 +114,31 @@ public class CentralProcessingUnitTest {
     }
 
     @Test
-    public void test2NNN() throws UnknownOPCodeException {   // Call subroutine at NNN
-        int opcode = 0x2123;
-        byte topByte = (byte) ((opcode & 0xff00) >> 8);
-        byte bottomByte = (byte) (opcode & 0x00ff);
+    public void test2NNNProgramCounter() throws UnknownOPCodeException {   // Call subroutine at NNN
+        setOpCode(0x01FF, 0x2123);
 
         cpu.getProgramCounter().jumpTo(new UnsignedShort(0x01FF));
 
-        memory.write(0x01FF, new UnsignedByte(topByte));
-        memory.write(0x0200, new UnsignedByte(bottomByte));
+        cpu.decodeNextOpCode();
+
+        assertEquals(new UnsignedShort(0x0123), cpu.getProgramCounter().getCounter());
+    }
+
+    @Test
+    public void test2NNNResult() throws UnknownOPCodeException {   // Call subroutine at NNN
+        setOpCode(0x01FF, 0x2123);
+
+        cpu.getProgramCounter().jumpTo(new UnsignedShort(0x01FF));
 
         cpu.decodeNextOpCode();
 
         // 0x01FF + 0x0002 = 0x0201
         assertEquals(new UnsignedShort(0x0201), cpu.getStack().pop());
-        assertEquals(new UnsignedShort(0x0123), cpu.getProgramCounter().getCounter());
     }
 
     @Test
     public void test3XNN() throws UnknownOPCodeException {   // Skip next instruction if Vx == NN
-        int opcode = 0x3002;
-        byte topByte = (byte) ((opcode & 0xff00) >> 8);
-        byte bottomByte = (byte) (opcode & 0x00ff);
-
-        memory.write(0, new UnsignedByte(topByte));
-        memory.write(1, new UnsignedByte(bottomByte));
+        setOpCode(0x3002);
 
         cpu.getRegisters().poke(0, new UnsignedByte(2));
 
@@ -147,12 +149,7 @@ public class CentralProcessingUnitTest {
 
     @Test
     public void test4XNN() throws UnknownOPCodeException {   // Skip next instruction if Vx != NN
-        int opcode = 0x4201;
-        byte topByte = (byte) ((opcode & 0xff00) >> 8);
-        byte bottomByte = (byte) (opcode & 0x00ff);
-
-        memory.write(0, new UnsignedByte(topByte));
-        memory.write(1, new UnsignedByte(bottomByte));
+        setOpCode(0x4201);
 
         cpu.getRegisters().poke(2, new UnsignedByte(2));
 
@@ -163,15 +160,10 @@ public class CentralProcessingUnitTest {
 
     @Test
     public void test5XY0() throws UnknownOPCodeException {      // Skip next instruction if Vx == Vy
-        int opcode = 0x5230;
-        byte topByte = (byte) ((opcode & 0xff00) >> 8);
-        byte bottomByte = (byte) (opcode & 0x00ff);
+        setOpCode(0x5230);
 
         cpu.getRegisters().poke(2, new UnsignedByte(1));
         cpu.getRegisters().poke(3, new UnsignedByte(1));
-
-        memory.write(0, new UnsignedByte(topByte));
-        memory.write(1, new UnsignedByte(bottomByte));
 
         cpu.decodeNextOpCode();
 
@@ -180,14 +172,9 @@ public class CentralProcessingUnitTest {
 
     @Test
     public void test6XNN() throws UnknownOPCodeException {   // 	Sets VX to NN
-        int opcode = 0x6512;
-        byte topByte = (byte) ((opcode & 0xff00) >> 8);
-        byte bottomByte = (byte) (opcode & 0x00ff);
+        setOpCode(0x6512);
 
         cpu.getRegisters().poke(5, new UnsignedByte(100));
-
-        memory.write(0, new UnsignedByte(topByte));
-        memory.write(1, new UnsignedByte(bottomByte));
 
         cpu.decodeNextOpCode();
 
@@ -196,14 +183,9 @@ public class CentralProcessingUnitTest {
 
     @Test
     public void test7XNN() throws UnknownOPCodeException {   // Adds NN to VX
-        int opcode = 0x7701;
-        byte topByte = (byte) ((opcode & 0xff00) >> 8);
-        byte bottomByte = (byte) (opcode & 0x00ff);
+        setOpCode(0x7701);
 
         cpu.getRegisters().poke(7, new UnsignedByte(100));
-
-        memory.write(0, new UnsignedByte(topByte));
-        memory.write(1, new UnsignedByte(bottomByte));
 
         cpu.decodeNextOpCode();
 
@@ -212,15 +194,10 @@ public class CentralProcessingUnitTest {
 
     @Test
     public void test8XY0() throws UnknownOPCodeException {   // Sets VX to the value of VY
-        int opcode = 0x8780;
-        byte topByte = (byte) ((opcode & 0xff00) >> 8);
-        byte bottomByte = (byte) (opcode & 0x00ff);
+        setOpCode(0x8780);
 
         cpu.getRegisters().poke(7, new UnsignedByte(90));
         cpu.getRegisters().poke(8, new UnsignedByte(101));
-
-        memory.write(0, new UnsignedByte(topByte));
-        memory.write(1, new UnsignedByte(bottomByte));
 
         cpu.decodeNextOpCode();
 
@@ -229,15 +206,10 @@ public class CentralProcessingUnitTest {
 
     @Test
     public void test8XY1() throws UnknownOPCodeException {   // 	Sets VX to VX or VY (Bitwise OR operation)
-        int opcode = 0x89A1;
-        byte topByte = (byte) ((opcode & 0xff00) >> 8);
-        byte bottomByte = (byte) (opcode & 0x00ff);
+        setOpCode(0x89A1);
 
         cpu.getRegisters().poke(0x9, new UnsignedByte(0b110));
         cpu.getRegisters().poke(0xA, new UnsignedByte(0b001));
-
-        memory.write(0, new UnsignedByte(topByte));
-        memory.write(1, new UnsignedByte(bottomByte));
 
         cpu.decodeNextOpCode();
 
@@ -246,12 +218,7 @@ public class CentralProcessingUnitTest {
 
     @Test
     public void test8XY2() throws UnknownOPCodeException {   // Sets VX to VX and VY (Bitwise AND operation)
-        int opcode = 0x8BC2;
-        byte topByte = (byte) ((opcode & 0xff00) >> 8);
-        byte bottomByte = (byte) (opcode & 0x00ff);
-
-        memory.write(0, new UnsignedByte(topByte));
-        memory.write(1, new UnsignedByte(bottomByte));
+        setOpCode(0x8BC2);
 
         cpu.getRegisters().poke(0xB, new UnsignedByte(0b110));
         cpu.getRegisters().poke(0xC, new UnsignedByte(0b101));
@@ -263,15 +230,10 @@ public class CentralProcessingUnitTest {
 
     @Test
     public void test8XY3() throws UnknownOPCodeException {   // Sets VX to VX xor VY
-        int opcode = 0x8DE3;
-        byte topByte = (byte) ((opcode & 0xff00) >> 8);
-        byte bottomByte = (byte) (opcode & 0x00ff);
+        setOpCode(0x8DE3);
 
         cpu.getRegisters().poke(0xD, new UnsignedByte(0b110));
         cpu.getRegisters().poke(0xE, new UnsignedByte(0b101));
-
-        memory.write(0, new UnsignedByte(topByte));
-        memory.write(1, new UnsignedByte(bottomByte));
 
         cpu.decodeNextOpCode();
 
@@ -280,15 +242,10 @@ public class CentralProcessingUnitTest {
 
     @Test
     public void test8XY4NoCarry() throws UnknownOPCodeException {   // Adds VY to VX. VF is set to 1 when there's a carry, and to 0 when there isn't
-        int opcode = 0x8DE4;
-        byte topByte = (byte) ((opcode & 0xff00) >> 8);
-        byte bottomByte = (byte) (opcode & 0x00ff);
+        setOpCode(0x8DE4);
 
         cpu.getRegisters().poke(0xD, new UnsignedByte((byte) 0b001));
         cpu.getRegisters().poke(0xE, new UnsignedByte((byte) 0b001));
-
-        memory.write(0, new UnsignedByte(topByte));
-        memory.write(1, new UnsignedByte(bottomByte));
 
         cpu.decodeNextOpCode();
 
@@ -298,15 +255,10 @@ public class CentralProcessingUnitTest {
 
     @Test
     public void test8XY4Carry() throws UnknownOPCodeException {   // Adds VY to VX. VF is set to 1 when there's a carry, and to 0 when there isn't
-        int opcode = 0x8DE4;
-        byte topByte = (byte) ((opcode & 0xff00) >> 8);
-        byte bottomByte = (byte) (opcode & 0x00ff);
+        setOpCode(0x8DE4);
 
         cpu.getRegisters().poke(0xD, new UnsignedByte(0xFF));
         cpu.getRegisters().poke(0xE, new UnsignedByte(0x01));
-
-        memory.write(0, new UnsignedByte(topByte));
-        memory.write(1, new UnsignedByte(bottomByte));
 
         cpu.decodeNextOpCode();
 
@@ -316,15 +268,10 @@ public class CentralProcessingUnitTest {
 
     @Test
     public void test8XY5Borrow() throws UnknownOPCodeException {   // VY is subtracted from VX. VF is set to 0 when there's a borrow, and 1 when there isn't.
-        int opcode = 0x8015;
-        byte topByte = (byte) ((opcode & 0xff00) >> 8);
-        byte bottomByte = (byte) (opcode & 0x00ff);
+        setOpCode(0x8015);
 
         cpu.getRegisters().poke(0x0, new UnsignedByte(0x01));
         cpu.getRegisters().poke(0x1, new UnsignedByte(0x02));
-
-        memory.write(0, new UnsignedByte(topByte));
-        memory.write(1, new UnsignedByte(bottomByte));
 
         cpu.decodeNextOpCode();
 
@@ -334,15 +281,10 @@ public class CentralProcessingUnitTest {
 
     @Test
     public void test8XY5NoBorrow() throws UnknownOPCodeException {   // VY is subtracted from VX. VF is set to 0 when there's a borrow, and 1 when there isn't.
-        int opcode = 0x8015;
-        byte topByte = (byte) ((opcode & 0xff00) >> 8);
-        byte bottomByte = (byte) (opcode & 0x00ff);
+        setOpCode(0x8015);
 
         cpu.getRegisters().poke(0x0, new UnsignedByte(0x01));
         cpu.getRegisters().poke(0x1, new UnsignedByte(0x01));
-
-        memory.write(0, new UnsignedByte(topByte));
-        memory.write(1, new UnsignedByte(bottomByte));
 
         cpu.decodeNextOpCode();
 
@@ -352,14 +294,9 @@ public class CentralProcessingUnitTest {
 
     @Test
     public void test8XY6() throws UnknownOPCodeException {   // Shifts VX right by one. VF is set to the value of the least significant bit of VX before the shift.
-        int opcode = 0x8126;
-        byte topByte = (byte) ((opcode & 0xff00) >> 8);
-        byte bottomByte = (byte) (opcode & 0x00ff);
+        setOpCode(0x8126);
 
         cpu.getRegisters().poke(0x1, new UnsignedByte(0x0F));
-
-        memory.write(0, new UnsignedByte(topByte));
-        memory.write(1, new UnsignedByte(bottomByte));
 
         cpu.decodeNextOpCode();
 
@@ -369,15 +306,10 @@ public class CentralProcessingUnitTest {
 
     @Test
     public void test8XY7Borrow() throws UnknownOPCodeException {   // Sets VX to VY minus VX. VF is set to 0 when there's a borrow, and 1 when there isn't.
-        int opcode = 0x8237;
-        byte topByte = (byte) ((opcode & 0xff00) >> 8);
-        byte bottomByte = (byte) (opcode & 0x00ff);
+        setOpCode(0x8237);
 
         cpu.getRegisters().poke(0x3, new UnsignedByte(0x01));
         cpu.getRegisters().poke(0x2, new UnsignedByte(0x0F));
-
-        memory.write(0, new UnsignedByte(topByte));
-        memory.write(1, new UnsignedByte(bottomByte));
 
         cpu.decodeNextOpCode();
 
@@ -387,15 +319,10 @@ public class CentralProcessingUnitTest {
 
     @Test
     public void test8XY7NoBorrow() throws UnknownOPCodeException {   // Sets VX to VY minus VX. VF is set to 0 when there's a borrow, and 1 when there isn't.
-        int opcode = 0x8237;
-        byte topByte = (byte) ((opcode & 0xff00) >> 8);
-        byte bottomByte = (byte) (opcode & 0x00ff);
+        setOpCode(0x8237);
 
         cpu.getRegisters().poke(0x3, new UnsignedByte(0x0F));
         cpu.getRegisters().poke(0x2, new UnsignedByte(0x01));
-
-        memory.write(0, new UnsignedByte(topByte));
-        memory.write(1, new UnsignedByte(bottomByte));
 
         cpu.decodeNextOpCode();
 
@@ -405,14 +332,9 @@ public class CentralProcessingUnitTest {
 
     @Test
     public void test8XYE() throws UnknownOPCodeException {   // Shifts VX left by one. VF is set to the value of the most significant bit of VX before the shift.
-        int opcode = 0x834E;
-        byte topByte = (byte) ((opcode & 0xff00) >> 8);
-        byte bottomByte = (byte) (opcode & 0x00ff);
+        setOpCode(0x834E);
 
         cpu.getRegisters().poke(0x3, new UnsignedByte(0xFF));
-
-        memory.write(0, new UnsignedByte(topByte));
-        memory.write(1, new UnsignedByte(bottomByte));
 
         cpu.decodeNextOpCode();
 
@@ -422,15 +344,9 @@ public class CentralProcessingUnitTest {
 
     @Test
     public void test9XYE() throws UnknownOPCodeException {   // Skips the next instruction if VX doesn't equal VY. (Usually the next instruction is a jump to skip a code block)
-        int opcode = 0x945E;
-        byte topByte = (byte) ((opcode & 0xff00) >> 8);
-        byte bottomByte = (byte) (opcode & 0x00ff);
-
+        setOpCode(0x945E);
         cpu.getRegisters().poke(0x4, new UnsignedByte(0x0F));
         cpu.getRegisters().poke(0x5, new UnsignedByte(0x0E));
-
-        memory.write(0, new UnsignedByte(topByte));
-        memory.write(1, new UnsignedByte(bottomByte));
 
         cpu.decodeNextOpCode();
 
@@ -439,12 +355,7 @@ public class CentralProcessingUnitTest {
 
     @Test
     public void testANNN() throws UnknownOPCodeException {   // Sets I to the address NNN.
-        int opcode = 0xA123;
-        byte topByte = (byte) ((opcode & 0xff00) >> 8);
-        byte bottomByte = (byte) (opcode & 0x00ff);
-
-        memory.write(0, new UnsignedByte(topByte));
-        memory.write(1, new UnsignedByte(bottomByte));
+        setOpCode(0xA123);
 
         cpu.decodeNextOpCode();
 
@@ -453,14 +364,9 @@ public class CentralProcessingUnitTest {
 
     @Test
     public void testBNNN() throws UnknownOPCodeException {   // Jumps to the address NNN plus V0.
-        int opcode = 0xB123;
-        byte topByte = (byte) ((opcode & 0xff00) >> 8);
-        byte bottomByte = (byte) (opcode & 0x00ff);
+        setOpCode(0xB123);
 
         cpu.getRegisters().poke(0, new UnsignedByte(0x03));
-
-        memory.write(0, new UnsignedByte(topByte));
-        memory.write(1, new UnsignedByte(bottomByte));
 
         cpu.decodeNextOpCode();
 
@@ -469,12 +375,7 @@ public class CentralProcessingUnitTest {
 
     @Test
     public void testCXNN() throws UnknownOPCodeException {   // Sets VX to the result of a bitwise and operation on a random number (Typically: 0 to 255) and NN.
-        int opcode = 0xC512;
-        byte topByte = (byte) ((opcode & 0xff00) >> 8);
-        byte bottomByte = (byte) (opcode & 0x00ff);
-
-        memory.write(0, new UnsignedByte(topByte));
-        memory.write(1, new UnsignedByte(bottomByte));
+        setOpCode(0xC512);
 
         cpu.decodeNextOpCode();
 
@@ -483,48 +384,34 @@ public class CentralProcessingUnitTest {
 
     @Test
     public void testDXYNNoCollision() throws UnknownOPCodeException {   // Draws a sprite at coordinate (VX, VY) that has a width of 8 pixels and a height of N pixels
-        int opcode = 0xD01A;
-        byte topByte = (byte) ((opcode & 0xff00) >> 8);
-        byte bottomByte = (byte) (opcode & 0x00ff);
+        setOpCode(0xD01A);
 
         cpu.getRegisters().poke(0x0, new UnsignedByte(0));
         cpu.getRegisters().poke(0x1, new UnsignedByte(0));
 
-        memory.write(0, new UnsignedByte(topByte));
-        memory.write(1, new UnsignedByte(bottomByte));
-        /* Set memory for sprite to display */
-        memory.write(0x200, new UnsignedByte(0xFF));
-        memory.write(0x201, new UnsignedByte(0xF0));
-        memory.write(0x202, new UnsignedByte(0xFF));
-        memory.write(0x203, new UnsignedByte(0xF0));
-        memory.write(0x204, new UnsignedByte(0xFF));
-        memory.write(0x205, new UnsignedByte(0XF0));
-        memory.write(0x206, new UnsignedByte(0xFF));
-        memory.write(0x207, new UnsignedByte(0xF0));
-        memory.write(0x208, new UnsignedByte(0xFF));
-        memory.write(0x209, new UnsignedByte(0xF0));
-        memory.write(0x20A, new UnsignedByte(0xFF));
+        setMemoryForSpriteToDisplay();
         cpu.getAddressRegister().setAddress(new UnsignedShort(0x200));
 
         cpu.decodeNextOpCode();
 
-        assertEquals(true, cpu.getScreenMemory().read(0, 0));
-        assertEquals(new UnsignedByte(0), cpu.getRegisters().peek(0xF));
-        assertEquals(new UnsignedShort(0x200), cpu.getAddressRegister().getAddress());
+        checkIfCollisionOccurred(true);
     }
 
     @Test
     public void testDXYNCollision() throws UnknownOPCodeException {   // Draws a sprite at coordinate (VX, VY) that has a width of 8 pixels and a height of N pixels
-        int opcode = 0xD01A;
-        byte topByte = (byte) ((opcode & 0xff00) >> 8);
-        byte bottomByte = (byte) (opcode & 0x00ff);
+        setOpCode(0xD01A);
 
-        memory.write(0, new UnsignedByte(topByte));
-        memory.write(1, new UnsignedByte(bottomByte));
-
-        /* Write into screenmemory */
+        /* Write into screen memory */
         cpu.getScreenMemory().write(0, 0, true);
-        /* Set memory for sprite to display */
+        setMemoryForSpriteToDisplay();
+        cpu.getAddressRegister().setAddress(new UnsignedShort(0x200));
+
+        cpu.decodeNextOpCode();
+
+        checkIfCollisionOccurred(false);
+    }
+
+    private void setMemoryForSpriteToDisplay() {
         memory.write(0x200, new UnsignedByte(0xFF));
         memory.write(0x201, new UnsignedByte(0xF0));
         memory.write(0x202, new UnsignedByte(0xFF));
@@ -536,27 +423,24 @@ public class CentralProcessingUnitTest {
         memory.write(0x208, new UnsignedByte(0xFF));
         memory.write(0x209, new UnsignedByte(0xF0));
         memory.write(0x20A, new UnsignedByte(0xFF));
-        cpu.getAddressRegister().setAddress(new UnsignedShort(0x200));
+    }
 
-        cpu.decodeNextOpCode();
+    private void checkIfCollisionOccurred(boolean expected) {
+        assertEquals(expected, cpu.getScreenMemory().read(0, 0));
 
-        assertEquals(false, cpu.getScreenMemory().read(0, 0));
-        assertEquals(new UnsignedByte(1), cpu.getRegisters().peek(0xF));
+        if (expected) assertEquals(new UnsignedByte(0), cpu.getRegisters().peek(0xF));
+        else assertEquals(new UnsignedByte(1), cpu.getRegisters().peek(0xF));
+
         assertEquals(new UnsignedShort(0x200), cpu.getAddressRegister().getAddress());
     }
 
     @Test
     public void testEX9E() throws UnknownOPCodeException {   // Skips the next instruction if the key stored in VX is pressed. (Usually the next instruction is a jump to skip a code block)
-        int opcode = 0xEC9E;
-        byte topByte = (byte) ((opcode & 0xff00) >> 8);
-        byte bottomByte = (byte) (opcode & 0x00ff);
+        setOpCode(0xEC9E);
 
         /* Set key and key to look for */
-        this.cpu.setKeyCode(1);
-        this.cpu.getRegisters().poke(0xC, new UnsignedByte(1));
-
-        memory.write(0, new UnsignedByte(topByte));
-        memory.write(1, new UnsignedByte(bottomByte));
+        cpu.setKeyCode(1);
+        cpu.getRegisters().poke(0xC, new UnsignedByte(1));
 
         cpu.decodeNextOpCode();
 
@@ -565,16 +449,11 @@ public class CentralProcessingUnitTest {
 
     @Test
     public void testEXA1() throws UnknownOPCodeException {   // Skips the next instruction if the key stored in VX isn't pressed. (Usually the next instruction is a jump to skip a code block)
-        int opcode = 0xEEA1;
-        byte topByte = (byte) ((opcode & 0xff00) >> 8);
-        byte bottomByte = (byte) (opcode & 0x00ff);
+        setOpCode(0xEEA1);
 
         /* Set key and key to look for */
-        this.cpu.setKeyCode(0);
-        this.cpu.getRegisters().poke(0xE, new UnsignedByte(1));
-
-        memory.write(0, new UnsignedByte(topByte));
-        memory.write(1, new UnsignedByte(bottomByte));
+        cpu.setKeyCode(0);
+        cpu.getRegisters().poke(0xE, new UnsignedByte(1));
 
         cpu.decodeNextOpCode();
 
@@ -583,73 +462,38 @@ public class CentralProcessingUnitTest {
 
     @Test
     public void testFX07() throws UnknownOPCodeException {   // Sets VX to the value of the delay timer.
-        int opcode = 0xF107;
-        byte topByte = (byte) ((opcode & 0xff00) >> 8);
-        byte bottomByte = (byte) (opcode & 0x00ff);
-
-        this.cpu.getDelayTimer().setValue(10);
-
-        memory.write(0, new UnsignedByte(topByte));
-        memory.write(1, new UnsignedByte(bottomByte));
+        setOpCode(0xF107);
+        cpu.getDelayTimer().setValue(10);
 
         cpu.decodeNextOpCode();
 
-        assertEquals(10, this.cpu.getRegisters().peek(1).unsignedDataType);
+        assertEquals(10, cpu.getRegisters().peek(1).unsignedDataType);
     }
 
     @Test
     public void testFX0A() throws UnknownOPCodeException {   // A key press is awaited, and then stored in VX. (Blocking BinaryOperation. All instruction halted until next key event)
-        int opcode = 0xF30A;
-        byte topByte = (byte) ((opcode & 0xff00) >> 8);
-        byte bottomByte = (byte) (opcode & 0x00ff);
-
-        memory.write(0, new UnsignedByte(topByte));
-        memory.write(1, new UnsignedByte(bottomByte));
-
-        /* Set a keycode after waiting a little bit */
-        new Thread(() -> {
-            try {
-                sleep(600);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-                currentThread().interrupt();
-            }
-            /* Set a keycode */
-            this.cpu.setKeyCode(1);
-        }).start();
+        setOpCode(0xF30A);
+        cpu.setKeyCode(1);
 
         cpu.decodeNextOpCode();
 
-        /* Check if correct keycode was set */
-        assertEquals(1, this.cpu.getRegisters().peek(3).unsignedDataType);
+        assertEquals(1, cpu.getRegisters().peek(3).unsignedDataType);
     }
 
     @Test
     public void testFX15() throws UnknownOPCodeException {   // Sets the delay timer to VX.
-        int opcode = 0xF815;
-        byte topByte = (byte) ((opcode & 0xff00) >> 8);
-        byte bottomByte = (byte) (opcode & 0x00ff);
-
-        this.cpu.getRegisters().poke(8, new UnsignedByte((byte) 10));
-
-        memory.write(0, new UnsignedByte(topByte));
-        memory.write(1, new UnsignedByte(bottomByte));
+        setOpCode(0xF815);
+        cpu.getRegisters().poke(8, new UnsignedByte(10));
 
         cpu.decodeNextOpCode();
 
-        assertEquals(10, this.cpu.getDelayTimer().getValue());
+        assertEquals(10, cpu.getDelayTimer().getValue());
     }
 
     @Test
     public void testFX18() throws UnknownOPCodeException {   // Sets the sound timer to VX.
-        int opcode = 0xFB18;
-        byte topByte = (byte) ((opcode & 0xff00) >> 8);
-        byte bottomByte = (byte) (opcode & 0x00ff);
-
-        this.cpu.getRegisters().poke(0xB, new UnsignedByte((byte) 10));
-
-        memory.write(0, new UnsignedByte(topByte));
-        memory.write(1, new UnsignedByte(bottomByte));
+        setOpCode(0xFB18);
+        cpu.getRegisters().poke(0xB, new UnsignedByte(10));
 
         cpu.decodeNextOpCode();
 
@@ -658,16 +502,10 @@ public class CentralProcessingUnitTest {
 
     @Test
     public void testFX1E() throws UnknownOPCodeException {   // Adds VX to I
-        int opcode = 0xF91E;
-        byte topByte = (byte) ((opcode & 0xff00) >> 8);
-        byte bottomByte = (byte) (opcode & 0x00ff);
-
+        setOpCode(0xF91E);
         /* Setup registers */
-        this.cpu.getRegisters().poke(0x9, new UnsignedByte(10));
-        this.cpu.getAddressRegister().setAddress(new UnsignedShort(0x200));
-
-        memory.write(0, new UnsignedByte(topByte));
-        memory.write(1, new UnsignedByte(bottomByte));
+        cpu.getRegisters().poke(0x9, new UnsignedByte(10));
+        cpu.getAddressRegister().setAddress(new UnsignedShort(0x200));
 
         cpu.decodeNextOpCode();
 
@@ -676,30 +514,21 @@ public class CentralProcessingUnitTest {
 
     @Test
     public void testFX29() throws UnknownOPCodeException {   // Sets I to the location of the sprite for the character in VX. Characters 0-F (in hexadecimal) are represented by a 4x5 font.
-        int opcode = 0xF429;
-        byte topByte = (byte) ((opcode & 0xff00) >> 8);
-        byte bottomByte = (byte) (opcode & 0x00ff);
-
-        memory.write(0, new UnsignedByte(topByte));
-        memory.write(1, new UnsignedByte(bottomByte));
+        setOpCode(0xF429);
+        cpu.getRegisters().poke(4, new UnsignedByte(1));
 
         cpu.decodeNextOpCode();
+
+        assertEquals(5, cpu.getAddressRegister().getAddress().unsignedDataType);
     }
 
     @Test
     public void testFX33() throws UnknownOPCodeException {   // Stores the binary-coded decimal representation of VX, with the most significant of three digits at the address in I, the middle digit at I plus 1, and the least significant digit at I plus 2. (In other words, take the decimal representation of VX, place the hundreds digit in hardware at location in I, the tens digit at location I+1, and the ones digit at location I+2.)
-        int opcode = 0xF733;
-        byte topByte = (byte) ((opcode & 0xff00) >> 8);
-        byte bottomByte = (byte) (opcode & 0x00ff);
+        setOpCode(0xF733);
 
-        this.cpu.getRegisters().poke(0x7, new UnsignedByte(123));
-        this.cpu.getAddressRegister().setAddress(new UnsignedShort(0x200));
-
-        memory.write(0, new UnsignedByte(topByte));
-        memory.write(1, new UnsignedByte(bottomByte));
-
+        cpu.getRegisters().poke(0x7, new UnsignedByte(123));
+        cpu.getAddressRegister().setAddress(new UnsignedShort(0x200));
         cpu.decodeNextOpCode();
-
 
         assertEquals(1, this.memory.read(0x200).unsignedDataType);
         assertEquals(2, this.memory.read(0x201).unsignedDataType);
@@ -708,21 +537,15 @@ public class CentralProcessingUnitTest {
 
     @Test
     public void testFX55() throws UnknownOPCodeException {   // Stores V0 to VX (including VX) in hardware starting at address I.
-        int opcode = 0xF555;
-        byte topByte = (byte) ((opcode & 0xff00) >> 8);
-        byte bottomByte = (byte) (opcode & 0x00ff);
+        setOpCode(0xF555);
 
-        this.cpu.getRegisters().poke(0, new UnsignedByte(1));
-        this.cpu.getRegisters().poke(1, new UnsignedByte(2));
-        this.cpu.getRegisters().poke(2, new UnsignedByte(3));
-        this.cpu.getRegisters().poke(3, new UnsignedByte(4));
-        this.cpu.getRegisters().poke(4, new UnsignedByte(5));
-        this.cpu.getRegisters().poke(5, new UnsignedByte(6));
-
-        this.cpu.getAddressRegister().setAddress(new UnsignedShort(0x200));
-
-        memory.write(0, new UnsignedByte(topByte));
-        memory.write(1, new UnsignedByte(bottomByte));
+        cpu.getRegisters().poke(0, new UnsignedByte(1));
+        cpu.getRegisters().poke(1, new UnsignedByte(2));
+        cpu.getRegisters().poke(2, new UnsignedByte(3));
+        cpu.getRegisters().poke(3, new UnsignedByte(4));
+        cpu.getRegisters().poke(4, new UnsignedByte(5));
+        cpu.getRegisters().poke(5, new UnsignedByte(6));
+        cpu.getAddressRegister().setAddress(new UnsignedShort(0x200));
 
         cpu.decodeNextOpCode();
 
@@ -736,23 +559,16 @@ public class CentralProcessingUnitTest {
 
     @Test
     public void testFX65() throws UnknownOPCodeException {   // Fills V0 to VX (including VX) with values from hardware starting at address I
-        int opcode = 0xF865;
-        byte topByte = (byte) ((opcode & 0xff00) >> 8);
-        byte bottomByte = (byte) (opcode & 0x00ff);
-
-        this.memory.write(0x205, new UnsignedByte((byte) 1));
-        this.memory.write(0x206, new UnsignedByte((byte) 2));
-        this.memory.write(0x207, new UnsignedByte((byte) 3));
-        this.memory.write(0x208, new UnsignedByte((byte) 4));
-        this.memory.write(0x209, new UnsignedByte((byte) 5));
-        this.memory.write(0x20A, new UnsignedByte((byte) 6));
-        this.memory.write(0x20B, new UnsignedByte((byte) 7));
-        this.memory.write(0x20C, new UnsignedByte((byte) 8));
-
-        this.cpu.getAddressRegister().setAddress(new UnsignedShort(0x205));
-
-        memory.write(0, new UnsignedByte(topByte));
-        memory.write(1, new UnsignedByte(bottomByte));
+        setOpCode(0xF865);
+        memory.write(0x205, new UnsignedByte(1));
+        memory.write(0x206, new UnsignedByte(2));
+        memory.write(0x207, new UnsignedByte(3));
+        memory.write(0x208, new UnsignedByte(4));
+        memory.write(0x209, new UnsignedByte(5));
+        memory.write(0x20A, new UnsignedByte(6));
+        memory.write(0x20B, new UnsignedByte(7));
+        memory.write(0x20C, new UnsignedByte(8));
+        cpu.getAddressRegister().setAddress(new UnsignedShort(0x205));
 
         cpu.decodeNextOpCode();
 
@@ -877,9 +693,19 @@ public class CentralProcessingUnitTest {
     }
 
     @Test
-    public void setPause() {
-        assertEquals(false, cpu.isPause());
+    public void setPauseTrue() {
+        cpu.setPause(true);
+        assertEquals(true, cpu.isPause());
+    }
 
+    @Test
+    public void setPauseFalse() {
+        cpu.setPause(false);
+        assertEquals(false, cpu.isPause());
+    }
+
+    @Test
+    public void setPause() {
         cpu.setPause(true);
         assertEquals(true, cpu.isPause());
 
@@ -889,25 +715,16 @@ public class CentralProcessingUnitTest {
 
     @Test
     public void getCycles() throws UnknownOPCodeException {
-        int opcode = 0xF865;
-        byte topByte = (byte) ((opcode & 0xff00) >> 8);
-        byte bottomByte = (byte) (opcode & 0x00ff);
-
-        assertEquals(0, cpu.getCycles());
-
-        this.memory.write(0x205, new UnsignedByte((byte) 1));
-        this.memory.write(0x206, new UnsignedByte((byte) 2));
-        this.memory.write(0x207, new UnsignedByte((byte) 3));
-        this.memory.write(0x208, new UnsignedByte((byte) 4));
-        this.memory.write(0x209, new UnsignedByte((byte) 5));
-        this.memory.write(0x20A, new UnsignedByte((byte) 6));
-        this.memory.write(0x20B, new UnsignedByte((byte) 7));
-        this.memory.write(0x20C, new UnsignedByte((byte) 8));
-
-        this.cpu.getAddressRegister().setAddress(new UnsignedShort(0x205));
-
-        memory.write(0, new UnsignedByte(topByte));
-        memory.write(1, new UnsignedByte(bottomByte));
+        setOpCode(0xF865);
+        memory.write(0x205, new UnsignedByte((byte) 1));
+        memory.write(0x206, new UnsignedByte((byte) 2));
+        memory.write(0x207, new UnsignedByte((byte) 3));
+        memory.write(0x208, new UnsignedByte((byte) 4));
+        memory.write(0x209, new UnsignedByte((byte) 5));
+        memory.write(0x20A, new UnsignedByte((byte) 6));
+        memory.write(0x20B, new UnsignedByte((byte) 7));
+        memory.write(0x20C, new UnsignedByte((byte) 8));
+        cpu.getAddressRegister().setAddress(new UnsignedShort(0x205));
 
         cpu.decodeNextOpCode();
 
@@ -916,28 +733,18 @@ public class CentralProcessingUnitTest {
 
     @Test
     public void getOpCodeString() throws UnknownOPCodeException {
-        int opcode = 0xF865;
-        byte topByte = (byte) ((opcode & 0xff00) >> 8);
-        byte bottomByte = (byte) (opcode & 0x00ff);
-
-        assertEquals(0, cpu.getCycles());
-
-        this.memory.write(0x205, new UnsignedByte((byte) 1));
-        this.memory.write(0x206, new UnsignedByte((byte) 2));
-        this.memory.write(0x207, new UnsignedByte((byte) 3));
-        this.memory.write(0x208, new UnsignedByte((byte) 4));
-        this.memory.write(0x209, new UnsignedByte((byte) 5));
-        this.memory.write(0x20A, new UnsignedByte((byte) 6));
-        this.memory.write(0x20B, new UnsignedByte((byte) 7));
-        this.memory.write(0x20C, new UnsignedByte((byte) 8));
-
-        this.cpu.getAddressRegister().setAddress(new UnsignedShort(0x205));
-
-        memory.write(0, new UnsignedByte(topByte));
-        memory.write(1, new UnsignedByte(bottomByte));
+        setOpCode(0xF865);
+        memory.write(0x205, new UnsignedByte((byte) 1));
+        memory.write(0x206, new UnsignedByte((byte) 2));
+        memory.write(0x207, new UnsignedByte((byte) 3));
+        memory.write(0x208, new UnsignedByte((byte) 4));
+        memory.write(0x209, new UnsignedByte((byte) 5));
+        memory.write(0x20A, new UnsignedByte((byte) 6));
+        memory.write(0x20B, new UnsignedByte((byte) 7));
+        memory.write(0x20C, new UnsignedByte((byte) 8));
+        cpu.getAddressRegister().setAddress(new UnsignedShort(0x205));
 
         cpu.decodeNextOpCode();
-
 
         assertEquals("f865 -> reg_load(V8, &I)", cpu.getOpCodeString());
     }
@@ -950,7 +757,7 @@ public class CentralProcessingUnitTest {
     }
 
     @Test
-    public void setOpCode() {
+    public void setOpCodeTest() {
         cpu.setOpCode("test");
 
         assertEquals("test", cpu.getOpCodeString());
@@ -964,5 +771,17 @@ public class CentralProcessingUnitTest {
             return;
         }
         fail();
+    }
+
+    private void setOpCode(int index, int opCode) {
+        int topByte = ((opCode & 0xff00) >> 8);
+        int bottomByte = (opCode & 0x00ff);
+
+        memory.write(index++, new UnsignedByte(topByte));
+        memory.write(index, new UnsignedByte(bottomByte));
+    }
+
+    private void setOpCode(int opCode) {
+        setOpCode(0, opCode);
     }
 }
