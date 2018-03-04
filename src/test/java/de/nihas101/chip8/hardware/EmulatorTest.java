@@ -18,14 +18,7 @@ public class EmulatorTest {
     public void createEmulator() {
         Emulator emulator = Emulator.createEmulator();
 
-        assertEquals("State:\n" +
-                "Cycles executed: 0\n" +
-                "OpCode: \n" +
-                "V0: 0   V1: 0   V2: 0   V3: 0   V4: 0   V5: 0   V6: 0   V7: 0\n" +
-                "V8: 0   V9: 0   VA: 0   VB: 0   VC: 0   VD: 0   VE: 0   VF: 0\n" +
-                "I:\t0\tPC:\t200\n" +
-                "Chip8Stack:\t[]\n" +
-                "DelayTimer: 0\tSoundTimer: 0\n", emulator.getState());
+        assertEquals(initialState(), emulator.getState());
     }
 
     @Test
@@ -40,17 +33,20 @@ public class EmulatorTest {
     @Test
     public void setKeyConfiguration() {
         Emulator emulator = Emulator.createEmulator();
-
-        HashMap<KeyCode, EmulatorKey> hashMap = new HashMap<>();
-        hashMap.put(DIGIT0, createEmulatorKey("test", () -> {
-                })
-        );
-
-        hashMap.get(DIGIT0).trigger();
-
+        HashMap<KeyCode, EmulatorKey> hashMap = createTestHashMap();
         emulator.setKeyConfiguration(KeyConfiguration.createKeyConfiguration(hashMap));
 
         assertEquals(true, emulator.getKeyConfiguration().contains(DIGIT0));
+    }
+
+    private HashMap<KeyCode, EmulatorKey> createTestHashMap() {
+        HashMap<KeyCode, EmulatorKey> testHashMap = new HashMap<>();
+        testHashMap.put(DIGIT0, createEmulatorKey("test", () -> {
+                })
+        );
+        testHashMap.get(DIGIT0).trigger();
+
+        return testHashMap;
     }
 
     @Test
@@ -76,14 +72,18 @@ public class EmulatorTest {
     public void getCentralProcessingUnit() {
         Emulator emulator = Emulator.createEmulator();
 
-        assertEquals("State:\n" +
+        assertEquals(initialState(), emulator.getCentralProcessingUnit().getState());
+    }
+
+    private String initialState() {
+        return "State:\n" +
                 "Cycles executed: 0\n" +
                 "OpCode: \n" +
                 "V0: 0   V1: 0   V2: 0   V3: 0   V4: 0   V5: 0   V6: 0   V7: 0\n" +
                 "V8: 0   V9: 0   VA: 0   VB: 0   VC: 0   VD: 0   VE: 0   VF: 0\n" +
                 "I:\t0\tPC:\t200\n" +
                 "Chip8Stack:\t[]\n" +
-                "DelayTimer: 0\tSoundTimer: 0\n", emulator.getCentralProcessingUnit().getState());
+                "DelayTimer: 0\tSoundTimer: 0\n";
     }
 
     @Test
