@@ -14,17 +14,26 @@ public class SaveStateHandlerTest {
 
     @Test
     public void readWriteState() throws IOException, FailedReadingStateException {
-        Emulator emulator = createEmulator();
-        SaveState saveState = createSaveState(emulator.getCentralProcessingUnit());
+        SaveState saveState = createTestSaveState();
         SaveStateHandler saveStateHandler = new SaveStateHandler();
-
-        File file = new File("src/test/resources/savestateTest.c8s");
-        file.createNewFile();
-        file.deleteOnExit();
+        File file = createSaveFile();
 
         saveStateHandler.writeState(file, saveState);
         SaveState saveState1 = saveStateHandler.readState(file);
 
         assertEquals(saveState.toString(), saveState1.toString());
+    }
+
+    private SaveState createTestSaveState() {
+        Emulator emulator = createEmulator();
+        return createSaveState(emulator.getCentralProcessingUnit());
+    }
+
+    private File createSaveFile() throws IOException {
+        File file = new File("src/test/resources/savestateTest.c8s");
+        file.createNewFile();
+        file.deleteOnExit();
+
+        return file;
     }
 }
