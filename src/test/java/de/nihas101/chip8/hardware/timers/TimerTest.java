@@ -10,12 +10,7 @@ public class TimerTest {
 
     @Test
     public void setValue() {
-        Timer timer = new Timer(0) {
-            @Override
-            public String getState() {
-                return "";
-            }
-        };
+        Timer timer = createTestTimer(0);
 
         timer.setValue(10);
 
@@ -24,12 +19,7 @@ public class TimerTest {
 
     @Test
     public void decrementValue() {
-        Timer timer = new Timer(10) {
-            @Override
-            public String getState() {
-                return "";
-            }
-        };
+        Timer timer = createTestTimer(10);
 
         timer.decrementValue();
 
@@ -38,47 +28,56 @@ public class TimerTest {
 
     @Test
     public void getValue() {
-        Timer timer = new Timer(10) {
-            @Override
-            public String getState() {
-                return "";
-            }
-        };
+        Timer timer = createTestTimer(10);
 
         assertEquals(10, timer.getValue());
     }
 
     @Test
-    public void setOnZero() {
+    public void setOnZeroBeforeDecrement() {
         AtomicBoolean zeroReached = new AtomicBoolean(false);
-        Timer timer = new Timer(2) {
-            @Override
-            public String getState() {
-                return "";
-            }
-        };
-
+        Timer timer = createTestTimer(2);
         timer.setOnZero(() -> zeroReached.set(true));
+        
         assertEquals(false, zeroReached.get());
-        timer.decrementValue();
-        assertEquals(false, zeroReached.get());
-        timer.decrementValue();
+    }
 
+    @Test
+    public void setOnZeroBeforeDecrementTwo() {
+        AtomicBoolean zeroReached = new AtomicBoolean(false);
+        Timer timer = createTestTimer(2);
+        timer.setOnZero(() -> zeroReached.set(true));
+
+        timer.decrementValue();
+        assertEquals(false, zeroReached.get());
+    }
+
+    @Test
+    public void setOnZeroDecrementToZero() {
+        AtomicBoolean zeroReached = new AtomicBoolean(false);
+        Timer timer = createTestTimer(2);
+        timer.setOnZero(() -> zeroReached.set(true));
+
+        timer.decrementValue();
+        timer.decrementValue();
         assertEquals(true, zeroReached.get());
     }
 
     @Test
     public void reset() {
-        AtomicBoolean zeroReached = new AtomicBoolean(false);
-        Timer timer = new Timer(100) {
+        Timer timer = createTestTimer(100);
+
+        timer.reset();
+
+        assertEquals(0, timer.getValue());
+    }
+
+    private Timer createTestTimer(int time){
+        return new Timer(time) {
             @Override
             public String getState() {
                 return "";
             }
         };
-
-        timer.reset();
-
-        assertEquals(0, timer.getValue());
     }
 }
