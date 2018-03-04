@@ -38,7 +38,7 @@ public class TimerTest {
         AtomicBoolean zeroReached = new AtomicBoolean(false);
         Timer timer = createTestTimer(2);
         timer.setOnZero(() -> zeroReached.set(true));
-        
+
         assertEquals(false, zeroReached.get());
     }
 
@@ -72,7 +72,7 @@ public class TimerTest {
         assertEquals(0, timer.getValue());
     }
 
-    private Timer createTestTimer(int time){
+    private Timer createTestTimer(int time) {
         return new Timer(time) {
             @Override
             public String getState() {
