@@ -57,10 +57,6 @@ public class KeyConfiguration {
         }
     }
 
-    private static void insertIntoHashMap(String entry, String value) {
-
-    }
-
     public void setEmulatorKeyHashMap(Map<KeyCode, EmulatorKey> emulatorKeyHashMap) {
         this.emulatorKeyHashMap = emulatorKeyHashMap;
     }
