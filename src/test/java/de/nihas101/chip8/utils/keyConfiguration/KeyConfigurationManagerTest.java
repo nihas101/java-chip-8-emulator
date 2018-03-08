@@ -60,7 +60,7 @@ public class KeyConfigurationManagerTest {
     }
 
     @Test
-    public void loadKeyConfigurationFileError(){
+    public void loadKeyConfigurationFileError() {
         Emulator emulator = createEmulator();
         File file = new File("src/test/resources/doesNotExist");
 
@@ -70,7 +70,7 @@ public class KeyConfigurationManagerTest {
     }
 
     @Test
-    public void saveKeyConfigurationFileError(){
+    public void saveKeyConfigurationFileError() {
         Emulator emulator = createEmulator();
         KeyConfiguration keyConfiguration = createKeyConfiguration(emulator);
         emulator.setKeyConfiguration(keyConfiguration);
@@ -79,7 +79,7 @@ public class KeyConfigurationManagerTest {
 
         try {
             KeyConfigurationManager.saveKeyConfiguration(file, emulator.getKeyConfiguration());
-        } catch (IOException exception){
+        } catch (IOException exception) {
             return;
         }
 

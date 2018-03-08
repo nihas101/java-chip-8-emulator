@@ -34,8 +34,11 @@ public final class ConfigureWindow extends Application {
         primaryStage.setScene(scene);
 
         primaryStage.setOnCloseRequest(windowEvent -> {
-            try {saveKeyConfiguration(configureController.getKeyConfiguration());}
-            catch (IOException exception){ exception.printStackTrace(); }
+            try {
+                saveKeyConfiguration(configureController.getKeyConfiguration());
+            } catch (IOException exception) {
+                exception.printStackTrace();
+            }
         });
 
         primaryStage.showAndWait();

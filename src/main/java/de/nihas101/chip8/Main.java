@@ -48,7 +48,7 @@ public final class Main extends Application {
      * Standard constructor needed for JavaFX
      */
     public Main() {
-        
+
     }
 
     /**
