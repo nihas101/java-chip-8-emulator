@@ -15,10 +15,25 @@ public class ScreenMemoryTest {
     }
 
     @Test
+    public void getStateTest() {
+        int skipScreenMemoryString = 14;
+        ScreenMemory screenMemory = new ScreenMemory();
+        String screenMemoryState = screenMemory.getState();
+        String screenMemoryString = screenMemoryState.substring(skipScreenMemoryString).trim();
+
+        checkForZeroes(screenMemoryString.split("\\s+"));
+    }
+
+    @Test
     public void toStringTest() {
-        String zero = "0";
         ScreenMemory screenMemory = new ScreenMemory();
         String[] screenMemoryStrings = screenMemory.toString().trim().split("\\s+");
+
+        checkForZeroes(screenMemoryStrings);
+    }
+
+    private void checkForZeroes(String[] screenMemoryStrings) {
+        String zero = "0";
 
         for (String screenMemoryString : screenMemoryStrings)
             assertEquals(zero, screenMemoryString.trim());
