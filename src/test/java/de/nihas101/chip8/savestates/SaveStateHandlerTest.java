@@ -8,6 +8,7 @@ import java.io.IOException;
 
 import static de.nihas101.chip8.hardware.Emulator.createEmulator;
 import static de.nihas101.chip8.savestates.SaveState.createSaveState;
+import static junit.framework.TestCase.fail;
 import static org.junit.Assert.assertEquals;
 
 public class SaveStateHandlerTest {
@@ -35,5 +36,18 @@ public class SaveStateHandlerTest {
         file.deleteOnExit();
 
         return file;
+    }
+
+    @Test
+    public void readStateFileError(){
+        File file = new File("src/test/resources/doesNotExist");
+        SaveStateHandler saveStateHandler = new SaveStateHandler();
+        try{
+            saveStateHandler.readState(file);
+        }catch (FailedReadingStateException exception){
+            return;
+        }
+
+        fail("FailedReadingStateException was not thrown");
     }
 }
