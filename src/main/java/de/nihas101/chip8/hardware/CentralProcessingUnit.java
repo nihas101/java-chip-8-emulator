@@ -80,20 +80,21 @@ public class CentralProcessingUnit implements Debuggable {
         this.delayTimer = delayTimer;
         this.soundTimer = soundTimer;
 
-        /* get and load default instrument and channel lists */
-        if (synthesizer != null) {
-            Instrument[] instruments = synthesizer.getDefaultSoundbank().getInstruments();
-            MidiChannel midiChannel = synthesizer.getChannels()[0];
-            synthesizer.loadInstrument(instruments[0]);
-            soundTimer.setOnValue(() -> {
-                if (midiChannel != null) midiChannel.noteOn(70, 40);
-            });
-            soundTimer.setOnZero(() -> {
-                if (midiChannel != null) midiChannel.noteOff(70);
-            });
-        }
+        if (synthesizer != null) setupSoundTimer();
 
         cycles = 0;
+    }
+
+    private void setupSoundTimer(){
+        Instrument[] instruments = synthesizer.getDefaultSoundbank().getInstruments();
+        MidiChannel midiChannel = synthesizer.getChannels()[0];
+        synthesizer.loadInstrument(instruments[0]);
+        soundTimer.setOnValue(() -> {
+            if (midiChannel != null) midiChannel.noteOn(70, 40);
+        });
+        soundTimer.setOnZero(() -> {
+            if (midiChannel != null) midiChannel.noteOff(70);
+        });
     }
 
     public CentralProcessingUnit(Memory memory, ScreenMemory screenMemory, Registers registers,
