@@ -85,7 +85,7 @@ public class CentralProcessingUnit implements Debuggable {
         cycles = 0;
     }
 
-    private void setupSoundTimer(){
+    private void setupSoundTimer() {
         Instrument[] instruments = synthesizer.getDefaultSoundbank().getInstruments();
         MidiChannel midiChannel = synthesizer.getChannels()[0];
         synthesizer.loadInstrument(instruments[0]);

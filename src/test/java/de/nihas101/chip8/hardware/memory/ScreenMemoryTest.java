@@ -15,6 +15,16 @@ public class ScreenMemoryTest {
     }
 
     @Test
+    public void toStringTest() {
+        String zero = "0";
+        ScreenMemory screenMemory = new ScreenMemory();
+        String[] screenMemoryStrings = screenMemory.toString().trim().split("\\s+");
+
+        for (String screenMemoryString : screenMemoryStrings)
+            assertEquals(zero, screenMemoryString.trim());
+    }
+
+    @Test
     public void read() {
         ScreenMemory screenMemory = new ScreenMemory();
         boolean readBoolean = screenMemory.read(0, 0);

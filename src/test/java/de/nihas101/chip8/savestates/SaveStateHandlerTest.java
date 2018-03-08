@@ -39,12 +39,12 @@ public class SaveStateHandlerTest {
     }
 
     @Test
-    public void readStateFileError(){
+    public void readStateFileError() {
         File file = new File("src/test/resources/doesNotExist");
         SaveStateHandler saveStateHandler = new SaveStateHandler();
-        try{
+        try {
             saveStateHandler.readState(file);
-        }catch (FailedReadingStateException exception){
+        } catch (FailedReadingStateException exception) {
             return;
         }
 
