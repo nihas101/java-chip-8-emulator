@@ -7,10 +7,17 @@ import java.io.*;
 import static de.nihas101.chip8.utils.keyConfiguration.KeyConfiguration.createKeyConfiguration;
 
 public class KeyConfigurationManager {
+    private static final String KEY_CONFIG_STANDARD_SAVE_DIR = "../config";
     private static final String KEY_CONFIG_STANDARD_SAVE_LOCATION = "../config/controls.dat";
 
     public static void saveKeyConfiguration(KeyConfiguration keyConfiguration) {
+        createSaveDirectory();
         saveKeyConfiguration(new File(KEY_CONFIG_STANDARD_SAVE_LOCATION), keyConfiguration);
+    }
+
+    private static void createSaveDirectory() {
+        File saveDir = new File(KEY_CONFIG_STANDARD_SAVE_DIR);
+        if (!saveDir.isDirectory()) saveDir.mkdir();
     }
 
     public static void saveKeyConfiguration(File saveTo, KeyConfiguration keyConfiguration) {
