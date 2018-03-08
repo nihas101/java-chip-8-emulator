@@ -11,6 +11,7 @@ import java.io.LineNumberReader;
 import static de.nihas101.chip8.hardware.Emulator.createEmulator;
 import static de.nihas101.chip8.utils.keyConfiguration.KeyConfiguration.createKeyConfiguration;
 import static javafx.scene.input.KeyCode.*;
+import static junit.framework.TestCase.fail;
 import static org.junit.Assert.assertEquals;
 
 public class KeyConfigurationManagerTest {
@@ -56,6 +57,33 @@ public class KeyConfigurationManagerTest {
         assertEquals("F", keyConfiguration.getOrNOP(V).toString());
 
         assertEquals("NOP", keyConfiguration.getOrNOP(NUMPAD0).toString());
+    }
+
+    @Test
+    public void loadKeyConfigurationFileError(){
+        Emulator emulator = createEmulator();
+        File file = new File("src/test/resources/doesNotExist");
+
+        KeyConfiguration keyConfiguration = KeyConfigurationManager.loadKeyConfiguration(file, emulator);
+
+        assertEquals(KeyConfiguration.createKeyConfiguration(emulator).toString(), keyConfiguration.toString());
+    }
+
+    @Test
+    public void saveKeyConfigurationFileError(){
+        Emulator emulator = createEmulator();
+        KeyConfiguration keyConfiguration = createKeyConfiguration(emulator);
+        emulator.setKeyConfiguration(keyConfiguration);
+
+        File file = new File("src/test/resources/doesNotExist/config.dat");
+
+        try {
+            KeyConfigurationManager.saveKeyConfiguration(file, emulator.getKeyConfiguration());
+        } catch (IOException exception){
+            return;
+        }
+
+        fail("IOException was not thrown");
     }
 
     private String readFile(File file) throws IOException {

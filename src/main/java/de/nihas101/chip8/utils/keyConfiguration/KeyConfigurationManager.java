@@ -10,7 +10,7 @@ public class KeyConfigurationManager {
     private static final String KEY_CONFIG_STANDARD_SAVE_DIR = "../config";
     private static final String KEY_CONFIG_STANDARD_SAVE_LOCATION = "../config/controls.dat";
 
-    public static void saveKeyConfiguration(KeyConfiguration keyConfiguration) {
+    public static void saveKeyConfiguration(KeyConfiguration keyConfiguration) throws IOException {
         createSaveDirectory();
         saveKeyConfiguration(new File(KEY_CONFIG_STANDARD_SAVE_LOCATION), keyConfiguration);
     }
@@ -20,14 +20,9 @@ public class KeyConfigurationManager {
         if (!saveDir.isDirectory()) saveDir.mkdir();
     }
 
-    public static void saveKeyConfiguration(File saveTo, KeyConfiguration keyConfiguration) {
+    public static void saveKeyConfiguration(File saveTo, KeyConfiguration keyConfiguration) throws IOException {
         String data = keyConfiguration.toString();
-
-        try {
-            saveTo.createNewFile();
-        } catch (IOException exception) {
-            exception.printStackTrace();
-        }
+        saveTo.createNewFile();
 
         try (FileWriter fileWriter = new FileWriter(saveTo)) {
             fileWriter.write(data);

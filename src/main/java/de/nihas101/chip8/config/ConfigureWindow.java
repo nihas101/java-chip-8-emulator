@@ -8,6 +8,8 @@ import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
+import java.io.IOException;
+
 import static de.nihas101.chip8.utils.keyConfiguration.KeyConfigurationManager.saveKeyConfiguration;
 
 public final class ConfigureWindow extends Application {
@@ -31,7 +33,10 @@ public final class ConfigureWindow extends Application {
         primaryStage.setTitle("Configure controls");
         primaryStage.setScene(scene);
 
-        primaryStage.setOnCloseRequest(windowEvent -> saveKeyConfiguration(configureController.getKeyConfiguration()));
+        primaryStage.setOnCloseRequest(windowEvent -> {
+            try {saveKeyConfiguration(configureController.getKeyConfiguration());}
+            catch (IOException exception){ exception.printStackTrace(); }
+        });
 
         primaryStage.showAndWait();
     }
