@@ -114,4 +114,12 @@ public class ResizableCanvas extends Canvas {
     public void setPaintOff(Paint paint) {
         this.paintOff = paint;
     }
+
+    public Paint getPaintOn() {
+        return paintOn;
+    }
+
+    public Paint getPaintOff() {
+        return paintOff;
+    }
 }

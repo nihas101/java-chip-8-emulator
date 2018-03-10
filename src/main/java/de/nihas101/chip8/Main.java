@@ -29,8 +29,8 @@ public final class Main extends Application {
     public Emulator emulator;
     private Scene scene;
     private Pane root;
-    private MainController mainController;
-    private ResizableCanvas canvas;
+    public MainController mainController;
+    public ResizableCanvas canvas;
     private Timeline timeline;
 
     private EventHandler<KeyEvent> keyPressedEventEventHandler;

@@ -7,9 +7,7 @@ import org.junit.Test;
 import org.testfx.framework.junit.ApplicationTest;
 
 import static javafx.application.Platform.runLater;
-import static javafx.scene.input.KeyCode.A;
-import static javafx.scene.input.KeyCode.DIGIT1;
-import static javafx.scene.input.KeyCode.Y;
+import static javafx.scene.input.KeyCode.*;
 import static org.junit.Assert.assertEquals;
 
 public class ConfigureWindowTest extends ApplicationTest {
