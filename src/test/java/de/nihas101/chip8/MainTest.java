@@ -24,6 +24,7 @@ public class MainTest extends ApplicationTest {
     public void start(Stage primaryStage) throws Exception {
         main = new Main();
         main.start(new Stage());
+        Thread.sleep(1000);
     }
 
     @Test
@@ -33,18 +34,20 @@ public class MainTest extends ApplicationTest {
     }
 
     @Test
-    public void setSpriteColorTest() {
+    public void setSpriteColorTest() throws InterruptedException {
         clickOn(main.mainController.colorPickerSprite);
         double[] colorCoordinates = colorCoordinates(main.mainController.colorPickerSprite);
         clickOn(colorCoordinates[0], colorCoordinates[1]);
+        Thread.sleep(1000);
         assertEquals("0x999999ff", main.canvas.getPaintOn().toString());
     }
 
     @Test
-    public void setBackgroundColorTest() {
+    public void setBackgroundColorTest() throws InterruptedException {
         clickOn(main.mainController.colorPickerBackground);
         double[] colorCoordinates = colorCoordinates(main.mainController.colorPickerBackground);
         clickOn(colorCoordinates[0], colorCoordinates[1]);
+        Thread.sleep(1000);
         assertEquals("0x999999ff", main.canvas.getPaintOff().toString());
     }
 

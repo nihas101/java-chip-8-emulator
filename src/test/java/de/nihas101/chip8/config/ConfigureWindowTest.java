@@ -14,10 +14,11 @@ public class ConfigureWindowTest extends ApplicationTest {
     private KeyConfiguration keyConfiguration;
 
     @Override
-    public void start(Stage primaryStage) {
+    public void start(Stage primaryStage) throws InterruptedException {
         Emulator emulator = Emulator.createEmulator();
         emulator.setKeyConfiguration(KeyConfiguration.createKeyConfiguration(emulator));
         runLater(() -> keyConfiguration = ConfigureWindow.configureControls(emulator));
+        Thread.sleep(1000);
     }
 
     @Test
