@@ -20,16 +20,17 @@ public class DebuggerTest extends ApplicationTest {
     }
 
     @Test
-    public void setDebuggable() {
+    public void setDebuggable() throws InterruptedException {
         setupDebugger();
+        Thread.sleep(2000);
         assertEquals(true, debugger.isDebugging());
         closeCurrentWindow();
     }
 
     @Test
-    public void setStepByStep() {
+    public void setStepByStep() throws InterruptedException {
         setupDebugger();
-
+        Thread.sleep(2000);
         debugger.setStepByStep(true);
 
         assertEquals(true, debugger.isDebugging());

@@ -24,17 +24,18 @@ public class MainTest extends ApplicationTest {
     public void start(Stage primaryStage) throws Exception {
         main = new Main();
         main.start(new Stage());
-        Thread.sleep(1000);
     }
 
     @Test
-    public void loadCancelTest() {
+    public void loadCancelTest() throws InterruptedException {
+        Thread.sleep(2000);
         clickOn(main.mainController.romLoaderButton);
         closeCurrentWindow();
     }
 
     @Test
     public void setSpriteColorTest() throws InterruptedException {
+        Thread.sleep(2000);
         clickOn(main.mainController.colorPickerSprite);
         double[] colorCoordinates = colorCoordinates(main.mainController.colorPickerSprite);
         clickOn(colorCoordinates[0], colorCoordinates[1]);
@@ -44,6 +45,7 @@ public class MainTest extends ApplicationTest {
 
     @Test
     public void setBackgroundColorTest() throws InterruptedException {
+        Thread.sleep(2000);
         clickOn(main.mainController.colorPickerBackground);
         double[] colorCoordinates = colorCoordinates(main.mainController.colorPickerBackground);
         clickOn(colorCoordinates[0], colorCoordinates[1]);
@@ -57,25 +59,29 @@ public class MainTest extends ApplicationTest {
     }
 
     @Test
-    public void debugger() {
+    public void debugger() throws InterruptedException {
+        Thread.sleep(2000);
         push(F1);
         runLater(() -> main.stop());
     }
 
     @Test
-    public void saveShortCut() {
+    public void saveShortCut() throws InterruptedException {
+        Thread.sleep(2000);
         push(F5);
         closeCurrentWindow();
     }
 
     @Test
-    public void loadShortCut() {
+    public void loadShortCut() throws InterruptedException {
+        Thread.sleep(2000);
         push(F6);
         closeCurrentWindow();
     }
 
     @Test
-    public void setSpeed() {
+    public void setSpeed() throws InterruptedException {
+        Thread.sleep(2000);
         clickOn(main.mainController.speedTextField);
         push(LEFT);
         push(LEFT);
@@ -92,7 +98,8 @@ public class MainTest extends ApplicationTest {
     }
 
     @Test
-    public void openConfiguration() {
+    public void openConfiguration() throws InterruptedException {
+        Thread.sleep(2000);
         clickOn(main.mainController.configureControlsButton);
         closeCurrentWindow();
     }
