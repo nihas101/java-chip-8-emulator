@@ -22,24 +22,6 @@ public class ConfigureWindowTest extends ApplicationTest {
     }
 
     @Test
-    public void configureControls() {
-        clickOn("#key0TextField");
-        push(Y);
-        closeCurrentWindow();
-        assertEquals("0", keyConfiguration.getOrNOP(Y).getKeyName());
-    }
-
-    @Test
-    public void configureControlsReset() {
-        clickOn("#key0TextField");
-        push(Y);
-        clickOn("#resetButton");
-        closeCurrentWindow();
-        assertEquals("NOP", keyConfiguration.getOrNOP(Y).getKeyName());
-        assertEquals("1", keyConfiguration.getOrNOP(DIGIT1).getKeyName());
-    }
-
-    @Test
     public void configureControlsAlreadyAssigned() {
         clickOn("#key0TextField");
         push(A);
