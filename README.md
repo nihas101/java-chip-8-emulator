@@ -57,7 +57,7 @@ The emulator expects a **US keyboard layout** and has the following standard key
 To reconfigure the key assignments, click on the ``config`` button in the interface to
 open the configuration window, change the configuration to your liking and close the window again.
 
-The configuration will be saved under ../config/controls.dat upon closing the window.
+The configuration will be saved under ``../config/controls.dat`` upon closing the window.
 
 To reset the configuration simply, click the reset button in the configuration window.
 
