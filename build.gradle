@@ -25,8 +25,10 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
 
     // TestFX: github.com/TestFX/TestFX
-    testCompile "org.testfx:testfx-core:4.0.12-alpha"
-    testCompile "org.testfx:testfx-junit:4.0.12-alpha"
+    // https://mvnrepository.com/artifact/org.testfx/testfx-core
+    testCompile group: 'org.testfx', name: 'testfx-core', version: '4.0.13-alpha'
+    // https://mvnrepository.com/artifact/org.testfx/testfx-junit
+    testCompile group: 'org.testfx', name: 'testfx-junit', version: '4.0.13-alpha'
 }
 
 jar {
